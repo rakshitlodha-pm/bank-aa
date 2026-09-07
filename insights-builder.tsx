@@ -34,7 +34,10 @@ type Period = {
 type Cat = { n: string; a: number; c: string; kind: string; sensitive?: boolean; sub?: string }
 type Fund = { n: string; c: string; ini: string; st: string; k: string; r: string }
 type StoryView = { kicker: string; big: string; sub: string; meta: string; cta: string | null; none?: string }
-type Story = { lbl: string; ini: string; c: string; merchant: boolean; id: string; why: string; v: StoryView }
+type Story = {
+  lbl: string; ini: string; c: string; merchant: boolean; id: string; why: string; v: StoryView
+  sheetId?: string
+}
 
 type Handlers = {
   openStory: (i: number) => void
@@ -116,6 +119,18 @@ const FUNDS: Record<string, Fund[]> = {
   ],
 }
 
+/* Listed players in a sector, shown behind a story's CTA when the claim is a
+   sector claim rather than a single-stock claim. Fixture only — no returns
+   shown, in keeping with §2.2's no-performance-figures rule. */
+const SECTOR_PLAYERS: Record<string, { n: string; c: string; ini: string; you?: boolean }[]> = {
+  travel: [
+    { n: 'MakeMyTrip Ltd',        c: '#e0234e', ini: 'MM', you: true },
+    { n: 'Easy Trip Planners',    c: '#00a99d', ini: 'ET' },
+    { n: 'Thomas Cook (India)',   c: '#f2a900', ini: 'TC' },
+    { n: 'Yatra Online',          c: '#0033a0', ini: 'YO' },
+  ],
+}
+
 const STORIES: Record<string, Story> = {
   blinkit: {
     lbl: 'Eternal', ini: 'ET', c: '#ef4f5f', merchant: true, id: 'S1',
@@ -135,8 +150,10 @@ const STORIES: Record<string, Story> = {
   mmt: {
     lbl: 'Travel', ini: 'MM', c: '#e0234e', merchant: true, id: 'S3',
     why: 'MakeMyTrip ₹51,428/12mo · sector claim only, not a stock claim',
-    v: { kicker: 'Travel', big: '₹51,428', sub: 'Five bookings this year, all through MakeMyTrip.',
-         meta: 'You are MakeMyTrip’s customer. Nobody else in the sector can claim you.', cta: 'Explore travel' },
+    sheetId: 'travel',
+    v: { kicker: 'Travel', big: '₹51,428',
+         sub: 'You’re a travel maestro — five bookings this year, all through MakeMyTrip. Top 1% of Paytm Money travellers.',
+         meta: 'You are MakeMyTrip’s customer. Nobody else in the sector can claim you.', cta: 'Explore listed OTAs' },
   },
   subs: {
     lbl: '12 subs', ini: '12', c: '#cdff82', merchant: true, id: 'S5',
@@ -824,8 +841,12 @@ function buildPage(S: Cfg, openStory: number | null, sheet: string | null, railS
   function badgesRow() {
     log('Structure', '—', 'always', 'Badge row',
       'needs no AA consent — this is the reason to connect an account (§8.1)')
-    log('State', '8.2', S.badges, 'Badge tiles',
-      'investing cohort exists; the spending tile stays locked behind the 5,000-account gate')
+    log('PRD clash', '8.2', 'changed', 'Second badge tile',
+      'Rakshit, 7 Sep. Was a locked "1,340 of 5,000 connected accounts" progress card — the spending percentile ' +
+      'gated behind cohort scale. Replaced with an unlocked category badge (Top 1% of travellers) per his sketch. ' +
+      'This is a category spending percentile, so it needs this user’s own AA data even though it needs no cohort ' +
+      'gate — it reopens whether §8’s "Section 3 needs no bank consent" line still holds for this tile.')
+    log('State', '8.2', S.badges, 'Badge tiles', 'both tiles unlocked: investing percentile + travel percentile')
 
     return (
       <>
@@ -837,13 +858,12 @@ function buildPage(S: Cfg, openStory: number | null, sheet: string | null, railS
             <div className="c2">of Paytm Money investors your age</div>
             <div className="ft2">Band median ₹18,400/mo · you ₹1,45,000 <span className="assumed">assumed</span></div>
           </div>
-          <div className="badge-t">
+          <div className="badge-t hot">
             <Anno r="§8.2" />
-            <div className="g2">🔒</div>
-            <div className="big">1,340</div>
-            <div className="c2">of 5,000 connected accounts</div>
-            <div className="lb2"><i style={{ width: '26.8%' }} /></div>
-            <div className="ft2">Spending comparisons switch on at 5,000. <span className="assumed">assumed</span></div>
+            <div className="g2">↗</div>
+            <div className="big">Top 1%</div>
+            <div className="c2">of Paytm Money travellers</div>
+            <div className="ft2">You ₹51,428/yr on travel · band median ₹9,800/yr <span className="assumed">assumed</span></div>
           </div>
         </div>
         <div className="disclose" style={{ border: 0 }}>
@@ -890,8 +910,38 @@ function buildPage(S: Cfg, openStory: number | null, sheet: string | null, railS
         </div>
         <div className="vft">
           {v.cta
-            ? <button className="pill">{v.cta}</button>
+            ? <button className="pill" onClick={() => s.sheetId && on.openSheet('sector:' + s.sheetId)}>{v.cta}</button>
             : <div className="vnone">{v.none}</div>}
+        </div>
+      </div>
+    )
+  }
+
+  /* ------------------------------------- what a sector-claim CTA opens */
+  function sectorSheet() {
+    if (!sheet || !sheet.startsWith('sector:')) return null
+    const id = sheet.slice('sector:'.length)
+    const list = SECTOR_PLAYERS[id]
+    if (!list) return null
+
+    log('Sheet', '5.2', 'open', 'Listed players in the sector',
+      'the claim is on the sector, not a single stock — this sheet is where that widens out. No returns shown (§2.2).')
+
+    return (
+      <div className="sheet">
+        <div className="panel">
+          <div className="grab" />
+          <h4>Listed in travel</h4>
+          <div className="sh">Everyone in the sector who is on the exchange. No buy button — holdings must exist first (§2.2).</div>
+          <div className="mrow" style={{ flexDirection: 'column' }}>
+            {list.map(p => (
+              <button className="mtile" key={p.n} style={{ width: '100%' }}>
+                <span className="ml" style={{ background: p.c }}>{p.ini}</span>
+                <span className="mn">{p.n}{p.you && <span className="assumed" style={{ marginLeft: 6 }}>your OTA</span>}</span>
+              </button>
+            ))}
+          </div>
+          <button className="later2" onClick={on.closeAll}>Close</button>
         </div>
       </div>
     )
@@ -934,6 +984,7 @@ function buildPage(S: Cfg, openStory: number | null, sheet: string | null, railS
       </div>
       {storyViewer()}
       {budgetSheet()}
+      {sectorSheet()}
     </div>
   )
 
