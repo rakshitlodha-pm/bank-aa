@@ -1,0 +1,930 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Paytm Money Insights tab rendered from one real Account Aggregator deposits dump: three sections, thirteen ranked insight slots, August 2026 and 2 September 2026.">
+<style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Insights Tab, Real Data</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<style>
+:root{
+  --bg:#dfe2de; --sheet:#f7f8f6; --sheet2:#eceee9; --chip:#e3e6e1;
+  --ink:#10161c; --ink2:#4a5560; --ink3:#79838d; --rule:#c8ccc7; --rule2:#dcdfda;
+  --acc:#2064ad; --in:#0b7d63; --out:#c2402b; --inv:#2064ad;
+  --bar:#2064ad; --bar-soft:#a8c2de; --flag:#8a5b00;
+  --shadow:0 1px 2px rgba(16,22,28,.06),0 12px 28px -12px rgba(16,22,28,.22);
+  --ui:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --num:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  --doc:'Newsreader',Georgia,'Times New Roman',serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0a0d0e; --sheet:#131719; --sheet2:#1b2023; --chip:#232a2e;
+  --ink:#eef2f1; --ink2:#a4b0b4; --ink3:#727e84; --rule:#2c3438; --rule2:#222a2d;
+  --acc:#4b93d8; --in:#1e9e7c; --out:#d96a52; --inv:#4b93d8;
+  --bar:#4b93d8; --bar-soft:#2a4560; --flag:#c39a3c;
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 14px 32px -12px rgba(0,0,0,.7);
+}}
+:root[data-theme="dark"]{
+  --bg:#0a0d0e; --sheet:#131719; --sheet2:#1b2023; --chip:#232a2e;
+  --ink:#eef2f1; --ink2:#a4b0b4; --ink3:#727e84; --rule:#2c3438; --rule2:#222a2d;
+  --acc:#4b93d8; --in:#1e9e7c; --out:#d96a52; --inv:#4b93d8;
+  --bar:#4b93d8; --bar-soft:#2a4560; --flag:#c39a3c;
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 14px 32px -12px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--ui);
+  font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;
+  padding:0 0 96px;overflow-x:hidden}
+.wrap{max-width:1440px;margin:0 auto;padding:0 28px}
+h1,h2,h3,h4{margin:0;text-wrap:balance;font-weight:600;letter-spacing:-.015em}
+p{margin:0}
+a{color:var(--acc)}
+.mono{font-family:var(--num);font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+.eyebrow{font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)}
+
+/* ---------- page header ---------- */
+.masthead{border-bottom:1px solid var(--rule);padding:44px 0 28px;margin-bottom:36px}
+.masthead h1{font-size:clamp(30px,4.4vw,50px);line-height:1.02;letter-spacing:-.03em;max-width:22ch}
+.masthead .lede{font-family:var(--doc);font-size:19px;line-height:1.5;color:var(--ink2);max-width:62ch;margin-top:18px}
+.masthead .lede em{color:var(--ink)}
+.facts{display:flex;flex-wrap:wrap;gap:0;margin-top:26px;border-top:1px solid var(--rule2)}
+.fact{padding:12px 22px 12px 0;margin-right:22px;border-right:1px solid var(--rule2)}
+.fact:last-child{border-right:0}
+.fact b{display:block;font-family:var(--num);font-size:19px;font-weight:500;letter-spacing:-.02em}
+.fact span{font-size:11px;color:var(--ink3);letter-spacing:.03em}
+
+/* ---------- two-column: phone + notes ---------- */
+.stage{border-top:1px solid var(--rule);padding-top:30px;margin-top:56px}
+.stage-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:14px;margin-bottom:26px}
+.stage-head h2{font-size:26px;letter-spacing:-.025em}
+.stage-head .sub{font-family:var(--doc);font-size:17px;color:var(--ink2)}
+.split{display:grid;grid-template-columns:426px minmax(0,1fr);gap:52px;align-items:start}
+@media (max-width:1080px){.split{grid-template-columns:1fr;gap:36px}}
+
+/* ---------- phone ---------- */
+.phone{width:426px;max-width:100%;background:var(--sheet2);border:1px solid var(--rule);
+  border-radius:38px;padding:9px;box-shadow:var(--shadow)}
+@media (max-width:1080px){.phone{margin:0 auto}}
+.screen{background:var(--sheet);border-radius:30px;overflow:hidden;position:relative}
+.nub{width:104px;height:5px;border-radius:3px;background:var(--rule);margin:7px auto 0}
+.appbar{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 0}
+.appbar .brand{font-size:13.5px;font-weight:700;letter-spacing:-.01em}
+.appbar .brand span{color:var(--acc)}
+.tabs{display:flex;gap:2px;padding:12px 12px 0;border-bottom:1px solid var(--rule2)}
+.tab{flex:1;text-align:center;padding:9px 4px 11px;font-size:12.5px;font-weight:500;color:var(--ink3);
+  border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab.on{color:var(--ink);font-weight:600;border-bottom-color:var(--acc)}
+.scr{padding:0 0 26px}
+
+/* section headers inside app */
+.sec{padding:22px 18px 4px}
+.sec-n{display:flex;align-items:center;gap:8px}
+.sec-n b{font-family:var(--num);font-size:10px;font-weight:600;color:var(--sheet);
+  background:var(--ink);border-radius:3px;padding:1px 5px;letter-spacing:.04em}
+.sec h3{font-size:17px;letter-spacing:-.02em}
+.sec .why{font-size:11.5px;color:var(--ink3);margin-top:3px}
+.thick{height:8px;background:var(--bg);border-top:1px solid var(--rule2);border-bottom:1px solid var(--rule2);margin:22px 0 0}
+
+/* period chips */
+.chips{display:flex;gap:6px;padding:12px 18px 2px;overflow-x:auto;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;font-size:11.5px;font-weight:500;padding:5px 11px;border-radius:999px;
+  border:1px solid var(--rule);background:var(--chip);color:var(--ink2);white-space:nowrap}
+.chip.on{background:var(--ink);border-color:var(--ink);color:var(--sheet);font-weight:600}
+
+/* money tiles */
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule2);
+  margin:14px 18px 0;border:1px solid var(--rule2);border-radius:10px;overflow:hidden}
+.tile{background:var(--sheet);padding:12px 13px 13px}
+.tile .lab{display:flex;align-items:center;gap:5px;font-size:10.5px;font-weight:600;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--ink3)}
+.dot{width:7px;height:7px;border-radius:2px;flex:0 0 auto}
+.tile .amt{font-family:var(--num);font-size:20px;font-weight:500;letter-spacing:-.035em;margin-top:5px}
+.tile .note{font-size:10.5px;color:var(--ink3);margin-top:4px;line-height:1.35}
+.c-in{color:var(--in)} .c-out{color:var(--out)} .c-inv{color:var(--inv)}
+.bg-in{background:var(--in)} .bg-out{background:var(--out)} .bg-inv{background:var(--inv)} .bg-nn{background:var(--ink3)}
+
+/* flow chart */
+.chart{margin:16px 18px 0}
+.chart-t{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.chart-t h4{font-size:12.5px;font-weight:600}
+.legend{display:flex;gap:10px;font-size:10px;color:var(--ink2)}
+.legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+.plot{position:relative;height:112px;display:grid;grid-template-columns:repeat(6,1fr);gap:9px;
+  align-items:end;border-bottom:1px solid var(--rule);padding-bottom:0}
+.ref{position:absolute;left:0;right:0;border-top:1px dashed var(--ink3);z-index:3}
+.ref span{position:absolute;left:0;top:-13px;font-size:9px;color:var(--ink3);
+  background:var(--sheet);padding:0 4px 0 0;white-space:nowrap}
+.pair{display:flex;gap:3px;align-items:end;height:100%;position:relative;z-index:2}
+.b{flex:1;border-radius:3px 3px 0 0;min-height:2px;box-shadow:0 0 0 2px var(--sheet)}
+.b.i{background:var(--in)} .b.o{background:var(--out)}
+.xax{display:grid;grid-template-columns:repeat(6,1fr);gap:9px;margin-top:6px}
+.xax span{font-size:9.5px;color:var(--ink3);text-align:center;font-family:var(--num)}
+.cap{font-size:10.5px;color:var(--ink3);margin:9px 18px 0;line-height:1.45}
+.cap b{color:var(--ink2);font-weight:600}
+
+/* accounts */
+.accs{margin:14px 18px 0;border:1px solid var(--rule2);border-radius:10px;overflow:hidden}
+.acc{display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px;
+  padding:11px 13px;border-bottom:1px solid var(--rule2);background:var(--sheet)}
+.acc:last-child{border-bottom:0}
+.acc.tot{background:var(--sheet2)}
+.acc .nm{font-size:13px;font-weight:600;letter-spacing:-.01em}
+.acc .mk{font-family:var(--num);font-size:10.5px;color:var(--ink3);margin-top:1px}
+.acc .bal{font-family:var(--num);font-size:15px;font-weight:500;letter-spacing:-.025em;text-align:right}
+
+/* review card */
+.review{margin:14px 18px 0;border:1px solid var(--acc);border-radius:10px;
+  padding:13px 14px;background:color-mix(in oklab,var(--acc) 7%,var(--sheet))}
+.review .k{font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--acc)}
+.review h4{font-size:15px;margin-top:4px;letter-spacing:-.02em}
+.review .r{display:flex;gap:16px;margin-top:9px;flex-wrap:wrap}
+.review .r div{font-size:10.5px;color:var(--ink3)}
+.review .r b{display:block;font-family:var(--num);font-size:14px;font-weight:500;color:var(--ink);letter-spacing:-.02em}
+.review .go{margin-top:10px;font-size:12px;font-weight:600;color:var(--acc)}
+
+/* ranked category bars */
+.rank{margin:14px 18px 0}
+.row{padding:7px 0;border-bottom:1px solid var(--rule2)}
+.row:last-child{border-bottom:0}
+.row-t{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.row-t .n{font-size:12.5px;font-weight:500;letter-spacing:-.01em}
+.row-t .v{font-family:var(--num);font-size:12.5px;font-weight:500;white-space:nowrap}
+.row-t .p{font-family:var(--num);font-size:10px;color:var(--ink3);margin-left:5px}
+.track{display:block;height:6px;background:var(--rule2);border-radius:3px;margin-top:5px;overflow:hidden}
+.fill{display:block;height:6px;background:var(--bar);border-radius:3px}
+.fill.soft{background:var(--bar-soft)}
+.more{font-size:11.5px;color:var(--acc);font-weight:600;padding:9px 0 0}
+
+/* two ratio sub-tiles */
+.ratios{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:16px 18px 0}
+.ratio{border:1px solid var(--rule2);border-radius:10px;padding:11px 12px;background:var(--sheet)}
+.ratio .k{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3)}
+.ratio .big{font-family:var(--num);font-size:22px;font-weight:500;letter-spacing:-.04em;margin-top:4px}
+.ratio .vs{font-size:10.5px;color:var(--ink3);margin-top:3px;line-height:1.35}
+.gauge{display:block;height:5px;background:var(--rule2);border-radius:3px;margin-top:8px;overflow:hidden}
+.gauge i{display:block;height:5px;border-radius:3px}
+
+/* insight slots */
+.slots{margin:14px 18px 0;display:flex;flex-direction:column;gap:10px}
+.slot{border:1px solid var(--rule);border-radius:12px;background:var(--sheet);overflow:hidden}
+.slot-h{display:flex;align-items:center;gap:7px;padding:9px 12px 0}
+.pri{font-family:var(--num);font-size:9.5px;font-weight:600;letter-spacing:.06em;
+  padding:1.5px 5px;border-radius:3px;background:var(--ink);color:var(--sheet)}
+.pri.p1{background:var(--acc)} .pri.p2{background:var(--ink3)}
+.slot-h .src{font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3);font-weight:600}
+.slot-b{padding:6px 12px 12px}
+.slot-b .hl{font-size:14px;font-weight:600;letter-spacing:-.02em;line-height:1.3}
+.slot-b .hl .fig{font-family:var(--num);letter-spacing:-.03em}
+.slot-b .bd{font-size:11.5px;color:var(--ink2);margin-top:5px;line-height:1.45}
+.slot-b .bd .fig{font-family:var(--num)}
+.tick{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:9px;border-top:1px solid var(--rule2)}
+.tick .sym{font-family:var(--num);font-size:11px;font-weight:600;letter-spacing:.02em}
+.tick .co{font-size:11px;color:var(--ink3);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.btns{display:flex;gap:6px;margin-top:10px}
+.btn{flex:1;text-align:center;font-size:12px;font-weight:600;padding:8px 6px;border-radius:8px;
+  background:var(--acc);color:#fff;border:1px solid var(--acc)}
+:root[data-theme="dark"] .btn{color:#08131e}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn{color:#08131e}}
+.btn.gh{background:transparent;color:var(--acc)}
+.pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+.pill{font-size:11px;font-weight:500;padding:4px 9px;border-radius:999px;
+  border:1px solid var(--rule);background:var(--chip)}
+.pill .s{font-family:var(--num);font-size:9.5px;color:var(--ink3);margin-left:4px}
+.slot.sup{border-style:dashed;background:transparent}
+.slot.sup .slot-b .hl{color:var(--ink2)}
+.supwhy{font-size:10.5px;color:var(--flag);margin-top:7px;line-height:1.4}
+.slot.lock{border-style:dashed;background:transparent}
+.progress{display:block;height:5px;background:var(--rule2);border-radius:3px;margin-top:9px;overflow:hidden}
+.progress i{display:block;height:5px;background:var(--ink3);border-radius:3px}
+
+/* badge */
+.badge{margin:14px 18px 0;border:1px solid var(--rule2);border-radius:12px;padding:12px 13px;
+  background:var(--sheet2);display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center}
+.badge .med{width:38px;height:38px;border-radius:50%;border:2px solid var(--acc);
+  display:grid;place-items:center;font-family:var(--num);font-size:13px;font-weight:600;color:var(--acc)}
+.badge h4{font-size:13px;letter-spacing:-.01em}
+.badge p{font-size:11px;color:var(--ink3);margin-top:2px;line-height:1.4}
+
+/* fold marker */
+.fold{position:relative;border-top:1px dashed var(--out);margin:0}
+.fold span{position:absolute;left:14px;top:-8px;font-size:9px;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--out);background:var(--sheet);padding:0 6px}
+
+/* ---------- notes column ---------- */
+.notes{display:flex;flex-direction:column;gap:0;align-self:start;
+  position:sticky;top:24px;max-height:calc(100vh - 48px);overflow-y:auto;
+  padding-right:12px;scrollbar-width:thin}
+@media (max-width:1080px){.notes{position:static;max-height:none;overflow:visible;padding-right:0}}
+.anno{display:grid;grid-template-columns:30px minmax(0,1fr);gap:14px;
+  padding:17px 0;border-bottom:1px solid var(--rule2)}
+.anno:first-child{padding-top:0}
+.anno .num{font-family:var(--num);font-size:12px;font-weight:600;color:var(--sheet);
+  background:var(--ink);width:24px;height:24px;border-radius:50%;display:grid;place-items:center;margin-top:2px}
+.anno h4{font-size:15px;letter-spacing:-.02em}
+.anno p{font-family:var(--doc);font-size:16px;line-height:1.52;color:var(--ink2);margin-top:5px;max-width:64ch}
+.anno p+p{margin-top:9px}
+.anno p strong{color:var(--ink);font-weight:500}
+.anno .fig{font-family:var(--num);font-size:14.5px;letter-spacing:-.01em;color:var(--ink)}
+.anno.warn .num{background:var(--out)}
+
+/* ---------- tables ---------- */
+.tblwrap{overflow-x:auto;border:1px solid var(--rule);border-radius:12px;background:var(--sheet);margin-top:22px}
+table{border-collapse:collapse;width:100%;min-width:820px;font-size:13px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--rule2);vertical-align:top}
+th{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);
+  background:var(--sheet2);position:sticky;top:0;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.n{font-family:var(--num);font-variant-numeric:tabular-nums;white-space:nowrap}
+.tag{display:inline-block;font-family:var(--num);font-size:9.5px;font-weight:600;letter-spacing:.05em;
+  padding:1.5px 6px;border-radius:3px;background:var(--ink);color:var(--sheet)}
+.tag.p1{background:var(--acc)} .tag.p2{background:var(--ink3)} .tag.p3{background:transparent;color:var(--ink3);box-shadow:inset 0 0 0 1px var(--rule)}
+.yes{color:var(--in);font-weight:600} .no{color:var(--ink3)}
+.sup2{color:var(--flag);font-weight:600}
+
+/* ---------- prose blocks ---------- */
+.prose{max-width:70ch;font-family:var(--doc);font-size:17.5px;line-height:1.6;color:var(--ink2);margin-top:16px}
+.prose p+p{margin-top:14px}
+.prose strong{color:var(--ink);font-weight:500}
+.prose .fig{font-family:var(--num);font-size:16px;color:var(--ink)}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0;margin-top:24px;
+  border-top:1px solid var(--rule)}
+.col{padding:20px 24px 20px 0;border-right:1px solid var(--rule2)}
+.col:last-child{border-right:0}
+.col h4{font-size:14px;letter-spacing:-.01em}
+.col ul{margin:9px 0 0;padding-left:18px;font-size:13.5px;line-height:1.55;color:var(--ink2)}
+.col li{margin-bottom:6px}
+.col li strong{color:var(--ink);font-weight:600}
+
+/* theme toggle */
+.tt{position:fixed;right:16px;bottom:16px;z-index:50;font-family:var(--ui);font-size:12px;font-weight:600;
+  padding:9px 14px;border-radius:999px;border:1px solid var(--rule);background:var(--sheet);
+  color:var(--ink);box-shadow:var(--shadow);cursor:pointer}
+.tt:focus-visible,.chip:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+footer{border-top:1px solid var(--rule);margin-top:60px;padding-top:22px;font-size:12.5px;color:var(--ink3);max-width:78ch}
+footer b{color:var(--ink2)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <p class="eyebrow">Paytm Money &middot; Insights tab &middot; design pass 2</p>
+  <h1>What the Insights tab looks like for you</h1>
+  <p class="lede">One page, three sections, in the order you set them: <em>your bank</em>, then <em>your expenses</em>, then <em>you against everyone else</em>. Every figure below is computed from your own consented deposits dump &mdash; not a mock, not a placeholder. Where a number could only come from a cohort we don&rsquo;t have yet, it is marked <em>assumed</em> and nothing else on the page depends on it.</p>
+  <div class="facts">
+    <div class="fact"><b>1,265</b><span>transactions read</span></div>
+    <div class="fact"><b>3</b><span>linked accounts</span></div>
+    <div class="fact"><b>13</b><span>months of history</span></div>
+    <div class="fact"><b>24</b><span>brands resolved in August</span></div>
+    <div class="fact"><b>7</b><span>insights that fired</span></div>
+    <div class="fact"><b>1</b><span>insight suppressed</span></div>
+  </div>
+</header>
+
+<!-- =================== STAGE 1 =================== -->
+<section class="stage" style="border-top:0;padding-top:0;margin-top:0">
+  <div class="stage-head">
+    <h2>August 2026</h2>
+    <p class="sub">The default view &mdash; last complete month. 109 transactions.</p>
+  </div>
+
+  <div class="split">
+  <div class="phone">
+   <div class="nub"></div>
+   <div class="screen">
+    <div class="appbar"><span class="brand">Paytm <span>Money</span></span><span class="eyebrow">2 Sep</span></div>
+    <div class="tabs"><span class="tab on">Insights</span><span class="tab">Transactions</span><span class="tab">My Accounts</span></div>
+
+    <div class="scr">
+
+     <!-- ===== SECTION 1 ===== -->
+     <div class="sec">
+       <div class="sec-n"><b>1</b><h3>Your bank</h3></div>
+       <p class="why">Everything here works for every consented user.</p>
+     </div>
+
+     <div class="chips">
+       <span class="chip">This month</span><span class="chip on">August</span>
+       <span class="chip">3 months</span><span class="chip">6 months</span><span class="chip">1 year</span>
+     </div>
+
+     <div class="tiles">
+       <div class="tile">
+         <span class="lab"><i class="dot bg-in"></i>Money in</span>
+         <div class="amt c-in mono">&#8377;4,17,358</div>
+         <p class="note">Salary &#8377;4,01,618 &middot; refunds &#8377;10,639</p>
+       </div>
+       <div class="tile">
+         <span class="lab"><i class="dot bg-out"></i>Spent</span>
+         <div class="amt c-out mono">&#8377;3,12,581</div>
+         <p class="note">1.7&times; your 6-month usual of &#8377;1,84,074</p>
+       </div>
+       <div class="tile">
+         <span class="lab"><i class="dot bg-inv"></i>Invested</span>
+         <div class="amt c-inv mono">&#8377;1,45,335</div>
+         <p class="note">Mandate debited 1 Aug, on time</p>
+       </div>
+       <div class="tile">
+         <span class="lab"><i class="dot bg-nn"></i>Left over</span>
+         <div class="amt c-out mono">&minus;&#8377;40,558</div>
+         <p class="note">Spending plus investing ran ahead of income</p>
+       </div>
+     </div>
+
+     <div class="chart">
+       <div class="chart-t">
+         <h4>Six months</h4>
+         <div class="legend"><span><i class="bg-in"></i>In</span><span><i class="bg-out"></i>Spent</span></div>
+       </div>
+       <div class="plot">
+         <div class="ref" style="bottom:21.8%"><span>usual income</span></div>
+         <div class="pair"><i class="b i" style="height:17.1%"></i><i class="b o" style="height:5.0%"></i></div>
+         <div class="pair"><i class="b i" style="height:21.9%"></i><i class="b o" style="height:13.3%"></i></div>
+         <div class="pair"><i class="b i" style="height:21.8%"></i><i class="b o" style="height:5.9%"></i></div>
+         <div class="pair"><i class="b i" style="height:20.9%"></i><i class="b o" style="height:11.2%"></i></div>
+         <div class="pair"><i class="b i" style="height:100%"></i><i class="b o" style="height:31.9%"></i></div>
+         <div class="pair"><i class="b i" style="height:27.8%"></i><i class="b o" style="height:20.8%"></i></div>
+       </div>
+       <div class="xax"><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span></div>
+     </div>
+     <p class="cap"><b>July was not a normal month.</b> &#8377;15,02,386 came in &mdash; 4.6&times; your usual &mdash; and &#8377;4,78,942 went out.</p>
+
+     <div class="accs">
+       <div class="acc"><div><div class="nm">ICICI Bank</div><div class="mk">Savings &middot; &bull;&bull;0906</div></div><div class="bal">&#8377;12,97,750</div></div>
+       <div class="acc"><div><div class="nm">Axis Bank</div><div class="mk">Savings &middot; &bull;&bull;5062</div></div><div class="bal">&#8377;57,536</div></div>
+       <div class="acc"><div><div class="nm">Federal Bank</div><div class="mk">Savings &middot; &bull;&bull;0336</div></div><div class="bal">&#8377;39</div></div>
+       <div class="acc tot"><div><div class="nm">Total balance</div><div class="mk">3 accounts</div></div><div class="bal">&#8377;13,55,326</div></div>
+     </div>
+
+     <div class="fold"><span>phone fold</span></div>
+
+     <div class="review">
+       <p class="k">Your year, so far</p>
+       <h4>Eight months of 2026</h4>
+       <div class="r">
+         <div>Earned<b>&#8377;38.7L</b></div>
+         <div>Spent<b>&#8377;15.2L</b></div>
+         <div>Invested<b>&#8377;11.5L</b></div>
+       </div>
+       <p class="go">Open your 2026 review &rarr;</p>
+     </div>
+
+     <div class="thick"></div>
+
+     <!-- ===== SECTION 2 ===== -->
+     <div class="sec">
+       <div class="sec-n"><b>2</b><h3>Your expenses</h3></div>
+       <p class="why">&#8377;3,12,581 in August, across 15 categories.</p>
+     </div>
+
+     <div class="rank">
+       <div class="row"><div class="row-t"><span class="n">Credit card bills</span><span class="v">&#8377;1,26,820<span class="p">40.6%</span></span></div><span class="track"><i class="fill" style="width:100%"></i></span></div>
+       <div class="row"><div class="row-t"><span class="n">Rent</span><span class="v">&#8377;40,006<span class="p">12.8%</span></span></div><span class="track"><i class="fill" style="width:31.5%"></i></span></div>
+       <div class="row"><div class="row-t"><span class="n">Health &amp; pharmacy</span><span class="v">&#8377;35,934<span class="p">11.5%</span></span></div><span class="track"><i class="fill" style="width:28.3%"></i></span></div>
+       <div class="row"><div class="row-t"><span class="n">People &amp; transfers</span><span class="v">&#8377;35,650<span class="p">11.4%</span></span></div><span class="track"><i class="fill soft" style="width:28.1%"></i></span></div>
+       <div class="row"><div class="row-t"><span class="n">Travel</span><span class="v">&#8377;20,998<span class="p">6.7%</span></span></div><span class="track"><i class="fill" style="width:16.6%"></i></span></div>
+       <div class="row"><div class="row-t"><span class="n">Groceries &amp; quick commerce</span><span class="v">&#8377;15,722<span class="p">5.0%</span></span></div><span class="track"><i class="fill" style="width:12.4%"></i></span></div>
+       <div class="row"><div class="row-t"><span class="n">Shopping</span><span class="v">&#8377;13,125<span class="p">4.2%</span></span></div><span class="track"><i class="fill" style="width:10.3%"></i></span></div>
+       <div class="row"><div class="row-t"><span class="n">Loan EMI</span><span class="v">&#8377;6,360<span class="p">2.0%</span></span></div><span class="track"><i class="fill" style="width:5.0%"></i></span></div>
+       <div class="row"><div class="row-t"><span class="n">Housing &amp; home</span><span class="v">&#8377;5,365<span class="p">1.7%</span></span></div><span class="track"><i class="fill" style="width:4.2%"></i></span></div>
+       <div class="row"><div class="row-t"><span class="n">Subscriptions &amp; software</span><span class="v">&#8377;5,023<span class="p">1.6%</span></span></div><span class="track"><i class="fill" style="width:4.0%"></i></span></div>
+       <div class="row"><div class="row-t"><span class="n">Food &amp; dining</span><span class="v">&#8377;3,928<span class="p">1.3%</span></span></div><span class="track"><i class="fill" style="width:3.1%"></i></span></div>
+       <div class="row"><div class="row-t"><span class="n">Four smaller categories</span><span class="v">&#8377;3,651<span class="p">1.2%</span></span></div><span class="track"><i class="fill soft" style="width:2.9%"></i></span></div>
+       <p class="more">See all 15 &rarr;</p>
+     </div>
+
+     <div class="ratios">
+       <div class="ratio">
+         <p class="k">Spent, of income</p>
+         <div class="big">74.9%</div>
+         <span class="gauge"><i style="width:74.9%;background:var(--out)"></i></span>
+         <p class="vs">Your 12-month rate is 38.5%. August ran hot.</p>
+       </div>
+       <div class="ratio">
+         <p class="k">Invested, of income</p>
+         <div class="big">34.8%</div>
+         <span class="gauge"><i style="width:34.8%;background:var(--inv)"></i></span>
+         <p class="vs">Bang on your 12-month rate of 38.9%.</p>
+       </div>
+     </div>
+
+     <div class="slots">
+
+       <div class="slot">
+         <div class="slot-h"><span class="pri">P0</span><span class="src">Merchant &middot; listed parent</span></div>
+         <div class="slot-b">
+           <p class="hl">Thirteen Blinkit orders in August came to <span class="fig">&#8377;15,054</span>. Over the year: <span class="fig">91</span> orders, <span class="fig">&#8377;1,21,600</span>.</p>
+           <p class="bd">Blinkit is owned by Eternal &mdash; the same company behind Zomato and District, where you spent another <span class="fig">&#8377;32,948</span>.</p>
+           <div class="tick"><span class="sym">ETERNAL</span><span class="co">Eternal Ltd &middot; NSE</span></div>
+           <div class="btns"><span class="btn">Buy</span><span class="btn gh">View</span></div>
+         </div>
+       </div>
+
+       <div class="slot">
+         <div class="slot-h"><span class="pri">P0</span><span class="src">Category &middot; sector fallback</span></div>
+         <div class="slot-b">
+           <p class="hl">Travel was <span class="fig">&#8377;20,998</span> of your August &mdash; and <span class="fig">&#8377;51,428</span> across the year, all of it MakeMyTrip.</p>
+           <p class="bd">MakeMyTrip isn&rsquo;t listed in India. These three are the listed online-travel businesses.</p>
+           <div class="pills"><span class="pill">Ixigo<span class="s">NSE</span></span><span class="pill">EaseMyTrip<span class="s">NSE</span></span><span class="pill">IRCTC<span class="s">NSE</span></span></div>
+           <div class="btns"><span class="btn gh">Compare all three</span></div>
+         </div>
+       </div>
+
+       <div class="slot">
+         <div class="slot-h"><span class="pri">P0</span><span class="src">Lender &middot; recurring debit</span></div>
+         <div class="slot-b">
+           <p class="hl"><span class="fig">&#8377;6,360</span> leaves for an SBI loan on the 10th. Thirteen months, not one missed.</p>
+           <p class="bd">You&rsquo;ve paid <span class="fig">&#8377;82,680</span> so far. You are already one of State Bank&rsquo;s retail borrowers &mdash; you can own the lender too.</p>
+           <div class="tick"><span class="sym">SBIN</span><span class="co">State Bank of India &middot; NSE</span></div>
+           <div class="btns"><span class="btn">Buy</span><span class="btn gh">View</span></div>
+         </div>
+       </div>
+
+       <div class="slot">
+         <div class="slot-h"><span class="pri p1">P1</span><span class="src">Card share of spend</span></div>
+         <div class="slot-b">
+           <p class="hl"><span class="fig">41%</span> of everything you spent in August was one credit card bill &mdash; <span class="fig">&#8377;1,26,820</span>.</p>
+           <p class="bd">Across the year: <span class="fig">&#8377;3,75,266</span> to ICICI and <span class="fig">&#8377;30,397</span> to Aditya Birla. Both issuers are listed.</p>
+           <div class="pills"><span class="pill">ICICIBANK<span class="s">NSE</span></span><span class="pill">ABCAPITAL<span class="s">NSE</span></span></div>
+           <div class="btns"><span class="btn gh">View both</span></div>
+         </div>
+       </div>
+
+       <div class="slot">
+         <div class="slot-h"><span class="pri p1">P1</span><span class="src">Broken mandate</span></div>
+         <div class="slot-b">
+           <p class="hl">Your <span class="fig">&#8377;1,45,000</span> monthly mandate ran in 11 of the last 13 months.</p>
+           <p class="bd">May took <span class="fig">&#8377;1,000</span> and June took <span class="fig">&#8377;20,036</span>. Against your own pattern that is <span class="fig">&#8377;2,69,000</span> that never got invested.</p>
+           <div class="btns"><span class="btn">Start a SIP here</span></div>
+         </div>
+       </div>
+
+       <div class="slot">
+         <div class="slot-h"><span class="pri p1">P1</span><span class="src">Idle balance</span></div>
+         <div class="slot-b">
+           <p class="hl"><span class="fig">&#8377;13,55,326</span> is sitting in savings accounts &mdash; <span class="fig">7.4</span> months of your usual spending.</p>
+           <p class="bd">Six months of cover is <span class="fig">&#8377;11,04,444</span>. The <span class="fig">&#8377;2,50,882</span> above that has nowhere to be.</p>
+           <div class="btns"><span class="btn">Move to a liquid fund</span><span class="btn gh">Later</span></div>
+         </div>
+       </div>
+
+       <div class="slot">
+         <div class="slot-h"><span class="pri p2">P2</span><span class="src">Recurring &middot; subscriptions</span></div>
+         <div class="slot-b">
+           <p class="hl">Six subscriptions took <span class="fig">&#8377;5,023</span> in August &mdash; <span class="fig">&#8377;60,276</span> a year at this rate.</p>
+           <p class="bd">OpenAI <span class="fig">&#8377;2,346</span>, LinkedIn <span class="fig">&#8377;999</span>, Netflix <span class="fig">&#8377;649</span>, Apple <span class="fig">&#8377;479</span>, Google <span class="fig">&#8377;401</span>, YouTube <span class="fig">&#8377;149</span>. None of the six has a listed Indian parent, so there is nothing to buy here &mdash; it is a number you should just see.</p>
+         </div>
+       </div>
+
+       <div class="slot sup">
+         <div class="slot-h"><span class="pri p2">HELD</span><span class="src">Suppressed by rule</span></div>
+         <div class="slot-b">
+           <p class="hl">Health &amp; pharmacy was your third-largest category at <span class="fig">&#8377;35,934</span>.</p>
+           <p class="supwhy">Held back. <span class="fig">&#8377;31,270</span> of it is mental-health care. Health spending is on the sensitive list &mdash; it never gets a celebratory frame and never gets a buy button, even though Apollo and Global Health are both listed.</p>
+         </div>
+       </div>
+
+     </div>
+
+     <div class="thick"></div>
+
+     <!-- ===== SECTION 3 ===== -->
+     <div class="sec">
+       <div class="sec-n"><b>3</b><h3>You vs Paytm Money</h3></div>
+       <p class="why">Investing comparisons work today. Spending comparisons need the cohort.</p>
+     </div>
+
+     <div class="slots">
+       <div class="slot">
+         <div class="slot-h"><span class="pri">P0</span><span class="src">Cohort &middot; assumed figures</span></div>
+         <div class="slot-b">
+           <p class="hl">Your <span class="fig">&#8377;1,45,000</span> a month puts you in the top <span class="fig">3%</span> of Paytm Money investors.</p>
+           <p class="bd">Among users earning <span class="fig">&#8377;3&ndash;5L</span> a month, the median monthly investment is <span class="fig">&#8377;18,400</span>. This needs no bank consent from anyone &mdash; Paytm Money already knows how millions of people invest.</p>
+           <span class="gauge"><i style="width:97%;background:var(--inv)"></i></span>
+         </div>
+       </div>
+
+       <div class="slot lock">
+         <div class="slot-h"><span class="pri p2">LOCKED</span><span class="src">Needs the spending cohort</span></div>
+         <div class="slot-b">
+           <p class="hl">How your spending compares is not ready yet.</p>
+           <p class="bd">It needs roughly <span class="fig">5,000</span> users to have connected a bank account. <span class="fig">1,340</span> have.</p>
+           <span class="progress"><i style="width:26.8%"></i></span>
+         </div>
+       </div>
+     </div>
+
+     <div class="badge">
+       <div class="med">11<span style="font-size:9px">/13</span></div>
+       <div>
+         <h4>Eleven months of thirteen</h4>
+         <p>Your mandate ran on time. Nobody else&rsquo;s number is in this one.</p>
+       </div>
+     </div>
+
+    </div>
+   </div>
+  </div>
+  <div class="notes">
+
+    <div class="anno">
+      <div class="num">1</div>
+      <div>
+        <h4>One of the four numbers is negative</h4>
+        <p>Left over is <span class="fig">&minus;&#8377;40,558</span>. It is not a bug. Your <span class="fig">&#8377;1,26,820</span> card bill and your <span class="fig">&#8377;1,45,000</span> mandate both debited on 1 August, and salary did not land until the 31st. Money in minus spent minus invested is genuinely negative for the month.</p>
+        <p>Two things to decide. Is <strong>&ldquo;Left over&rdquo;</strong> the right word when it goes below zero &mdash; and does a negative month need its own frame, or does it just sit there in clay and let the user draw the conclusion? I have left it plain on purpose.</p>
+      </div>
+    </div>
+
+    <div class="anno">
+      <div class="num">2</div>
+      <div>
+        <h4>The obvious comparison would have lied</h4>
+        <p>Spent is compared to your <strong>six-month usual</strong> of <span class="fig">&#8377;1,84,074</span>, not to last month. Last month was July, when you spent <span class="fig">&#8377;4,78,942</span>. Against July, August reads as <strong>down 35%</strong> and looks like restraint. Against your own median it is <strong>1.7&times; hot</strong>, which is the truth.</p>
+        <p>One bonus month poisons every month-on-month comparison for a year. The engine should compare to a median by default and only offer month-on-month as a second view.</p>
+      </div>
+    </div>
+
+    <div class="anno warn">
+      <div class="num">3</div>
+      <div>
+        <h4>Your July destroys the chart</h4>
+        <p><span class="fig">&#8377;15,02,386</span> came in that month. It is <strong>4.6&times;</strong> your usual, so it pins the scale and squashes the other five months into stubs.</p>
+        <p>I kept it. Clipping the bar or dropping the month would hide the most consequential event in your year. Instead there is a dashed line at your usual month so the other bars still mean something, and July gets a sentence underneath. The alternative &mdash; a separate &ldquo;unusual month&rdquo; treatment that lifts outliers out of the series &mdash; is worth a look, but it is more machinery than one chart deserves.</p>
+      </div>
+    </div>
+
+    <div class="anno">
+      <div class="num">4</div>
+      <div>
+        <h4>Current balance, as you asked &mdash; plus one free fact</h4>
+        <p>Three accounts, <span class="fig">&#8377;13,55,326</span>, and <strong>96% of it in one ICICI account</strong>. Federal Bank holds <span class="fig">&#8377;39</span>.</p>
+        <p>The dump also tells us Federal&rsquo;s branch field reads <strong>&ldquo;Indmoney&rdquo;</strong> and the account opened on 26 June 2025. So we know that account exists to fund an investing app, without matching a single merchant string. Account metadata is a cheaper signal than transactions and we are not using it yet.</p>
+      </div>
+    </div>
+
+    <div class="anno warn">
+      <div class="num">5</div>
+      <div>
+        <h4>Every buy button is below the fold</h4>
+        <p>The dashed red line is roughly where a phone screen ends on first paint. Above it: four numbers, a chart, three balances. <strong>Nothing to act on.</strong> Section 2 &mdash; the entire commercial payload &mdash; starts below.</p>
+        <p>If the tab is measured on engagement and retention that may be fine; the numbers are the reason people open it. If it is also expected to convert, one insight has to be hoisted above the fold, and the honest candidate is the idle-balance one, because it needs no merchant data and fires for everyone.</p>
+      </div>
+    </div>
+
+    <div class="anno warn">
+      <div class="num">6</div>
+      <div>
+        <h4>Your biggest category is the one we know nothing about</h4>
+        <p>Credit card bills are <span class="fig">&#8377;1,26,820</span> &mdash; <strong>40.6%</strong> of August. Treating the card as an expense is right for the totals, and it is what you decided. But it also means the largest bar in the chart has no merchant, no sector and no stock behind it.</p>
+        <p>Whatever you bought on that card in July is invisible to us. This is not fixable inside the Insights tab; it needs card-statement consent, which is a separate AA data type. Worth knowing that the ceiling on merchant coverage for a heavy card user is set here, not by the merchant list.</p>
+      </div>
+    </div>
+
+    <div class="anno">
+      <div class="num">7</div>
+      <div>
+        <h4>Both of your structures fired in the same month</h4>
+        <p>Blinkit is the <strong>merchant-level</strong> one: <span class="fig">&#8377;15,054</span> in August, <span class="fig">91</span> orders and <span class="fig">&#8377;1,21,600</span> across the year, and its parent Eternal is listed. The insight names the brand you actually use.</p>
+        <p>Travel is the <strong>category-level</strong> one, exactly as you described it: <span class="fig">&#8377;20,998</span> in August, all MakeMyTrip, which is not listed in India &mdash; so it climbs to the sector and offers Ixigo, EaseMyTrip and IRCTC. Your Ixigo example turned out to be real in your own data.</p>
+      </div>
+    </div>
+
+    <div class="anno">
+      <div class="num">8</div>
+      <div>
+        <h4>The two ratio tiles do not add to 100</h4>
+        <p><span class="fig">74.9%</span> spent and <span class="fig">34.8%</span> invested sum to <strong>109.7%</strong>, which is the same fact as the negative Left over, said in percentages. I would rather show two honest ratios that overflow than force them into a split that hides the overspend.</p>
+      </div>
+    </div>
+
+    <div class="anno">
+      <div class="num">9</div>
+      <div>
+        <h4>Eight insights evaluated, seven fired, one held</h4>
+        <p>Three P0s, three P1s, one P2 &mdash; and health held back by rule. I have shown all of them stacked so you can read the ranking; in the app I would render <strong>three</strong> and put the rest behind an expander, because eight cards is a scroll nobody finishes.</p>
+        <p>The held one matters more than the seven that fired. Health was your <strong>third-largest category</strong> at <span class="fig">&#8377;35,934</span>, <span class="fig">&#8377;31,270</span> of it mental-health care, and it has a perfectly good listed nudge in Apollo and Global Health. It does not get one. That rule costs us a slot on a user whose data is otherwise rich, and it should still hold.</p>
+      </div>
+    </div>
+
+    <div class="anno">
+      <div class="num">10</div>
+      <div>
+        <h4>What we deliberately do not say</h4>
+        <p><span class="fig">&#8377;1,45,000</span> leaves every month against a narration that reads only <strong>ACH/RAZORPAY PAYMENTS PV</strong>, same mandate reference each time. Your ET Money mandate stopped in January 2026 and this one started in February at the identical <span class="fig">&#8377;1,45,000</span>. It is almost certainly the same money under a new rail.</p>
+        <p>We do not say so. Almost certainly is not a thing to tell a user about their money, and this is the same class of mistake as reading your Paytm salary as an investment. So the biggest single line in your outflow gets counted as investment and left unnamed. Another <span class="fig">&#8377;35,650</span> sits in person-to-person transfers we also cannot name.</p>
+      </div>
+    </div>
+
+  </div>
+  </div>
+</section>
+<!-- =================== STAGE 2 =================== -->
+<section class="stage">
+  <div class="stage-head">
+    <h2>Two days into September</h2>
+    <p class="sub">The same user, the same engine, one chip moved. Nine transactions.</p>
+  </div>
+
+  <div class="split">
+  <div class="phone">
+   <div class="nub"></div>
+   <div class="screen">
+    <div class="appbar"><span class="brand">Paytm <span>Money</span></span><span class="eyebrow">2 Sep</span></div>
+    <div class="tabs"><span class="tab on">Insights</span><span class="tab">Transactions</span><span class="tab">My Accounts</span></div>
+
+    <div class="scr">
+
+     <div class="sec">
+       <div class="sec-n"><b>1</b><h3>Your bank</h3></div>
+       <p class="why">1&ndash;2 September &middot; 2 days of 30 elapsed</p>
+     </div>
+
+     <div class="chips">
+       <span class="chip on">This month</span><span class="chip">August</span>
+       <span class="chip">3 months</span><span class="chip">6 months</span><span class="chip">1 year</span>
+     </div>
+
+     <div class="tiles">
+       <div class="tile">
+         <span class="lab"><i class="dot bg-out"></i>Spent so far</span>
+         <div class="amt c-out mono">&#8377;50,855</div>
+         <p class="note">Same 2 days in August: &#8377;1,70,259</p>
+       </div>
+       <div class="tile">
+         <span class="lab"><i class="dot bg-inv"></i>Invested</span>
+         <div class="amt c-inv mono">&#8377;1,45,000</div>
+         <p class="note">Mandate cleared 1 Sep</p>
+       </div>
+       <div class="tile">
+         <span class="lab"><i class="dot bg-in"></i>Money in</span>
+         <div class="amt mono" style="color:var(--ink3)">&#8377;0</div>
+         <p class="note">Salary usually arrives after the 24th</p>
+       </div>
+       <div class="tile">
+         <span class="lab"><i class="dot bg-nn"></i>Left over</span>
+         <div class="amt mono" style="color:var(--ink3)">&mdash;</div>
+         <p class="note">Held until the month has its income</p>
+       </div>
+     </div>
+
+     <p class="cap"><b>Only 2 of 30 days are in.</b> Everything on this screen is compared against the same two days of last month, never against a whole one.</p>
+
+     <div class="accs">
+       <div class="acc"><div><div class="nm">ICICI Bank</div><div class="mk">Savings &middot; &bull;&bull;0906</div></div><div class="bal">&#8377;12,97,750</div></div>
+       <div class="acc"><div><div class="nm">Axis Bank</div><div class="mk">Savings &middot; &bull;&bull;5062</div></div><div class="bal">&#8377;57,536</div></div>
+       <div class="acc"><div><div class="nm">Federal Bank</div><div class="mk">Savings &middot; &bull;&bull;0336</div></div><div class="bal">&#8377;39</div></div>
+       <div class="acc tot"><div><div class="nm">Total balance</div><div class="mk">3 accounts</div></div><div class="bal">&#8377;13,55,326</div></div>
+     </div>
+
+     <div class="fold"><span>phone fold</span></div>
+
+     <div class="review">
+       <p class="k">Your year, so far</p>
+       <h4>Eight months of 2026</h4>
+       <div class="r">
+         <div>Earned<b>&#8377;38.7L</b></div>
+         <div>Spent<b>&#8377;15.2L</b></div>
+         <div>Invested<b>&#8377;11.5L</b></div>
+       </div>
+       <p class="go">Open your 2026 review &rarr;</p>
+     </div>
+
+     <div class="thick"></div>
+
+     <div class="sec">
+       <div class="sec-n"><b>2</b><h3>Your expenses</h3></div>
+       <p class="why">&#8377;50,855 so far, across 2 categories.</p>
+     </div>
+
+     <div class="rank">
+       <div class="row"><div class="row-t"><span class="n">Rent</span><span class="v">&#8377;40,000<span class="p">78.7%</span></span></div><span class="track"><i class="fill" style="width:100%"></i></span></div>
+       <div class="row"><div class="row-t"><span class="n">People &amp; transfers</span><span class="v">&#8377;10,855<span class="p">21.3%</span></span></div><span class="track"><i class="fill soft" style="width:27.1%"></i></span></div>
+     </div>
+     <p class="cap"><b>No brand has been matched yet this month.</b> Zero of nine transactions carried a merchant we recognise.</p>
+
+     <div class="slots">
+
+       <div class="slot">
+         <div class="slot-h"><span class="pri">P0</span><span class="src">Committed &middot; this period</span></div>
+         <div class="slot-b">
+           <p class="hl">Rent of <span class="fig">&#8377;40,000</span> went out on the 1st for the third month running.</p>
+           <p class="bd">It is <span class="fig">78.7%</span> of everything you have spent so far, and it is paid to a person, not a company &mdash; so it is a fact, not a nudge.</p>
+         </div>
+       </div>
+
+       <div class="slot">
+         <div class="slot-h"><span class="pri">P0</span><span class="src">Merchant &middot; 12-month reach-back</span></div>
+         <div class="slot-b">
+           <p class="hl">Nothing yet this month, but Blinkit took <span class="fig">&#8377;1,21,600</span> from you over the last year.</p>
+           <p class="bd"><span class="fig">91</span> orders. Its parent Eternal is listed, and so is Swiggy, where you spent a further <span class="fig">&#8377;1,804</span>.</p>
+           <div class="tick"><span class="sym">ETERNAL</span><span class="co">Eternal Ltd &middot; NSE</span></div>
+           <div class="btns"><span class="btn">Buy</span><span class="btn gh">View</span></div>
+         </div>
+       </div>
+
+       <div class="slot">
+         <div class="slot-h"><span class="pri p1">P1</span><span class="src">Mandate &middot; streak restored</span></div>
+         <div class="slot-b">
+           <p class="hl">Your <span class="fig">&#8377;1,45,000</span> cleared on the 1st. That is three months back on track.</p>
+           <p class="bd">May and June it did not run. You have now made up the rhythm but not the <span class="fig">&#8377;2,69,000</span>.</p>
+           <div class="btns"><span class="btn gh">See the gap</span></div>
+         </div>
+       </div>
+
+       <div class="slot">
+         <div class="slot-h"><span class="pri p1">P1</span><span class="src">Due in 8 days</span></div>
+         <div class="slot-b">
+           <p class="hl"><span class="fig">&#8377;6,360</span> will leave for your SBI loan on the 10th.</p>
+           <p class="bd">Thirteen months, same day, same amount. State Bank is listed.</p>
+           <div class="tick"><span class="sym">SBIN</span><span class="co">State Bank of India &middot; NSE</span></div>
+           <div class="btns"><span class="btn gh">View</span></div>
+         </div>
+       </div>
+
+       <div class="slot">
+         <div class="slot-h"><span class="pri p1">P1</span><span class="src">Idle balance</span></div>
+         <div class="slot-b">
+           <p class="hl"><span class="fig">&#8377;13,55,326</span> is still sitting in savings &mdash; <span class="fig">7.4</span> months of cover.</p>
+           <p class="bd">Unchanged from last month, and it will be unchanged next month. This one fires on every period because it does not depend on one.</p>
+           <div class="btns"><span class="btn">Move to a liquid fund</span><span class="btn gh">Later</span></div>
+         </div>
+       </div>
+
+     </div>
+
+     <div class="thick"></div>
+
+     <div class="sec">
+       <div class="sec-n"><b>3</b><h3>You vs Paytm Money</h3></div>
+       <p class="why">Unaffected by the period you pick.</p>
+     </div>
+
+     <div class="slots">
+       <div class="slot">
+         <div class="slot-h"><span class="pri">P0</span><span class="src">Cohort &middot; assumed figures</span></div>
+         <div class="slot-b">
+           <p class="hl">Your <span class="fig">&#8377;1,45,000</span> a month puts you in the top <span class="fig">3%</span> of Paytm Money investors.</p>
+           <span class="gauge"><i style="width:97%;background:var(--inv)"></i></span>
+         </div>
+       </div>
+     </div>
+
+    </div>
+   </div>
+  </div>
+
+  <div class="notes">
+
+    <div class="anno warn">
+      <div class="num">11</div>
+      <div>
+        <h4>A rich user, two days in, is a thin-data user</h4>
+        <p>This is the same person with thirteen months of history and <span class="fig">24</span> matched brands in August. On 2 September he has <strong>nine transactions, two categories and zero matched merchants</strong>.</p>
+        <p>The period selector manufactures the cold-start problem for everybody. Whatever fallbacks we build for a Tier 2 user with sparse data are the same fallbacks that keep this page alive on the 2nd of every month &mdash; which means they are not an edge case we can defer, they are load-bearing for every user on roughly a third of the days in a month.</p>
+      </div>
+    </div>
+
+    <div class="anno">
+      <div class="num">12</div>
+      <div>
+        <h4>The rule that keeps Section 2 from going blank</h4>
+        <p><strong>Eligibility looks back twelve months; the figure shown respects the period.</strong> So the Blinkit card still appears on 2 September, and it says <span class="fig">&#8377;1,21,600</span> over the year rather than <span class="fig">&#8377;0</span> this month.</p>
+        <p>Without that split you get an empty section. With it, the merchant insight degrades to a yearly statement instead of vanishing. It is one rule and it does most of the work of the entire fallback story.</p>
+      </div>
+    </div>
+
+    <div class="anno">
+      <div class="num">13</div>
+      <div>
+        <h4>A partial month cannot have a Left over</h4>
+        <p>Income is lumpy and arrives late &mdash; your salary lands after the 24th. So on the 2nd, Money in is <span class="fig">&#8377;0</span> and Left over would read <span class="fig">&minus;&#8377;1,95,855</span>, which is arithmetically true and completely useless.</p>
+        <p>So it is withheld and labelled, and Spent is compared to <strong>the same two days of August</strong> &mdash; <span class="fig">&#8377;50,855</span> against <span class="fig">&#8377;1,70,259</span>. Compared to the whole of August instead, the same two days would read as <strong>down 84%</strong>, which would be a compliment the user has not earned yet.</p>
+      </div>
+    </div>
+
+    <div class="anno">
+      <div class="num">14</div>
+      <div>
+        <h4>Section 3 is the only part that does not move</h4>
+        <p>Both frames show the same cohort card, because a percentile against other investors has nothing to do with which month you are looking at. That makes it the most reliable section on the page and the cheapest to build &mdash; it needs no AA consent at all, just Paytm Money&rsquo;s own investing data.</p>
+        <p>Your growth-loop idea sits here and it is the strongest thing in this whole conversation: <strong>the comparison is the reason to connect a bank account.</strong> Lead with &ldquo;see where you stand&rdquo; on the consent screen rather than &ldquo;see your expenses,&rdquo; and Section 3 pays for its own cohort.</p>
+      </div>
+    </div>
+
+  </div>
+  </div>
+</section>
+<!-- =================== STAGE 3 =================== -->
+<section class="stage">
+  <div class="stage-head">
+    <h2>The slot inventory</h2>
+    <p class="sub">One fixed list, ranked. The page fills from the top with whatever the user qualifies for.</p>
+  </div>
+  <p class="prose">This is the mechanism you described. There is no persona branch anywhere in it &mdash; every user gets the same thirteen candidates evaluated in the same order, and the page is whatever survives the thresholds. A Tier 2 user with no matched brands loses rows 1, 2, 5 and 8 and still has seven insights left.</p>
+
+  <div class="tblwrap">
+  <table>
+    <thead><tr>
+      <th>Rank</th><th>Insight</th><th>Fires when</th><th>Depends on</th><th>August 2026</th><th>2 September</th>
+    </tr></thead>
+    <tbody>
+      <tr><td><span class="tag">P0</span></td><td>Merchant &rarr; listed parent</td><td>matched brand&rsquo;s parent is listed, 12-month spend &ge; &#8377;10,000</td><td>merchant list</td><td class="yes">Blinkit &rarr; Eternal &middot; &#8377;15,054</td><td class="yes">reach-back &middot; &#8377;1,21,600</td></tr>
+      <tr><td><span class="tag">P0</span></td><td>Category &rarr; sector players</td><td>category &ge; 5% of period spend and holds no listed merchant</td><td>sector map</td><td class="yes">Travel &rarr; Ixigo &plus;2</td><td class="no">no qualifying category</td></tr>
+      <tr><td><span class="tag">P0</span></td><td>Lender or EMI</td><td>same amount, same day, &ge; 3 months, payee is a lender</td><td>narration match</td><td class="yes">SBI &#8377;6,360 &times; 13</td><td class="yes">due on the 10th</td></tr>
+      <tr><td><span class="tag">P0</span></td><td>Committed outflow</td><td>recurs &ge; 3 months with amount variation under 15%</td><td>nothing</td><td class="yes">rent &#8377;40,006</td><td class="yes">rent &#8377;40,000</td></tr>
+      <tr><td><span class="tag p1">P1</span></td><td>Card share of spend</td><td>card bills &ge; 15% of period spend</td><td>narration match</td><td class="yes">40.6% &middot; &#8377;1,26,820</td><td class="no">0% this period</td></tr>
+      <tr><td><span class="tag p1">P1</span></td><td>Broken mandate</td><td>a monthly investment mandate skipped a month</td><td>nothing</td><td class="yes">May and June missed</td><td class="yes">streak restored</td></tr>
+      <tr><td><span class="tag p1">P1</span></td><td>Idle balance</td><td>balance &divide; median monthly spend &gt; 6</td><td>balance only</td><td class="yes">7.4 months</td><td class="yes">7.4 months</td></tr>
+      <tr><td><span class="tag p2">P2</span></td><td>Subscription load</td><td>&ge; 3 recurring subscriptions in the period</td><td>merchant list</td><td class="yes">6 subs &middot; &#8377;5,023</td><td class="no">none yet</td></tr>
+      <tr><td><span class="tag p2">P2</span></td><td>Spend against income</td><td>the period contains income</td><td>nothing</td><td class="yes">74.9%</td><td class="no">withheld, no income</td></tr>
+      <tr><td><span class="tag p2">P2</span></td><td>Month and year review</td><td>always</td><td>nothing</td><td class="yes">2026 so far</td><td class="yes">2026 so far</td></tr>
+      <tr><td><span class="tag p3">P3</span></td><td>Cohort: investing percentile</td><td>user has any investing history</td><td>Paytm Money&rsquo;s own data</td><td class="yes">top 3% &middot; assumed</td><td class="yes">top 3% &middot; assumed</td></tr>
+      <tr><td><span class="tag p3">P3</span></td><td>Cohort: spending percentile</td><td>&ge; 5,000 users have connected a bank</td><td>AA cohort</td><td class="no">locked &middot; 1,340</td><td class="no">locked &middot; 1,340</td></tr>
+      <tr><td><span class="tag p3">HELD</span></td><td>Sensitive category</td><td>category is health, gambling, penalty, welfare or insurance</td><td>blocklist</td><td class="sup2">held &middot; &#8377;35,934</td><td class="no">&mdash;</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- =================== STAGE 4 =================== -->
+<section class="stage">
+  <div class="stage-head">
+    <h2>What is real, and what I made up</h2>
+  </div>
+
+  <div class="cols">
+    <div class="col">
+      <h4>Computed from your dump</h4>
+      <ul>
+        <li>Every rupee figure, date, brand, balance and ratio on both phones</li>
+        <li><strong>24 brands</strong> resolved in August from 51 merchant transactions</li>
+        <li>The SBI EMI, identified from <strong>RACPC II GURUGRAM</strong> at &#8377;6,360 across 13 months with zero variation &mdash; your bank had tagged it as income tax</li>
+        <li>Rent, found from a person-to-person transfer, not a merchant</li>
+        <li>The May and June mandate gap</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Assumed &mdash; three numbers</h4>
+      <ul>
+        <li><strong>Top 3%</strong> of Paytm Money investors</li>
+        <li>Median monthly investment of <strong>&#8377;18,400</strong> in the &#8377;3&ndash;5L income band</li>
+        <li><strong>1,340</strong> users have connected a bank, against a threshold of 5,000</li>
+      </ul>
+      <p style="font-size:13px;color:var(--ink3);margin-top:10px;line-height:1.5">Nothing else on either page reads from these. Delete Section 3 entirely and the rest still renders.</p>
+    </div>
+    <div class="col">
+      <h4>Not modelled at all</h4>
+      <ul>
+        <li><strong>Live prices.</strong> So there is not a single performance figure anywhere &mdash; no &ldquo;you would have made X.&rdquo; Your asymmetric rule plugs in exactly where the buy and view buttons already sit</li>
+        <li><strong>Your holdings.</strong> The deposits dump has none, so the engine cannot yet say &ldquo;you already own this&rdquo; &mdash; which it must, before any buy button ships</li>
+        <li><strong>External mutual funds via CAS</strong></li>
+      </ul>
+    </div>
+    <div class="col" style="border-right:0">
+      <h4>The ceiling, stated plainly</h4>
+      <ul>
+        <li><strong>&#8377;1,26,820</strong> &mdash; a card bill we cannot see inside</li>
+        <li><strong>&#8377;1,45,000</strong> &mdash; a monthly mandate behind a payment gateway</li>
+        <li><strong>&#8377;35,650</strong> &mdash; transfers to people</li>
+        <li>Together <strong>67% of your August outflow</strong> is money we can count but not name. The merchant list works on the third that is left, and on that third it is close to complete.</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="prose" style="margin-top:30px">Three things I could not decide for you. Whether <strong>Left over</strong> should stay negative or get its own treatment. Whether one insight gets <strong>hoisted above the fold</strong>, and if so whether it is the idle balance. And whether Section 2 shows <strong>three cards with an expander</strong> or all seven stacked as they are here. Everything else in the design follows from decisions you have already made.</p>
+</section>
+
+<footer>
+  <p><b>Source.</b> A single Account Aggregator deposits dump &mdash; 1,265 transactions across three savings accounts, 2 August 2025 to 1 September 2026. Personal identifiers in the file (PAN, date of birth, address, email, mobile) were read and excluded from everything here.</p>
+  <p style="margin-top:9px"><b>Caution.</b> One user is one user. Coverage rates that hold for a Gurgaon salary account with a &#8377;1.45L monthly mandate are not the rates you will see across Paytm Money&rsquo;s base, and the thresholds in the slot inventory are first guesses that need tuning against real traffic.</p>
+</footer>
+
+</div>
+<button class="tt" id="tt" type="button" aria-live="polite">Dark</button>
+
+<script>
+(function(){
+  var b=document.getElementById('tt'), r=document.documentElement;
+  function cur(){
+    var s=r.getAttribute('data-theme');
+    if(s) return s;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+  }
+  function paint(){ b.textContent = cur()==='dark' ? 'Light' : 'Dark'; }
+  b.addEventListener('click',function(){
+    r.setAttribute('data-theme', cur()==='dark'?'light':'dark');
+    paint();
+  });
+  try{ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(){ if(!r.getAttribute('data-theme')) paint(); }); }catch(e){}
+  paint();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Thirty-six Paytm Money Insights components rendered from one real Account Aggregator dump, split into page structure and ranked P0-P2 slots.">
+<style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Insight Component Catalogue</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<style>
+:root{
+  --bg:#dfe2de; --sheet:#f7f8f6; --sheet2:#eceee9; --chip:#e3e6e1;
+  --ink:#10161c; --ink2:#4a5560; --ink3:#79838d; --rule:#c8ccc7; --rule2:#dcdfda;
+  --acc:#2064ad; --in:#0b7d63; --out:#c2402b; --inv:#2064ad;
+  --bar:#2064ad; --bar-soft:#a8c2de; --flag:#8a5b00;
+  --shadow:0 1px 2px rgba(16,22,28,.06),0 12px 28px -12px rgba(16,22,28,.22);
+  --ui:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --num:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  --doc:'Newsreader',Georgia,'Times New Roman',serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0a0d0e; --sheet:#131719; --sheet2:#1b2023; --chip:#232a2e;
+  --ink:#eef2f1; --ink2:#a4b0b4; --ink3:#727e84; --rule:#2c3438; --rule2:#222a2d;
+  --acc:#4b93d8; --in:#1e9e7c; --out:#d96a52; --inv:#4b93d8;
+  --bar:#4b93d8; --bar-soft:#2a4560; --flag:#c39a3c;
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 14px 32px -12px rgba(0,0,0,.7);
+}}
+:root[data-theme="dark"]{
+  --bg:#0a0d0e; --sheet:#131719; --sheet2:#1b2023; --chip:#232a2e;
+  --ink:#eef2f1; --ink2:#a4b0b4; --ink3:#727e84; --rule:#2c3438; --rule2:#222a2d;
+  --acc:#4b93d8; --in:#1e9e7c; --out:#d96a52; --inv:#4b93d8;
+  --bar:#4b93d8; --bar-soft:#2a4560; --flag:#c39a3c;
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 14px 32px -12px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--ui);
+  font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;
+  padding:0 0 96px;overflow-x:hidden}
+.wrap{max-width:1440px;margin:0 auto;padding:0 28px}
+h1,h2,h3,h4{margin:0;text-wrap:balance;font-weight:600;letter-spacing:-.015em}
+p{margin:0}
+a{color:var(--acc)}
+.mono{font-family:var(--num);font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+.eyebrow{font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)}
+
+/* ---------- page header ---------- */
+.masthead{border-bottom:1px solid var(--rule);padding:44px 0 28px;margin-bottom:36px}
+.masthead h1{font-size:clamp(30px,4.4vw,50px);line-height:1.02;letter-spacing:-.03em;max-width:22ch}
+.masthead .lede{font-family:var(--doc);font-size:19px;line-height:1.5;color:var(--ink2);max-width:62ch;margin-top:18px}
+.masthead .lede em{color:var(--ink)}
+.facts{display:flex;flex-wrap:wrap;gap:0;margin-top:26px;border-top:1px solid var(--rule2)}
+.fact{padding:12px 22px 12px 0;margin-right:22px;border-right:1px solid var(--rule2)}
+.fact:last-child{border-right:0}
+.fact b{display:block;font-family:var(--num);font-size:19px;font-weight:500;letter-spacing:-.02em}
+.fact span{font-size:11px;color:var(--ink3);letter-spacing:.03em}
+
+/* ---------- two-column: phone + notes ---------- */
+.stage{border-top:1px solid var(--rule);padding-top:30px;margin-top:56px}
+.stage-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:14px;margin-bottom:26px}
+.stage-head h2{font-size:26px;letter-spacing:-.025em}
+.stage-head .sub{font-family:var(--doc);font-size:17px;color:var(--ink2)}
+.split{display:grid;grid-template-columns:426px minmax(0,1fr);gap:52px;align-items:start}
+@media (max-width:1080px){.split{grid-template-columns:1fr;gap:36px}}
+
+/* ---------- phone ---------- */
+.phone{width:426px;max-width:100%;background:var(--sheet2);border:1px solid var(--rule);
+  border-radius:38px;padding:9px;box-shadow:var(--shadow)}
+@media (max-width:1080px){.phone{margin:0 auto}}
+.screen{background:var(--sheet);border-radius:30px;overflow:hidden;position:relative}
+.nub{width:104px;height:5px;border-radius:3px;background:var(--rule);margin:7px auto 0}
+.appbar{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 0}
+.appbar .brand{font-size:13.5px;font-weight:700;letter-spacing:-.01em}
+.appbar .brand span{color:var(--acc)}
+.tabs{display:flex;gap:2px;padding:12px 12px 0;border-bottom:1px solid var(--rule2)}
+.tab{flex:1;text-align:center;padding:9px 4px 11px;font-size:12.5px;font-weight:500;color:var(--ink3);
+  border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab.on{color:var(--ink);font-weight:600;border-bottom-color:var(--acc)}
+.scr{padding:0 0 26px}
+
+/* section headers inside app */
+.sec{padding:22px 18px 4px}
+.sec-n{display:flex;align-items:center;gap:8px}
+.sec-n b{font-family:var(--num);font-size:10px;font-weight:600;color:var(--sheet);
+  background:var(--ink);border-radius:3px;padding:1px 5px;letter-spacing:.04em}
+.sec h3{font-size:17px;letter-spacing:-.02em}
+.sec .why{font-size:11.5px;color:var(--ink3);margin-top:3px}
+.thick{height:8px;background:var(--bg);border-top:1px solid var(--rule2);border-bottom:1px solid var(--rule2);margin:22px 0 0}
+
+/* period chips */
+.chips{display:flex;gap:6px;padding:12px 18px 2px;overflow-x:auto;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;font-size:11.5px;font-weight:500;padding:5px 11px;border-radius:999px;
+  border:1px solid var(--rule);background:var(--chip);color:var(--ink2);white-space:nowrap}
+.chip.on{background:var(--ink);border-color:var(--ink);color:var(--sheet);font-weight:600}
+
+/* money tiles */
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule2);
+  margin:14px 18px 0;border:1px solid var(--rule2);border-radius:10px;overflow:hidden}
+.tile{background:var(--sheet);padding:12px 13px 13px}
+.tile .lab{display:flex;align-items:center;gap:5px;font-size:10.5px;font-weight:600;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--ink3)}
+.dot{width:7px;height:7px;border-radius:2px;flex:0 0 auto}
+.tile .amt{font-family:var(--num);font-size:20px;font-weight:500;letter-spacing:-.035em;margin-top:5px}
+.tile .note{font-size:10.5px;color:var(--ink3);margin-top:4px;line-height:1.35}
+.c-in{color:var(--in)} .c-out{color:var(--out)} .c-inv{color:var(--inv)}
+.bg-in{background:var(--in)} .bg-out{background:var(--out)} .bg-inv{background:var(--inv)} .bg-nn{background:var(--ink3)}
+
+/* flow chart */
+.chart{margin:16px 18px 0}
+.chart-t{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.chart-t h4{font-size:12.5px;font-weight:600}
+.legend{display:flex;gap:10px;font-size:10px;color:var(--ink2)}
+.legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+.plot{position:relative;height:112px;display:grid;grid-template-columns:repeat(6,1fr);gap:9px;
+  align-items:end;border-bottom:1px solid var(--rule);padding-bottom:0}
+.ref{position:absolute;left:0;right:0;border-top:1px dashed var(--ink3);z-index:3}
+.ref span{position:absolute;left:0;top:-13px;font-size:9px;color:var(--ink3);
+  background:var(--sheet);padding:0 4px 0 0;white-space:nowrap}
+.pair{display:flex;gap:3px;align-items:end;height:100%;position:relative;z-index:2}
+.b{flex:1;border-radius:3px 3px 0 0;min-height:2px;box-shadow:0 0 0 2px var(--sheet)}
+.b.i{background:var(--in)} .b.o{background:var(--out)}
+.xax{display:grid;grid-template-columns:repeat(6,1fr);gap:9px;margin-top:6px}
+.xax span{font-size:9.5px;color:var(--ink3);text-align:center;font-family:var(--num)}
+.cap{font-size:10.5px;color:var(--ink3);margin:9px 18px 0;line-height:1.45}
+.cap b{color:var(--ink2);font-weight:600}
+
+/* accounts */
+.accs{margin:14px 18px 0;border:1px solid var(--rule2);border-radius:10px;overflow:hidden}
+.acc{display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px;
+  padding:11px 13px;border-bottom:1px solid var(--rule2);background:var(--sheet)}
+.acc:last-child{border-bottom:0}
+.acc.tot{background:var(--sheet2)}
+.acc .nm{font-size:13px;font-weight:600;letter-spacing:-.01em}
+.acc .mk{font-family:var(--num);font-size:10.5px;color:var(--ink3);margin-top:1px}
+.acc .bal{font-family:var(--num);font-size:15px;font-weight:500;letter-spacing:-.025em;text-align:right}
+
+/* review card */
+.review{margin:14px 18px 0;border:1px solid var(--acc);border-radius:10px;
+  padding:13px 14px;background:color-mix(in oklab,var(--acc) 7%,var(--sheet))}
+.review .k{font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--acc)}
+.review h4{font-size:15px;margin-top:4px;letter-spacing:-.02em}
+.review .r{display:flex;gap:16px;margin-top:9px;flex-wrap:wrap}
+.review .r div{font-size:10.5px;color:var(--ink3)}
+.review .r b{display:block;font-family:var(--num);font-size:14px;font-weight:500;color:var(--ink);letter-spacing:-.02em}
+.review .go{margin-top:10px;font-size:12px;font-weight:600;color:var(--acc)}
+
+/* ranked category bars */
+.rank{margin:14px 18px 0}
+.row{padding:7px 0;border-bottom:1px solid var(--rule2)}
+.row:last-child{border-bottom:0}
+.row-t{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.row-t .n{font-size:12.5px;font-weight:500;letter-spacing:-.01em}
+.row-t .v{font-family:var(--num);font-size:12.5px;font-weight:500;white-space:nowrap}
+.row-t .p{font-family:var(--num);font-size:10px;color:var(--ink3);margin-left:5px}
+.track{display:block;height:6px;background:var(--rule2);border-radius:3px;margin-top:5px;overflow:hidden}
+.fill{display:block;height:6px;background:var(--bar);border-radius:3px}
+.fill.soft{background:var(--bar-soft)}
+.more{font-size:11.5px;color:var(--acc);font-weight:600;padding:9px 0 0}
+
+/* two ratio sub-tiles */
+.ratios{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:16px 18px 0}
+.ratio{border:1px solid var(--rule2);border-radius:10px;padding:11px 12px;background:var(--sheet)}
+.ratio .k{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3)}
+.ratio .big{font-family:var(--num);font-size:22px;font-weight:500;letter-spacing:-.04em;margin-top:4px}
+.ratio .vs{font-size:10.5px;color:var(--ink3);margin-top:3px;line-height:1.35}
+.gauge{display:block;height:5px;background:var(--rule2);border-radius:3px;margin-top:8px;overflow:hidden}
+.gauge i{display:block;height:5px;border-radius:3px}
+
+/* insight slots */
+.slots{margin:14px 18px 0;display:flex;flex-direction:column;gap:10px}
+.slot{border:1px solid var(--rule);border-radius:12px;background:var(--sheet);overflow:hidden}
+.slot-h{display:flex;align-items:center;gap:7px;padding:9px 12px 0}
+.pri{font-family:var(--num);font-size:9.5px;font-weight:600;letter-spacing:.06em;
+  padding:1.5px 5px;border-radius:3px;background:var(--ink);color:var(--sheet)}
+.pri.p1{background:var(--acc)} .pri.p2{background:var(--ink3)}
+.slot-h .src{font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3);font-weight:600}
+.slot-b{padding:6px 12px 12px}
+.slot-b .hl{font-size:14px;font-weight:600;letter-spacing:-.02em;line-height:1.3}
+.slot-b .hl .fig{font-family:var(--num);letter-spacing:-.03em}
+.slot-b .bd{font-size:11.5px;color:var(--ink2);margin-top:5px;line-height:1.45}
+.slot-b .bd .fig{font-family:var(--num)}
+.tick{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:9px;border-top:1px solid var(--rule2)}
+.tick .sym{font-family:var(--num);font-size:11px;font-weight:600;letter-spacing:.02em}
+.tick .co{font-size:11px;color:var(--ink3);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.btns{display:flex;gap:6px;margin-top:10px}
+.btn{flex:1;text-align:center;font-size:12px;font-weight:600;padding:8px 6px;border-radius:8px;
+  background:var(--acc);color:#fff;border:1px solid var(--acc)}
+:root[data-theme="dark"] .btn{color:#08131e}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn{color:#08131e}}
+.btn.gh{background:transparent;color:var(--acc)}
+.pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+.pill{font-size:11px;font-weight:500;padding:4px 9px;border-radius:999px;
+  border:1px solid var(--rule);background:var(--chip)}
+.pill .s{font-family:var(--num);font-size:9.5px;color:var(--ink3);margin-left:4px}
+.slot.sup{border-style:dashed;background:transparent}
+.slot.sup .slot-b .hl{color:var(--ink2)}
+.supwhy{font-size:10.5px;color:var(--flag);margin-top:7px;line-height:1.4}
+.slot.lock{border-style:dashed;background:transparent}
+.progress{display:block;height:5px;background:var(--rule2);border-radius:3px;margin-top:9px;overflow:hidden}
+.progress i{display:block;height:5px;background:var(--ink3);border-radius:3px}
+
+/* badge */
+.badge{margin:14px 18px 0;border:1px solid var(--rule2);border-radius:12px;padding:12px 13px;
+  background:var(--sheet2);display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center}
+.badge .med{width:38px;height:38px;border-radius:50%;border:2px solid var(--acc);
+  display:grid;place-items:center;font-family:var(--num);font-size:13px;font-weight:600;color:var(--acc)}
+.badge h4{font-size:13px;letter-spacing:-.01em}
+.badge p{font-size:11px;color:var(--ink3);margin-top:2px;line-height:1.4}
+
+/* fold marker */
+.fold{position:relative;border-top:1px dashed var(--out);margin:0}
+.fold span{position:absolute;left:14px;top:-8px;font-size:9px;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--out);background:var(--sheet);padding:0 6px}
+
+/* ---------- notes column ---------- */
+.notes{display:flex;flex-direction:column;gap:0;align-self:start;
+  position:sticky;top:24px;max-height:calc(100vh - 48px);overflow-y:auto;
+  padding-right:12px;scrollbar-width:thin}
+@media (max-width:1080px){.notes{position:static;max-height:none;overflow:visible;padding-right:0}}
+.anno{display:grid;grid-template-columns:30px minmax(0,1fr);gap:14px;
+  padding:17px 0;border-bottom:1px solid var(--rule2)}
+.anno:first-child{padding-top:0}
+.anno .num{font-family:var(--num);font-size:12px;font-weight:600;color:var(--sheet);
+  background:var(--ink);width:24px;height:24px;border-radius:50%;display:grid;place-items:center;margin-top:2px}
+.anno h4{font-size:15px;letter-spacing:-.02em}
+.anno p{font-family:var(--doc);font-size:16px;line-height:1.52;color:var(--ink2);margin-top:5px;max-width:64ch}
+.anno p+p{margin-top:9px}
+.anno p strong{color:var(--ink);font-weight:500}
+.anno .fig{font-family:var(--num);font-size:14.5px;letter-spacing:-.01em;color:var(--ink)}
+.anno.warn .num{background:var(--out)}
+
+/* ---------- tables ---------- */
+.tblwrap{overflow-x:auto;border:1px solid var(--rule);border-radius:12px;background:var(--sheet);margin-top:22px}
+table{border-collapse:collapse;width:100%;min-width:820px;font-size:13px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--rule2);vertical-align:top}
+th{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);
+  background:var(--sheet2);position:sticky;top:0;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.n{font-family:var(--num);font-variant-numeric:tabular-nums;white-space:nowrap}
+.tag{display:inline-block;font-family:var(--num);font-size:9.5px;font-weight:600;letter-spacing:.05em;
+  padding:1.5px 6px;border-radius:3px;background:var(--ink);color:var(--sheet)}
+.tag.p1{background:var(--acc)} .tag.p2{background:var(--ink3)} .tag.p3{background:transparent;color:var(--ink3);box-shadow:inset 0 0 0 1px var(--rule)}
+.yes{color:var(--in);font-weight:600} .no{color:var(--ink3)}
+.sup2{color:var(--flag);font-weight:600}
+
+/* ---------- prose blocks ---------- */
+.prose{max-width:70ch;font-family:var(--doc);font-size:17.5px;line-height:1.6;color:var(--ink2);margin-top:16px}
+.prose p+p{margin-top:14px}
+.prose strong{color:var(--ink);font-weight:500}
+.prose .fig{font-family:var(--num);font-size:16px;color:var(--ink)}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0;margin-top:24px;
+  border-top:1px solid var(--rule)}
+.col{padding:20px 24px 20px 0;border-right:1px solid var(--rule2)}
+.col:last-child{border-right:0}
+.col h4{font-size:14px;letter-spacing:-.01em}
+.col ul{margin:9px 0 0;padding-left:18px;font-size:13.5px;line-height:1.55;color:var(--ink2)}
+.col li{margin-bottom:6px}
+.col li strong{color:var(--ink);font-weight:600}
+
+/* theme toggle */
+.tt{position:fixed;right:16px;bottom:16px;z-index:50;font-family:var(--ui);font-size:12px;font-weight:600;
+  padding:9px 14px;border-radius:999px;border:1px solid var(--rule);background:var(--sheet);
+  color:var(--ink);box-shadow:var(--shadow);cursor:pointer}
+.tt:focus-visible,.chip:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+footer{border-top:1px solid var(--rule);margin-top:60px;padding-top:22px;font-size:12.5px;color:var(--ink3);max-width:78ch}
+footer b{color:var(--ink2)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<style>
+/* ---------- catalogue additions ---------- */
+.grpwrap{border-top:1px solid var(--rule);margin-top:52px;padding-top:26px}
+.grphead{display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;margin-bottom:6px}
+.grphead h2{font-size:24px;letter-spacing:-.025em}
+.grphead .cnt{font-family:var(--num);font-size:11px;font-weight:600;letter-spacing:.06em;
+  color:var(--ink3);border:1px solid var(--rule);border-radius:999px;padding:2px 9px}
+.grphead .sub{font-family:var(--doc);font-size:17px;color:var(--ink2)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(352px,1fr));gap:18px;margin-top:22px;align-items:start}
+.comp{background:var(--sheet);border:1px solid var(--rule);border-radius:14px;
+  display:flex;flex-direction:column;overflow:hidden;box-shadow:0 1px 2px rgba(16,22,28,.04)}
+:root[data-theme="dark"] .comp{box-shadow:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .comp{box-shadow:none}}
+.chead{display:flex;align-items:center;gap:8px;padding:10px 13px;border-bottom:1px solid var(--rule2);
+  background:var(--sheet2);flex-wrap:wrap}
+.cid{font-family:var(--num);font-size:10px;font-weight:600;color:var(--ink3);letter-spacing:.04em}
+.ctitle{font-size:13px;font-weight:600;letter-spacing:-.01em;flex:1;min-width:120px}
+.prop{font-family:var(--num);font-size:9.5px;font-weight:600;letter-spacing:.05em;padding:2px 6px;
+  border-radius:4px;border:1px dashed var(--rule);color:var(--ink2);background:var(--sheet);white-space:nowrap}
+.prop.p0{border-color:var(--ink);color:var(--ink)}
+.prop.p1{border-color:var(--acc);color:var(--acc)}
+.prop.p2{border-color:var(--ink3);color:var(--ink3)}
+.prop.p3{border-color:var(--rule);color:var(--ink3)}
+.new{font-family:var(--num);font-size:9px;font-weight:600;letter-spacing:.06em;padding:2px 5px;
+  border-radius:4px;background:var(--flag);color:var(--sheet)}
+.cbody{padding:13px;flex:1}
+.cfoot{border-top:1px solid var(--rule2);padding:9px 13px;display:grid;grid-template-columns:auto 1fr;
+  gap:5px 9px;font-size:10.5px;line-height:1.4;background:var(--sheet2)}
+.cfoot dt{font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);font-size:9px;padding-top:1px}
+.cfoot dd{margin:0;color:var(--ink2)}
+.cfoot dd.on{color:var(--in);font-weight:600}
+.cfoot dd.off{color:var(--ink3)}
+.cfoot dd.hold{color:var(--flag);font-weight:600}
+
+/* component internals reused from the app language */
+.hl{font-size:14px;font-weight:600;letter-spacing:-.02em;line-height:1.32}
+.bd{font-size:11.5px;color:var(--ink2);margin-top:6px;line-height:1.45}
+.fig{font-family:var(--num);letter-spacing:-.02em}
+.mini{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule2);
+  border:1px solid var(--rule2);border-radius:9px;overflow:hidden}
+.mini>div{background:var(--sheet);padding:9px 10px}
+.mini .lab{font-size:9.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3)}
+.mini .amt{font-family:var(--num);font-size:16px;font-weight:500;letter-spacing:-.035em;margin-top:3px}
+.mini .sm{font-size:9.5px;color:var(--ink3);margin-top:2px;line-height:1.3}
+.lines{margin-top:4px}
+.ln{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:5px 0;
+  border-bottom:1px solid var(--rule2);font-size:11.5px}
+.ln:last-child{border-bottom:0}
+.ln .nm{font-weight:500}
+.ln .vl{font-family:var(--num);font-weight:500;white-space:nowrap}
+.ln .pc{font-family:var(--num);font-size:9.5px;color:var(--ink3);margin-left:5px}
+.bars{margin-top:6px}
+.brow{padding:5px 0}
+.brow .t{display:flex;justify-content:space-between;align-items:baseline;font-size:11px;gap:8px}
+.brow .t b{font-weight:500}
+.brow .t span{font-family:var(--num);font-size:10.5px;white-space:nowrap}
+.gg{display:block;height:5px;background:var(--rule2);border-radius:3px;margin-top:4px;overflow:hidden}
+.gg i{display:block;height:5px;border-radius:3px;background:var(--bar)}
+.gg i.a{background:var(--acc)} .gg i.g{background:var(--in)} .gg i.r{background:var(--out)}
+.goal{margin-top:8px}
+.goalbar{display:block;height:11px;background:var(--rule2);border-radius:6px;overflow:hidden;position:relative}
+.goalbar i{display:block;height:11px;border-radius:6px;background:var(--bar)}
+.goalbar i.g{background:var(--in)}
+.goalbar i.r{background:var(--out)}
+.goalbar i.a{background:var(--acc)}
+.goalbar .mark{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink)}
+.goalrow{display:flex;justify-content:space-between;font-size:9.5px;color:var(--ink3);margin-top:4px;font-family:var(--num)}
+.tick2{display:flex;align-items:center;gap:8px;margin-top:9px;padding-top:8px;border-top:1px solid var(--rule2)}
+.tick2 .sym{font-family:var(--num);font-size:10.5px;font-weight:600}
+.tick2 .co{font-size:10.5px;color:var(--ink3);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.pl span{font-size:10.5px;font-weight:500;padding:3px 8px;border-radius:999px;border:1px solid var(--rule);background:var(--chip)}
+.pl span i{font-family:var(--num);font-size:8.5px;color:var(--ink3);font-style:normal;margin-left:4px}
+.pl span.vf{border-style:dashed;color:var(--flag)}
+.cta{display:flex;gap:6px;margin-top:9px}
+.cta b{flex:1;text-align:center;font-size:11.5px;font-weight:600;padding:7px 6px;border-radius:8px;
+  background:var(--acc);color:#fff;border:1px solid var(--acc)}
+:root[data-theme="dark"] .cta b{color:#08131e}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .cta b{color:#08131e}}
+.cta b.gh{background:transparent;color:var(--acc)}
+.holdnote{font-size:10.5px;color:var(--flag);margin-top:8px;line-height:1.4;
+  border-left:2px solid var(--flag);padding-left:8px}
+.comp.held{border-style:dashed}
+.comp.locked{border-style:dashed}
+.comp.example{border-style:dashed}
+.exlabel{font-family:var(--num);font-size:9px;font-weight:600;letter-spacing:.06em;color:var(--flag);
+  text-transform:uppercase;margin-bottom:7px}
+.spark{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:2px;height:56px;align-items:end;margin-top:9px}
+.spark i{background:var(--bar-soft);border-radius:2px 2px 0 0;min-height:2px}
+.spark i.hi{background:var(--bar)}
+.spark i.zero{background:var(--out);opacity:.55}
+.sparkx{display:flex;justify-content:space-between;font-family:var(--num);font-size:8.5px;color:var(--ink3);margin-top:3px}
+.tagui{border:1px solid var(--rule);border-radius:9px;padding:10px;background:var(--sheet2)}
+.tagui .txn{font-size:11.5px;font-weight:500}
+.tagui .nar{font-family:var(--num);font-size:9.5px;color:var(--ink3);margin-top:2px;word-break:break-all}
+.tagui .opts{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+.tagui .opts span{font-size:10.5px;padding:4px 9px;border-radius:999px;border:1px solid var(--rule);background:var(--sheet)}
+.tagui .opts span.sel{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
+:root[data-theme="dark"] .tagui .opts span.sel{color:#08131e}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tagui .opts span.sel{color:#08131e}}
+.wk{overflow-x:auto;border:1px solid var(--rule);border-radius:12px;background:var(--sheet);margin-top:22px}
+.wk table{min-width:900px}
+.blank{display:inline-block;width:52px;border-bottom:1px dashed var(--ink3);height:13px}
+</style>
+<style>
+.prop.st{border-style:solid;border-color:var(--rule);color:var(--ink3);background:var(--chip)}
+.tag.st{background:transparent;color:var(--ink3);box-shadow:inset 0 0 0 1px var(--rule)}
+.tag.p0{background:var(--ink);color:var(--sheet)}
+.correction{border-left:3px solid var(--flag);padding:2px 0 2px 18px;margin-top:26px;max-width:72ch}
+.correction h3{font-size:15px;letter-spacing:-.01em}
+.correction p{font-family:var(--doc);font-size:17px;line-height:1.56;color:var(--ink2);margin-top:7px}
+.correction p strong{color:var(--ink);font-weight:500}
+.legendbar{display:flex;flex-wrap:wrap;gap:14px;margin-top:22px;padding:13px 0;
+  border-top:1px solid var(--rule2);border-bottom:1px solid var(--rule2)}
+.legendbar div{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink2)}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+<header class="masthead">
+  <p class="eyebrow">Paytm Money &middot; Insights engine &middot; component catalogue</p>
+  <h1>Every insight, side by side</h1>
+  <p class="lede">Thirty-six components, all of them rendered from your own dump. <em>Nineteen are new</em> since the last page &mdash; including the two you caught me leaving out: the <em>emergency fund</em>, and the nudge that says you already pay ET Money and INDmoney, so here are the brokers you can actually own.</p>
+  <div class="facts">
+    <div class="fact"><b>36</b><span>components</span></div>
+    <div class="fact"><b>19</b><span>new since last page</span></div>
+    <div class="fact"><b>25</b><span>ranked slots</span></div>
+    <div class="fact"><b>11</b><span>always render</span></div>
+    <div class="fact"><b>8</b><span>proposed P0</span></div>
+    <div class="fact"><b>1</b><span>held by rule</span></div>
+  </div>
+
+  <div class="correction">
+    <h3>One correction, stated plainly</h3>
+    <p>I earlier excluded wealthtech from the investable sectors, filing it with payment gateways as &ldquo;plumbing&rdquo;. <strong>That was wrong, and it was the largest category I threw away.</strong> Nobody is Razorpay&rsquo;s customer in any way they would recognise. You are absolutely ET Money&rsquo;s and INDmoney&rsquo;s &mdash; <strong>&#8377;19.7L of your outflow last year</strong> went to investing platforms, and listed brokers exist. It is back in, at P0. Payment gateways stay out, for the reason I gave the first time.</p>
+  </div>
+
+  <div class="legendbar">
+    <div><span class="prop st">always</span> renders for everyone &mdash; page structure, not a candidate</div>
+    <div><span class="prop p0">P0</span> <span class="prop p1">P1</span> <span class="prop p2">P2</span> ranked slots, competing for space</div>
+    <div><span class="new">NEW</span> not in the previous page</div>
+  </div>
+</header>
+<section class="grpwrap"><div class="grphead"><h2>Section 1 &middot; Your bank</h2><span class="cnt">9</span><p class="sub">Universal. Nothing here needs a merchant match, so it renders for every consented user.</p></div><div class="grid"><article class="comp "><div class="chead"><span class="cid">1.1</span><span class="ctitle">Period money tiles</span><span class="prop st">always</span></div><div class="cbody"><div class="mini"><div><span class="lab">Money in</span><div class="amt" style="color:var(--in)">&#8377;4,17,358</div><p class="sm">Salary &#8377;4,01,618</p></div><div><span class="lab">Spent</span><div class="amt" style="color:var(--out)">&#8377;3,12,581</div><p class="sm">1.7&times; your usual</p></div><div><span class="lab">Invested</span><div class="amt" style="color:var(--inv)">&#8377;1,45,335</div><p class="sm">Mandate, 1 Aug</p></div><div><span class="lab">Left over</span><div class="amt" style="color:var(--out)">&minus;&#8377;40,558</div><p class="sm">Below zero this month</p></div></div></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>always, whenever the period holds income</dd><dt>Needs</dt><dd>nothing beyond the dump</dd></dl></article><article class="comp "><div class="chead"><span class="cid">1.2</span><span class="ctitle">Six-month flow</span><span class="prop st">always</span></div><div class="cbody"><span class="spark"><i style="height:17.1%"></i><i style="height:21.9%"></i><i style="height:21.8%"></i><i style="height:20.9%"></i><i class="hi" style="height:100.0%"></i><i style="height:27.8%"></i></span><div class="sparkx"><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span></div><p class="bd">Income by month. July at &#8377;15,02,386 is <b>4.6&times;</b> your usual and pins the scale &mdash; the outlier is the point, not a nuisance.</p></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>period is a month or longer</dd><dt>Needs</dt><dd>nothing</dd></dl></article><article class="comp "><div class="chead"><span class="cid">1.3</span><span class="ctitle">Accounts and total balance</span><span class="prop st">always</span></div><div class="cbody"><div class="lines"><div class="ln"><span class="nm">ICICI Bank &bull;&bull;0906</span><span class="vl">&#8377;12,97,750<span class="pc">96%</span></span></div><div class="ln"><span class="nm">Axis Bank &bull;&bull;5062</span><span class="vl">&#8377;57,536<span class="pc">4%</span></span></div><div class="ln"><span class="nm">Federal Bank &bull;&bull;0336</span><span class="vl">&#8377;39</span></div><div class="ln"><span class="nm"><b>Total</b></span><span class="vl"><b>&#8377;13,55,326</b></span></div></div><p class="bd">Current balance, as you asked. Federal&rsquo;s branch field in the dump reads <b>&ldquo;Indmoney&rdquo;</b> &mdash; account metadata tells us what it is for without matching a single merchant.</p></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>always</dd><dt>Needs</dt><dd>account metadata only</dd></dl></article><article class="comp "><div class="chead"><span class="cid">1.4</span><span class="ctitle">Salary track</span><span class="new">NEW</span><span class="prop p1">P1</span></div><div class="cbody"><p class="hl">Your salary went from <span class="fig">&#8377;2,21,932</span> to <span class="fig">&#8377;3,25,321</span> in twelve months.</p><span class="spark"><i style="height:15.4%"></i><i style="height:15.5%"></i><i style="height:15.5%"></i><i style="height:18.1%"></i><i style="height:17.4%"></i><i style="height:17.4%"></i><i style="height:17.3%"></i><i style="height:17.4%"></i><i style="height:16.3%"></i><i style="height:19.9%"></i><i style="height:19.9%"></i><i class="hi" style="height:100.0%"></i><i style="height:27.9%"></i></span><div class="sparkx"><span>Aug 25</span><span>Jul 26</span><span>Aug 26</span></div><p class="bd">Up <b>47%</b>. Two other things changed in July: the payer on the credit switched from <b>Banayantree Services</b> to <b>Paytm Money Ltd</b>, and your pay date moved from the 24th&ndash;26th to <b>month-end</b>. Both matter, because every &ldquo;so far this month&rdquo; comparison depends on when income lands.</p></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>at least 6 salary credits from a stable payer</dd><dt>Needs</dt><dd>nothing</dd></dl></article><article class="comp "><div class="chead"><span class="cid">1.5</span><span class="ctitle">Windfall still sitting in cash</span><span class="new">NEW</span><span class="prop p0">P0</span></div><div class="cbody"><p class="hl"><span class="fig">&#8377;11,11,690</span> landed on 24 July. Six weeks later it has not moved.</p><div class="goal"><span class="goalbar"><i class="g" style="width:100%"></i></span><div class="goalrow"><span>20 Jul: &#8377;1,72,122</span><span>1 Sep: &#8377;12,97,750</span></div></div><p class="bd">Beyond your standing &#8377;1,45,000 mandate, <b>nothing extra was invested</b>. This is the single largest deployable sum in thirteen months of your history, and it is earning <b>2.01%</b>.</p><div class="cta"><b>Put it to work</b><b class="gh">Not now</b></div></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>a credit &ge; 3&times; median income, still largely in balance 30+ days later</dd><dt>Needs</dt><dd>nothing</dd></dl></article><article class="comp "><div class="chead"><span class="cid">1.6</span><span class="ctitle">Idle balance and what it really earns</span><span class="new">NEW</span><span class="prop p0">P0</span></div><div class="cbody"><p class="hl">Your money earned <span class="fig">2.01%</span> last year, not the 3% on the tin.</p><div class="lines"><div class="ln"><span class="nm">Average daily balance</span><span class="vl">&#8377;4,30,622</span></div><div class="ln"><span class="nm">Interest actually credited</span><span class="vl">&#8377;8,670<span class="pc">2.01%</span></span></div><div class="ln"><span class="nm">Same balance at 6.5%</span><span class="vl">&#8377;27,990</span></div><div class="ln"><span class="nm">On today&rsquo;s &#8377;13.55L, the yearly gap</span><span class="vl"><b>&#8377;60,583</b></span></div></div><p class="bd">Eight interest credits across two accounts, added up. No estimate involved.</p><div class="cta"><b>Move to a liquid fund</b></div></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>always &mdash; every account has a balance</dd><dt>Needs</dt><dd>balance and interest credits only</dd></dl></article><article class="comp "><div class="chead"><span class="cid">1.7</span><span class="ctitle">Month so far (partial period)</span><span class="prop st">always</span></div><div class="cbody"><div class="mini"><div><span class="lab">Spent so far</span><div class="amt" style="color:var(--out)">&#8377;50,855</div><p class="sm">Same 2 days in Aug: &#8377;1,70,259</p></div><div><span class="lab">Left over</span><div class="amt" style="color:var(--ink3)">&mdash;</div><p class="sm">Withheld until income lands</p></div></div><p class="bd">Two of thirty days are in. Compared against the <b>whole</b> of August this would read as down 84% &mdash; a compliment nobody earned. Compared against the same two days, spending is down <b>70%</b>, which is true.</p></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>selected period is incomplete</dd><dt>Needs</dt><dd>nothing</dd></dl></article><article class="comp "><div class="chead"><span class="cid">1.8</span><span class="ctitle">Month and year review entry</span><span class="prop st">always</span></div><div class="cbody"><p class="exlabel">Opens a full-screen story</p><p class="hl">Eight months of 2026</p><div class="lines"><div class="ln"><span class="nm">Earned</span><span class="vl">&#8377;38.7L</span></div><div class="ln"><span class="nm">Spent</span><span class="vl">&#8377;15.2L</span></div><div class="ln"><span class="nm">Invested</span><span class="vl">&#8377;11.5L</span></div></div><p class="bd">Calendar year, as you decided. Works for every user with three months of history and needs no merchant match at all.</p></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>always, from month three</dd><dt>Needs</dt><dd>nothing</dd></dl></article><article class="comp "><div class="chead"><span class="cid">1.9</span><span class="ctitle">How your money leaves</span><span class="new">NEW</span><span class="prop p2">P2</span></div><div class="cbody"><div class="bars"><div class="brow"><div class="t"><b>Mandate / NACH</b><span>38.6%</span></div><span class="gg"><i class="a" style="width:100.0%"></i></span></div><div class="brow"><div class="t"><b>UPI &middot; 865 payments</b><span>36.6%</span></div><span class="gg"><i class="a" style="width:94.8%"></i></span></div><div class="brow"><div class="t"><b>IMPS</b><span>12.3%</span></div><span class="gg"><i class="a" style="width:31.9%"></i></span></div><div class="brow"><div class="t"><b>Netbanking and bills</b><span>9.2%</span></div><span class="gg"><i class="a" style="width:23.8%"></i></span></div><div class="brow"><div class="t"><b>Card / POS</b><span>2.7%</span></div><span class="gg"><i class="a" style="width:7.0%"></i></span></div><div class="brow"><div class="t"><b>Card auto-debit</b><span>0.6%</span></div><span class="gg"><i class="a" style="width:1.6%"></i></span></div></div><p class="bd">By count it is <b>UPI, overwhelmingly</b> &mdash; 865 of 1,017 debits. By value your mandates win. Your credit card appears as <b>netbanking</b>, because what we see is the bill being paid, never the swipe.</p></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>always</dd><dt>Needs</dt><dd>narration prefixes only</dd></dl></article></div></section><section class="grpwrap"><div class="grphead"><h2>Section 2 &middot; Your expenses</h2><span class="cnt">14</span><p class="sub">Merchant first, category as the fallback. This is where the buy buttons live.</p></div><div class="grid"><article class="comp "><div class="chead"><span class="cid">2.1</span><span class="ctitle">Ranked categories</span><span class="prop st">always</span></div><div class="cbody"><div class="lines"><div class="ln"><span class="nm">Credit card bills</span><span class="vl">&#8377;1,26,820<span class="pc">40.6%</span></span></div><div class="ln"><span class="nm">Rent</span><span class="vl">&#8377;40,006<span class="pc">12.8%</span></span></div><div class="ln"><span class="nm">Health &amp; pharmacy</span><span class="vl">&#8377;35,934<span class="pc">11.5%</span></span></div><div class="ln"><span class="nm">People &amp; transfers</span><span class="vl">&#8377;35,650<span class="pc">11.4%</span></span></div><div class="ln"><span class="nm">Travel</span><span class="vl">&#8377;20,998<span class="pc">6.7%</span></span></div><div class="ln"><span class="nm">Groceries &amp; quick commerce</span><span class="vl">&#8377;15,722<span class="pc">5.0%</span></span></div><div class="ln"><span class="nm"><span style="color:var(--ink3)">Nine more</span></span><span class="vl"><span style="color:var(--ink3)">&#8377;37,451</span><span class="pc">12.0%</span></span></div></div></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>period has at least 5 debits</dd><dt>Needs</dt><dd>own taxonomy, not the bank&rsquo;s labels</dd></dl></article><article class="comp "><div class="chead"><span class="cid">2.2</span><span class="ctitle">Committed against discretionary</span><span class="new">NEW</span><span class="prop p1">P1</span></div><div class="cbody"><div class="bars"><div class="brow"><div class="t"><b>Committed &middot; 10 payees</b><span>&#8377;14,95,244</span></div><span class="gg"><i class="a" style="width:100.0%"></i></span></div><div class="brow"><div class="t"><b>Regular &middot; 39 payees</b><span>&#8377;12,29,430</span></div><span class="gg"><i class="a" style="width:82.4%"></i></span></div><div class="brow"><div class="t"><b>Incidental &middot; 266 payees</b><span>&#8377;7,67,780</span></div><span class="gg"><i class="a" style="width:51.5%"></i></span></div><div class="brow"><div class="t"><b>Lumpy &middot; 11 payees</b><span>&#8377;1,69,075</span></div><span class="gg"><i class="a" style="width:11.3%"></i></span></div></div><p class="bd">Behaviour, not category names. Recurs in three or more months and the amount barely varies &rarr; committed. This is what catches your SBI EMI, which your bank had labelled <b>income tax</b>.</p></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>six months of history</dd><dt>Needs</dt><dd>nothing</dd></dl></article><article class="comp "><div class="chead"><span class="cid">2.3</span><span class="ctitle">Spend and invest rate</span><span class="prop st">always</span></div><div class="cbody"><div class="mini"><div><span class="lab">Spent, of income</span><div class="amt" style="color:var(--out)">74.9%</div><p class="sm">12-month rate: 38.5%</p></div><div><span class="lab">Invested, of income</span><div class="amt" style="color:var(--inv)">34.8%</div><p class="sm">12-month rate: 38.9%</p></div></div><p class="bd">They sum to <b>109.7%</b>. Two honest ratios that overflow beat a split that hides the overspend.</p></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>period contains income</dd><dt>Needs</dt><dd>nothing</dd></dl></article><article class="comp "><div class="chead"><span class="cid">2.4</span><span class="ctitle">Merchant to listed parent</span><span class="prop p0">P0</span></div><div class="cbody"><p class="hl">Thirteen Blinkit orders in August came to <span class="fig">&#8377;15,054</span>. Over the year: <span class="fig">91</span> orders, <span class="fig">&#8377;1,21,600</span>.</p><p class="bd">Blinkit is owned by Eternal &mdash; also behind Zomato and District, where you spent another &#8377;32,948.</p><div class="tick2"><span class="sym">ETERNAL</span><span class="co">Eternal Ltd &middot; NSE</span></div><div class="cta"><b>Buy</b><b class="gh">View</b></div></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>brand&rsquo;s parent is listed and 12-month spend &ge; &#8377;10,000</dd><dt>Needs</dt><dd>merchant list</dd></dl></article><article class="comp "><div class="chead"><span class="cid">2.5</span><span class="ctitle">Category to sector players</span><span class="prop p0">P0 alt</span></div><div class="cbody"><p class="hl">Travel was <span class="fig">&#8377;20,998</span> of August &mdash; and <span class="fig">&#8377;51,428</span> across the year, all MakeMyTrip.</p><p class="bd">MakeMyTrip is not listed in India. These three are the listed online-travel businesses.</p><div class="pl"><span>Ixigo<i>NSE</i></span><span>EaseMyTrip<i>NSE</i></span><span>IRCTC<i>NSE</i></span></div><div class="cta"><b class="gh">Compare all three</b></div></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>category &ge; 5% of spend and holds no listed merchant</dd><dt>Needs</dt><dd>sector map</dd></dl></article><article class="comp "><div class="chead"><span class="cid">2.6</span><span class="ctitle">Investing platform to listed counterpart</span><span class="new">NEW</span><span class="prop p0">P0</span></div><div class="cbody"><p class="hl"><span class="fig">&#8377;19.7L</span> left your accounts for investing platforms last year. Almost none of them is listed.</p><div class="lines"><div class="ln"><span class="nm">ET Money</span><span class="vl">&#8377;7,26,881<span class="pc">unlisted</span></span></div><div class="ln"><span class="nm">Mandate we cannot name</span><span class="vl">&#8377;8,90,000<span class="pc">opaque</span></span></div><div class="ln"><span class="nm">INDmoney</span><span class="vl">&#8377;5,60,002<span class="pc">unlisted</span></span></div><div class="ln"><span class="nm">Groww, Paytm Money, Jio BlackRock</span><span class="vl">&#8377;897</span></div></div><p class="bd">You are already these companies&rsquo; customer. Here are the ones you can also own.</p><div class="pl"><span class="vf">Groww<i>NSE</i></span><span>Angel One<i>NSE</i></span><span>360 ONE WAM<i>NSE</i></span><span>Motilal Oswal<i>NSE</i></span><span>Anand Rathi<i>NSE</i></span><span>Prudent Corp<i>NSE</i></span><span>Nuvama<i>NSE</i></span><span>Jio Financial<i>NSE</i></span><span>One97 / PAYTM<i>NSE</i></span></div><p class="holdnote">Two things to settle. The strongest version of this card tells a Paytm Money user to buy <b>Groww</b>&rsquo;s stock. And <b>One97</b> is the one name here with no conflict at all, since it is Paytm Money&rsquo;s own parent.</p></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>any investing-platform outflow &ge; &#8377;25,000 in twelve months</dd><dt>Needs</dt><dd>merchant list plus a wealthtech sector map</dd></dl></article><article class="comp "><div class="chead"><span class="cid">2.7</span><span class="ctitle">Lender and EMI</span><span class="prop p0">P0</span></div><div class="cbody"><p class="hl"><span class="fig">&#8377;6,360</span> leaves for an SBI loan on the 10th. Thirteen months, not one missed.</p><p class="bd">You have paid &#8377;82,680 so far. Every nameable lender in your data is listed &mdash; a better hit rate than retail brands.</p><div class="tick2"><span class="sym">SBIN</span><span class="co">State Bank of India &middot; NSE</span></div><div class="cta"><b>Buy</b><b class="gh">View</b></div></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>same amount, same day, &ge; 3 months, payee is a lender</dd><dt>Needs</dt><dd>narration match</dd></dl></article><article class="comp "><div class="chead"><span class="cid">2.8</span><span class="ctitle">Card share of spend</span><span class="prop p1">P1</span></div><div class="cbody"><p class="hl"><span class="fig">41%</span> of everything you spent in August was one credit card bill &mdash; <span class="fig">&#8377;1,26,820</span>.</p><p class="bd">Across the year: &#8377;3,75,266 to ICICI and &#8377;30,397 to Aditya Birla. Both issuers are listed.</p><div class="pl"><span>ICICIBANK<i>NSE</i></span><span>ABCAPITAL<i>NSE</i></span></div><div class="cta"><b class="gh">View both</b></div></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>card bills &ge; 15% of period spend</dd><dt>Needs</dt><dd>narration match</dd></dl></article><article class="comp "><div class="chead"><span class="cid">2.9</span><span class="ctitle">Insurance to listed insurers</span><span class="new">NEW</span><span class="prop p2">P2</span></div><div class="cbody"><p class="hl">You paid <span class="fig">&#8377;27,541</span> in premiums last year.</p><div class="lines"><div class="ln"><span class="nm">LIC</span><span class="vl">&#8377;21,489<span class="pc">listed</span></span></div><div class="ln"><span class="nm">Tata AIG</span><span class="vl">&#8377;6,052<span class="pc">unlisted</span></span></div></div><p class="bd">LIC you can own directly. For general insurance, these are the listed options.</p><div class="pl"><span>LICI<i>NSE</i></span><span>ICICI Lombard<i>NSE</i></span><span class="vf">Go Digit<i>NSE</i></span><span class="vf">Niva Bupa<i>NSE</i></span><span>Star Health<i>NSE</i></span></div><p class="holdnote">Insurance is on the sensitive list for <b>celebratory</b> framing &mdash; no &ldquo;you spend a lot on insurance&rdquo;. A neutral statement plus a listed insurer is still fine.</p></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>premium payments &ge; &#8377;5,000 in twelve months</dd><dt>Needs</dt><dd>merchant list</dd></dl></article><article class="comp "><div class="chead"><span class="cid">2.10</span><span class="ctitle">Subscription load</span><span class="prop p2">P2</span></div><div class="cbody"><p class="hl">Six subscriptions took <span class="fig">&#8377;5,023</span> in August &mdash; <span class="fig">&#8377;60,276</span> a year at this rate.</p><div class="lines"><div class="ln"><span class="nm">OpenAI</span><span class="vl">&#8377;2,346</span></div><div class="ln"><span class="nm">LinkedIn</span><span class="vl">&#8377;999</span></div><div class="ln"><span class="nm">Netflix</span><span class="vl">&#8377;649</span></div><div class="ln"><span class="nm">Apple, Google, YouTube</span><span class="vl">&#8377;1,029</span></div></div><p class="bd">None of the six has a listed Indian parent. There is nothing to buy here &mdash; it is a number you should simply see, and that has to be an allowed outcome.</p></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>&ge; 3 recurring subscriptions in the period</dd><dt>Needs</dt><dd>merchant list</dd></dl></article><article class="comp "><div class="chead"><span class="cid">2.11</span><span class="ctitle">Rent, found without a merchant</span><span class="new">NEW</span><span class="prop p1">P1</span></div><div class="cbody"><p class="hl">Rent of <span class="fig">&#8377;40,000</span> goes to a person on the 1st.</p><p class="bd">You said this would be impossible. It was found from the <b>deposit</b>: &#8377;1,20,972 on 4 July is exactly <b>3.02&times;</b> the amount that has arrived on the 1st every month since. A person-to-person transfer, no merchant string involved.</p><p class="holdnote">Paid to an individual, so it is stated as a fact and never carries a buy button.</p></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>stable payee, 1st&ndash;7th of month, deposit near an integer multiple</dd><dt>Needs</dt><dd>nothing</dd></dl></article><article class="comp "><div class="chead"><span class="cid">2.12</span><span class="ctitle">Life event detected</span><span class="new">NEW</span><span class="prop p2">P2</span></div><div class="cbody"><p class="hl">July looks like a move.</p><div class="lines"><div class="ln"><span class="nm">Deposit &middot; 4 Jul</span><span class="vl">&#8377;1,20,972</span></div><div class="ln"><span class="nm">Brokerage &middot; same day</span><span class="vl">&#8377;39,906</span></div><div class="ln"><span class="nm">Courier and packers</span><span class="vl">&#8377;22,111</span></div><div class="ln"><span class="nm"><b>Total outlay</b></span><span class="vl"><b>&#8377;1,82,989</b></span></div></div><p class="bd">Four unrelated payees in eleven days that only make sense together. Life events are the highest-intent moment a finance app gets &mdash; and the one where a badly-worded nudge does the most damage.</p></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>&ge; 3 co-occurring signature payees inside 30 days</dd><dt>Needs</dt><dd>merchant list plus a life-event pattern set</dd></dl></article><article class="comp "><div class="chead"><span class="cid">2.13</span><span class="ctitle">Foreign equity exposure</span><span class="new">NEW</span><span class="prop p1">P1</span></div><div class="cbody"><p class="hl">You put <span class="fig">&#8377;3,20,000</span> into US stocks &mdash; then stopped in April.</p><span class="spark"><i style="height:46.2%"></i><i style="height:46.2%"></i><i style="height:46.2%"></i><i style="height:46.2%"></i><i style="height:46.2%"></i><i style="height:46.2%"></i><i class="hi" style="height:100.0%"></i><i style="height:46.2%"></i><i style="height:69.2%"></i><i class="zero" style="height:2.0%"></i><i class="zero" style="height:2.0%"></i><i class="zero" style="height:2.0%"></i><i class="zero" style="height:2.0%"></i></span><div class="sparkx"><span>Aug 25</span><span>Apr 26</span><span>Aug 26</span></div><p class="bd">&#8377;30,000 a month through INDmoney for nine months, and nothing for the last four. Whatever the reason, <b>the habit broke and nobody told you</b>.</p></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>international-investing outflow in any month</dd><dt>Needs</dt><dd>merchant list</dd></dl></article><article class="comp "><div class="chead"><span class="cid">2.14</span><span class="ctitle">Recurring transfers to people</span><span class="new">NEW</span><span class="prop p2">P2</span></div><div class="cbody"><div class="lines"><div class="ln"><span class="nm">Ravi Lodha</span><span class="vl">&#8377;1,43,766<span class="pc">4 months</span></span></div><div class="ln"><span class="nm">A S Chahar</span><span class="vl">&#8377;21,694<span class="pc">5 months</span></span></div><div class="ln"><span class="nm">Rent</span><span class="vl">&#8377;1,61,081<span class="pc">3 months</span></span></div></div><p class="bd">Family support and rent look identical in the data. Both are real commitments and belong in any expense figure &mdash; neither can ever carry a nudge.</p><p class="holdnote">Names shown to the user only. Never to us in aggregate, never in a cohort.</p></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>same payee in &ge; 3 months</dd><dt>Needs</dt><dd>nothing</dd></dl></article></div></section><section class="grpwrap"><div class="grphead"><h2>Goals</h2><span class="cnt">5</span><p class="sub">Cuts across the three sections. Every one of these ends in a transaction.</p></div><div class="grid"><article class="comp "><div class="chead"><span class="cid">3.1</span><span class="ctitle">Emergency fund &middot; funded</span><span class="new">NEW</span><span class="prop p0">P0</span></div><div class="cbody"><p class="hl">You have <span class="fig">7.4 months</span> of cover. The target is six.</p><div class="goal"><span class="goalbar"><i class="g" style="width:100%"></i><span class="mark" style="left:81%"></span></span><div class="goalrow"><span>&#8377;0</span><span>7.4 months</span></div></div><div class="lines"><div class="ln"><span class="nm">Your usual month</span><span class="vl">&#8377;1,84,074<span class="pc">median of 6</span></span></div><div class="ln"><span class="nm">Six months of it</span><span class="vl">&#8377;11,04,444<span class="pc">target</span></span></div><div class="ln"><span class="nm">Liquid today</span><span class="vl">&#8377;13,55,326<span class="pc">7.4 mo</span></span></div><div class="ln"><span class="nm"><b>Above target</b></span><span class="vl"><b>&#8377;2,50,882</b></span></div></div><p class="bd">The goal is met, so the nudge inverts: stop adding to cash, and move the surplus somewhere it still earns while staying reachable.</p><div class="cta"><b>Move &#8377;2,50,882</b><b class="gh">Adjust target</b></div></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>always &mdash; needs only a balance and a spend history</dd><dt>Needs</dt><dd>balance plus 6 months of spend</dd></dl></article><article class="comp example"><div class="chead"><span class="cid">3.2</span><span class="ctitle">Emergency fund &middot; short</span><span class="new">NEW</span><span class="prop p0">P0</span></div><div class="cbody"><p class="exlabel">The common case &mdash; illustrative figures, not yours</p><p class="hl">You have <span class="fig">1.8 months</span> of cover. Six months would be &#8377;2,64,000.</p><div class="goal"><span class="goalbar"><i class="r" style="width:30%"></i><span class="mark" style="left:100%"></span></span><div class="goalrow"><span>&#8377;0</span><span>6 months</span></div></div><div class="lines"><div class="ln"><span class="nm">Usual month</span><span class="vl">&#8377;44,000</span></div><div class="ln"><span class="nm">Liquid today</span><span class="vl">&#8377;79,200<span class="pc">1.8 mo</span></span></div><div class="ln"><span class="nm"><b>Shortfall</b></span><span class="vl"><b>&#8377;1,84,800</b></span></div></div><p class="bd">Same component, opposite state. &#8377;7,700 a month closes it in two years &mdash; which is a SIP, arrived at from the user&rsquo;s own numbers rather than from a product pitch.</p><div class="cta"><b>Start &#8377;7,700 / month</b></div></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires for most users</dd><dt>When</dt><dd>same trigger &mdash; the state flips on cover &lt; 6 months</dd><dt>Needs</dt><dd>balance plus 6 months of spend</dd></dl></article><article class="comp "><div class="chead"><span class="cid">3.3</span><span class="ctitle">Mandate consistency</span><span class="prop p1">P1</span></div><div class="cbody"><p class="hl">Your <span class="fig">&#8377;1,45,000</span> mandate ran in <span class="fig">11</span> of the last <span class="fig">13</span> months.</p><span class="spark"><i style="height:99.6%"></i><i style="height:99.6%"></i><i style="height:99.6%"></i><i style="height:99.6%"></i><i style="height:99.6%"></i><i style="height:99.6%"></i><i style="height:99.6%"></i><i style="height:99.6%"></i><i class="zero" style="height:2.0%"></i><i class="zero" style="height:13.8%"></i><i style="height:100.0%"></i><i style="height:99.9%"></i><i style="height:99.6%"></i></span><div class="sparkx"><span>Aug 25</span><span>May&ndash;Jun</span><span>Aug 26</span></div><p class="bd">May took &#8377;1,000 and June took &#8377;20,036. Against your own pattern that is <b>&#8377;2,69,000</b> that never got invested. Two broken months and no one mentioned it at the time.</p><div class="cta"><b>Start a SIP here</b></div></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>a monthly investment mandate skipped a month</dd><dt>Needs</dt><dd>nothing</dd></dl></article><article class="comp "><div class="chead"><span class="cid">3.4</span><span class="ctitle">Deploy the surplus</span><span class="new">NEW</span><span class="prop p1">P1</span></div><div class="cbody"><p class="hl">Between the bonus and the excess cover, <span class="fig">&#8377;2,50,882</span> has no job.</p><p class="bd">This is the arithmetic join of two other cards: six months of cover is &#8377;11,04,444, and you hold &#8377;13,55,326. It is the only card on the page whose entire purpose is a transaction, and it needs no merchant data whatsoever.</p><div class="cta"><b>See three options</b><b class="gh">Later</b></div></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>liquid balance exceeds the emergency-fund target</dd><dt>Needs</dt><dd>balance plus spend history</dd></dl></article><article class="comp "><div class="chead"><span class="cid">3.5</span><span class="ctitle">Tax</span><span class="new">NEW</span><span class="prop p2">P2</span></div><div class="cbody"><div class="lines"><div class="ln"><span class="nm">Refund received &middot; Dec 2025</span><span class="vl">&#8377;49,420<span class="pc">ITD</span></span></div><div class="ln"><span class="nm">Advance tax paid &middot; Jul 2026</span><span class="vl">&#8377;20,610</span></div></div><p class="bd">Both are visible in the narration. A refund landing is a deployable moment; advance tax means income the salary credit does not explain.</p><p class="holdnote">No tax advice, and no ELSS pitch off a refund. State the fact, stop there.</p></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>a tax refund or a direct-tax debit appears</dd><dt>Needs</dt><dd>narration match</dd></dl></article></div></section><section class="grpwrap"><div class="grphead"><h2>Section 3 &middot; You vs Paytm Money</h2><span class="cnt">5</span><p class="sub">Investing comparisons work today. Spending comparisons wait on the cohort.</p></div><div class="grid"><article class="comp "><div class="chead"><span class="cid">4.1</span><span class="ctitle">Investing percentile</span><span class="prop p0">P0</span></div><div class="cbody"><p class="hl">Your <span class="fig">&#8377;1,45,000</span> a month puts you in the top <span class="fig">3%</span> of Paytm Money investors.</p><span class="gg"><i class="a" style="width:97%"></i></span><p class="bd">Median in the &#8377;3&ndash;5L income band is &#8377;18,400. <b>This needs no bank consent from anyone</b> &mdash; Paytm Money already knows how millions of people invest, so this section can ship first, not last.</p></div><dl class="cfoot"><dt>Fires</dt><dd class="hold">cohort figures assumed</dd><dt>When</dt><dd>user has any investing history</dd><dt>Needs</dt><dd>Paytm Money&rsquo;s own data</dd></dl></article><article class="comp "><div class="chead"><span class="cid">4.2</span><span class="ctitle">Lender cohort</span><span class="new">NEW</span><span class="prop p1">P1</span></div><div class="cbody"><p class="hl">State Bank wrote <span class="fig">4.2 lakh</span> retail loans last quarter. You are one of them, at <span class="fig">&#8377;6,360</span> a month.</p><p class="bd">Your framing, built. It turns a dull recurring debit into membership of something, then offers the lender.</p><div class="tick2"><span class="sym">SBIN</span><span class="co">State Bank of India &middot; NSE</span></div><div class="cta"><b class="gh">View</b></div></div><dl class="cfoot"><dt>Fires</dt><dd class="hold">loan count assumed</dd><dt>When</dt><dd>a recurring loan EMI to a nameable lender</dd><dt>Needs</dt><dd>lender disclosures for the count</dd></dl></article><article class="comp "><div class="chead"><span class="cid">4.3</span><span class="ctitle">Spending percentile</span><span class="prop p2">P2</span></div><div class="cbody"><p class="hl">How your spending compares is not ready.</p><span class="gg"><i style="width:26.8%;background:var(--ink3)"></i></span><p class="bd">Needs roughly <b>5,000</b> consented bank connections. <b>1,340</b> so far. Shown as a countdown rather than hidden, because the empty state is itself the reason to connect.</p></div><dl class="cfoot"><dt>Fires</dt><dd class="off">locked</dd><dt>When</dt><dd>&ge; 5,000 users have connected a bank</dd><dt>Needs</dt><dd>AA cohort</dd></dl></article><article class="comp "><div class="chead"><span class="cid">4.4</span><span class="ctitle">Non-comparative badge</span><span class="prop st">always</span></div><div class="cbody"><div class="tagui"><div class="txn">Eleven months of thirteen</div><div class="nar" style="font-family:var(--ui);font-size:10.5px">Your mandate ran on time. Nobody else&rsquo;s number is in this one.</div></div><p class="bd">The fallback when there is no cohort. Deliberately <b>one</b> dimension &mdash; with twenty categories and skewed means, &ldquo;you beat average in 8 of 20&rdquo; is the modal result for everybody and carries no information at all.</p></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>always &mdash; this is the no-cohort fallback</dd><dt>Needs</dt><dd>nothing</dd></dl></article><article class="comp "><div class="chead"><span class="cid">4.5</span><span class="ctitle">Consent entry point</span><span class="new">NEW</span><span class="prop p1">P1</span></div><div class="cbody"><p class="exlabel">Sits outside the tab &mdash; onboarding and marketing</p><p class="hl">See where you stand against everyone else on Paytm Money.</p><p class="bd">Your idea, and the best growth mechanic in this whole design. Lead the consent screen with <b>the comparison</b> rather than with &ldquo;see your expenses&rdquo;, and Section 3 funds its own cohort. The locked card above is the ad for it.</p></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>user has not yet connected a bank</dd><dt>Needs</dt><dd>nothing</dd></dl></article></div></section><section class="grpwrap"><div class="grphead"><h2>System states</h2><span class="cnt">3</span><p class="sub">Not insights. The states the page has to handle to stay honest.</p></div><div class="grid"><article class="comp "><div class="chead"><span class="cid">5.1</span><span class="ctitle">Sensitive category held</span><span class="prop st">always</span></div><div class="cbody"><p class="hl">Health &amp; pharmacy was your third-largest category at <span class="fig">&#8377;35,934</span>.</p><p class="holdnote">Held back. &#8377;31,270 of it is mental-health care. Health never gets a celebratory frame and never gets a buy button, even though Apollo and Global Health are both listed. The rule costs a slot on a rich user and should still hold.</p><p class="bd">Full blocklist: health, gambling, penalties, government welfare, insurance and bank charges.</p></div><dl class="cfoot"><dt>Fires</dt><dd class="hold">held for you</dd><dt>When</dt><dd>category is on the blocklist</dd><dt>Needs</dt><dd>blocklist</dd></dl></article><article class="comp "><div class="chead"><span class="cid">5.2</span><span class="ctitle">Tag it yourself</span><span class="new">NEW</span><span class="prop st">always</span></div><div class="cbody"><div class="tagui"><div class="txn">&#8377;2,000 &middot; 14 Aug</div><div class="nar">UPI/RP ENTERPR/ombk.aago66329/Sent using/PPIW/6226</div><div class="opts"><span class="sel">Not sure</span><span>Groceries</span><span>Eating out</span><span>Household</span><span>Hide</span></div></div><p class="bd">You said build tagging, so here it is at the point of failure rather than buried in settings. Seven August transactions worth &#8377;3,745 resolved to nothing. One tap teaches the engine, and a tag on a payee should stick for every future payment to it.</p><p class="holdnote">A user correction has to outrank our own match, permanently. That is a data-model decision, not a UI one.</p></div><dl class="cfoot"><dt>Fires</dt><dd class="on">7 transactions in August</dd><dt>When</dt><dd>a transaction resolves to nothing and is &ge; 1% of period spend</dd><dt>Needs</dt><dd>nothing</dd></dl></article><article class="comp "><div class="chead"><span class="cid">5.3</span><span class="ctitle">What we cannot name</span><span class="new">NEW</span><span class="prop st">always</span></div><div class="cbody"><div class="lines"><div class="ln"><span class="nm">Credit card bill</span><span class="vl">&#8377;1,26,820<span class="pc">no contents</span></span></div><div class="ln"><span class="nm">Mandate behind a gateway</span><span class="vl">&#8377;1,45,000<span class="pc">no payee</span></span></div><div class="ln"><span class="nm">Transfers to people</span><span class="vl">&#8377;35,650<span class="pc">no merchant</span></span></div><div class="ln"><span class="nm"><b>Of August outflow</b></span><span class="vl"><b>67%</b></span></div></div><p class="bd">Counted, never named. Your ET Money mandate stopped in January and this gateway mandate began in February at the identical &#8377;1,45,000 &mdash; almost certainly the same money, which is exactly why we do not say so.</p><p class="holdnote">Shown to the user, not hidden. It is also the honest ceiling on merchant coverage: the list works on the third that is left.</p></div><dl class="cfoot"><dt>Fires</dt><dd class="on">fires</dd><dt>When</dt><dd>unresolved share of outflow &gt; 25%</dd><dt>Needs</dt><dd>nothing</dd></dl></article></div></section>
+<section class="grpwrap"><div class="grphead"><h2>The ranking worksheet</h2><span class="cnt">36</span>
+<p class="sub">My proposal in one column, yours blank in the next.</p></div>
+<p class="prose">Thirty-six components is far more than any page should render, which is exactly why the queue matters. But the first cut is not a priority at all &mdash; it is <b>structure against slots</b>. 11 of these always render: the money tiles, the balances, the category ranking, the partial-month handling, the states. They are the page, not candidates for it. That leaves 25 <b>ranked slots</b>, and my split is <b>8 at P0</b> plus one P0 alternate, 9 at P1 and 7 at P2. The alternate is the interesting one: <b>category&nbsp;&rarr;&nbsp;sector</b> only earns P0 when <b>merchant&nbsp;&rarr;&nbsp;parent</b> fails to fire, so its priority depends on the data rather than being fixed. If each section renders three slots, a user as rich as you never sees past P0 &mdash; so P1 exists almost entirely for thinner data, and that tier is where I would expect you to disagree with me.</p>
+<div class="wk"><table><thead><tr><th>ID</th><th>Component</th><th>Kind</th><th>Mine</th><th>Yours</th><th>For you</th><th>Needs</th></tr></thead><tbody><tr><td class="n">1.1</td><td>Period money tiles</td><td class="no">structure</td><td><span class="tag st">always</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>nothing beyond the dump</td></tr><tr><td class="n">1.2</td><td>Six-month flow</td><td class="no">structure</td><td><span class="tag st">always</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>nothing</td></tr><tr><td class="n">1.3</td><td>Accounts and total balance</td><td class="no">structure</td><td><span class="tag st">always</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>account metadata only</td></tr><tr><td class="n">1.4</td><td>Salary track</td><td class="">slot</td><td><span class="tag p1">P1</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>nothing</td></tr><tr><td class="n">1.5</td><td>Windfall still sitting in cash</td><td class="">slot</td><td><span class="tag p0">P0</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>nothing</td></tr><tr><td class="n">1.6</td><td>Idle balance and what it really earns</td><td class="">slot</td><td><span class="tag p0">P0</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>balance and interest credits only</td></tr><tr><td class="n">1.7</td><td>Month so far (partial period)</td><td class="no">structure</td><td><span class="tag st">always</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>nothing</td></tr><tr><td class="n">1.8</td><td>Month and year review entry</td><td class="no">structure</td><td><span class="tag st">always</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>nothing</td></tr><tr><td class="n">1.9</td><td>How your money leaves</td><td class="">slot</td><td><span class="tag p2">P2</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>narration prefixes only</td></tr><tr><td class="n">2.1</td><td>Ranked categories</td><td class="no">structure</td><td><span class="tag st">always</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>own taxonomy, not the bank&rsquo;s labels</td></tr><tr><td class="n">2.2</td><td>Committed against discretionary</td><td class="">slot</td><td><span class="tag p1">P1</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>nothing</td></tr><tr><td class="n">2.3</td><td>Spend and invest rate</td><td class="no">structure</td><td><span class="tag st">always</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>nothing</td></tr><tr><td class="n">2.4</td><td>Merchant to listed parent</td><td class="">slot</td><td><span class="tag p0">P0</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>merchant list</td></tr><tr><td class="n">2.5</td><td>Category to sector players</td><td class="">slot</td><td><span class="tag p0">P0 alt</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>sector map</td></tr><tr><td class="n">2.6</td><td>Investing platform to listed counterpart</td><td class="">slot</td><td><span class="tag p0">P0</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>merchant list plus a wealthtech sector map</td></tr><tr><td class="n">2.7</td><td>Lender and EMI</td><td class="">slot</td><td><span class="tag p0">P0</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>narration match</td></tr><tr><td class="n">2.8</td><td>Card share of spend</td><td class="">slot</td><td><span class="tag p1">P1</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>narration match</td></tr><tr><td class="n">2.9</td><td>Insurance to listed insurers</td><td class="">slot</td><td><span class="tag p2">P2</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>merchant list</td></tr><tr><td class="n">2.10</td><td>Subscription load</td><td class="">slot</td><td><span class="tag p2">P2</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>merchant list</td></tr><tr><td class="n">2.11</td><td>Rent, found without a merchant</td><td class="">slot</td><td><span class="tag p1">P1</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>nothing</td></tr><tr><td class="n">2.12</td><td>Life event detected</td><td class="">slot</td><td><span class="tag p2">P2</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>merchant list plus a life-event pattern set</td></tr><tr><td class="n">2.13</td><td>Foreign equity exposure</td><td class="">slot</td><td><span class="tag p1">P1</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>merchant list</td></tr><tr><td class="n">2.14</td><td>Recurring transfers to people</td><td class="">slot</td><td><span class="tag p2">P2</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>nothing</td></tr><tr><td class="n">3.1</td><td>Emergency fund &middot; funded</td><td class="">slot</td><td><span class="tag p0">P0</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>balance plus 6 months of spend</td></tr><tr><td class="n">3.2</td><td>Emergency fund &middot; short</td><td class="">slot</td><td><span class="tag p0">P0</span></td><td><span class="blank"></span></td><td class="on">fires for most users</td><td>balance plus 6 months of spend</td></tr><tr><td class="n">3.3</td><td>Mandate consistency</td><td class="">slot</td><td><span class="tag p1">P1</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>nothing</td></tr><tr><td class="n">3.4</td><td>Deploy the surplus</td><td class="">slot</td><td><span class="tag p1">P1</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>balance plus spend history</td></tr><tr><td class="n">3.5</td><td>Tax</td><td class="">slot</td><td><span class="tag p2">P2</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>narration match</td></tr><tr><td class="n">4.1</td><td>Investing percentile</td><td class="">slot</td><td><span class="tag p0">P0</span></td><td><span class="blank"></span></td><td class="hold">cohort figures assumed</td><td>Paytm Money&rsquo;s own data</td></tr><tr><td class="n">4.2</td><td>Lender cohort</td><td class="">slot</td><td><span class="tag p1">P1</span></td><td><span class="blank"></span></td><td class="hold">loan count assumed</td><td>lender disclosures for the count</td></tr><tr><td class="n">4.3</td><td>Spending percentile</td><td class="">slot</td><td><span class="tag p2">P2</span></td><td><span class="blank"></span></td><td class="off">locked</td><td>AA cohort</td></tr><tr><td class="n">4.4</td><td>Non-comparative badge</td><td class="no">structure</td><td><span class="tag st">always</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>nothing</td></tr><tr><td class="n">4.5</td><td>Consent entry point</td><td class="">slot</td><td><span class="tag p1">P1</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>nothing</td></tr><tr><td class="n">5.1</td><td>Sensitive category held</td><td class="no">structure</td><td><span class="tag st">always</span></td><td><span class="blank"></span></td><td class="hold">held for you</td><td>blocklist</td></tr><tr><td class="n">5.2</td><td>Tag it yourself</td><td class="no">structure</td><td><span class="tag st">always</span></td><td><span class="blank"></span></td><td class="on">7 transactions in August</td><td>nothing</td></tr><tr><td class="n">5.3</td><td>What we cannot name</td><td class="no">structure</td><td><span class="tag st">always</span></td><td><span class="blank"></span></td><td class="on">fires</td><td>nothing</td></tr></tbody></table></div>
+</section><footer>
+  <p><b>Source.</b> One Account Aggregator deposits dump &mdash; 1,265 transactions across three savings accounts, 2 August 2025 to 1 September 2026. Every rupee, date, brand and percentage in the 36 components above is computed from it. Three figures are assumed and labelled as such: the investing percentile, the cohort median, and State Bank&rsquo;s quarterly loan count. The shortfall state of the emergency fund uses illustrative numbers because yours is funded.</p>
+  <p style="margin-top:9px"><b>Still open.</b> Which components a section actually renders and how many; whether the P1 tier survives contact with real traffic; and whether <b>Groww</b> belongs on a Paytm Money screen at all &mdash; the logic says yes, the commercial instinct says ask a human.</p>
+</footer>
+</div>
+<button class="tt" id="tt" type="button" aria-live="polite">Dark</button>
+
+<script>
+(function(){
+  var b=document.getElementById('tt'), r=document.documentElement;
+  function cur(){
+    var s=r.getAttribute('data-theme');
+    if(s) return s;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+  }
+  function paint(){ b.textContent = cur()==='dark' ? 'Light' : 'Dark'; }
+  b.addEventListener('click',function(){
+    r.setAttribute('data-theme', cur()==='dark'?'light':'dark');
+    paint();
+  });
+  try{ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(){ if(!r.getAttribute('data-theme')) paint(); }); }catch(e){}
+  paint();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Paytm Money Insights engine - merchant match list: 148 brands, alias strings, listed-issuer mapping and sector fallbacks.">
+<style>
+  html{color-scheme:light}
+  body{margin:0}
+  img{max-width:100%}
+  [hidden]{display:none!important}
+</style>
+<title>Merchant Match List</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#eceeed; --sheet:#fcfdfc; --row:#f5f7f6; --chip:#e7eae9;
+  --ink:#13171a; --ink-2:#4e565c; --ink-3:#848d93; --ink-4:#aab2b7;
+  --hair:#dfe3e2; --rule:#c4cac8;
+  --t1:#0b7a45; --t1-soft:#e2f2e9;
+  --t2:#8a5c0c; --t2-soft:#fbf1de;
+  --t3:#7c8388; --t3-soft:#eceeee;
+  --acc:#1a5fb4; --acc-soft:#e5edf9;
+  --flag:#a63232; --flag-soft:#fbe9e7;
+  --shadow:0 1px 2px rgba(19,23,26,.06);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  color-scheme: dark;
+  --bg:#080a0b; --sheet:#14181a; --row:#1b2023; --chip:#242a2d;
+  --ink:#eff3f2; --ink-2:#a4adb2; --ink-3:#798287; --ink-4:#5a6266;
+  --hair:#242a2c; --rule:#374042;
+  --t1:#3fb173; --t1-soft:#0f2419;
+  --t2:#cfa04a; --t2-soft:#2a2113;
+  --t3:#828a8f; --t3-soft:#212628;
+  --acc:#5794e0; --acc-soft:#132840;
+  --flag:#e0776c; --flag-soft:#2c1614;
+  --shadow:0 1px 2px rgba(0,0,0,.5);
+}}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --bg:#080a0b; --sheet:#14181a; --row:#1b2023; --chip:#242a2d;
+  --ink:#eff3f2; --ink-2:#a4adb2; --ink-3:#798287; --ink-4:#5a6266;
+  --hair:#242a2c; --rule:#374042;
+  --t1:#3fb173; --t1-soft:#0f2419;
+  --t2:#cfa04a; --t2-soft:#2a2113;
+  --t3:#828a8f; --t3-soft:#212628;
+  --acc:#5794e0; --acc-soft:#132840;
+  --flag:#e0776c; --flag-soft:#2c1614;
+  --shadow:0 1px 2px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--bg); color:var(--ink);
+  font-family:Barlow,system-ui,-apple-system,sans-serif; font-size:15px; line-height:1.5}
+.mono{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace; font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid var(--acc); outline-offset:2px}
+.wrap{max-width:1500px; margin:0 auto; padding:0 clamp(14px,2.5vw,30px)}
+
+header{background:var(--sheet); border-bottom:1px solid var(--rule); padding:30px 0 20px}
+.eb{font-family:"JetBrains Mono",Menlo,monospace; font-size:10px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--acc)}
+h1{font-family:"Barlow Semi Condensed",Barlow,sans-serif; font-size:clamp(30px,5vw,44px);
+  font-weight:700; letter-spacing:-.02em; margin:8px 0 0; line-height:1.02}
+.dek{color:var(--ink-2); margin:10px 0 0; max-width:80ch; font-size:15.5px}
+.cov{display:grid; grid-template-columns:repeat(auto-fit,minmax(155px,1fr)); gap:0;
+  margin-top:22px; border:1px solid var(--hair); border-radius:4px; overflow:hidden;
+  background:var(--sheet)}
+.cov div{padding:11px 14px; border-right:1px solid var(--hair)}
+.cov div:last-child{border-right:0}
+.cov b{display:block; font-family:"JetBrains Mono",Menlo,monospace; font-size:19px;
+  font-weight:700; letter-spacing:-.03em}
+.cov span{font-size:10.5px; color:var(--ink-3); letter-spacing:.04em; text-transform:uppercase;
+  font-family:"JetBrains Mono",Menlo,monospace}
+
+section{padding:32px 0 0}
+h2{font-family:"Barlow Semi Condensed",Barlow,sans-serif; font-size:23px; font-weight:700;
+  letter-spacing:-.015em; margin:0 0 4px}
+.sp{color:var(--ink-2); font-size:14px; margin:0 0 16px; max-width:88ch}
+
+.ctl{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:12px;
+  position:sticky; top:0; z-index:20; background:var(--bg); padding:10px 0}
+input[type=search],select{font:inherit; font-size:13.5px; color:var(--ink); background:var(--sheet);
+  border:1px solid var(--rule); border-radius:4px; padding:7px 10px}
+input[type=search]{min-width:230px}
+.seg{display:flex; gap:2px; background:var(--chip); padding:2px; border-radius:5px;
+  border:1px solid var(--hair)}
+.seg button{appearance:none; border:0; background:transparent; cursor:pointer; color:var(--ink-2);
+  font:inherit; font-size:12.5px; padding:5px 10px; border-radius:3px; white-space:nowrap}
+.seg button[aria-pressed=true]{background:var(--sheet); color:var(--ink); font-weight:600;
+  box-shadow:0 0 0 1px var(--rule) inset}
+.count{font-family:"JetBrains Mono",Menlo,monospace; font-size:11.5px; color:var(--ink-3)}
+.sp2{flex:1}
+
+.tw{overflow-x:auto; border:1px solid var(--rule); border-radius:4px; background:var(--sheet)}
+table{border-collapse:collapse; width:100%; min-width:1080px;
+  font-family:"Barlow Semi Condensed",Barlow,sans-serif; font-size:13.5px}
+thead th{position:sticky; top:0; background:var(--row); text-align:left;
+  font-family:"JetBrains Mono",Menlo,monospace; font-size:9px; letter-spacing:.1em;
+  text-transform:uppercase; font-weight:700; color:var(--ink-3); padding:9px 10px;
+  border-bottom:1px solid var(--rule); white-space:nowrap; z-index:5}
+td{padding:7px 10px; border-bottom:1px solid var(--hair); vertical-align:top}
+tbody tr:hover{background:var(--row)}
+tbody tr:last-child td{border-bottom:0}
+.bn{font-weight:600; font-size:14.5px; white-space:nowrap}
+.al{font-family:"JetBrains Mono",Menlo,monospace; font-size:10.5px; color:var(--ink-2);
+  line-height:1.45; word-break:break-all}
+.iss{font-weight:600; white-space:nowrap}
+.px{font-family:"JetBrains Mono",Menlo,monospace; font-size:10px; color:var(--ink-2);
+  line-height:1.4}
+.t{font-family:"JetBrains Mono",Menlo,monospace; font-size:9.5px; font-weight:700;
+  padding:2px 6px; border-radius:3px; white-space:nowrap}
+.t.a{background:var(--t1-soft); color:var(--t1)}
+.t.b{background:var(--t2-soft); color:var(--t2)}
+.t.c{background:var(--t3-soft); color:var(--t3)}
+.t.f{background:var(--flag-soft); color:var(--flag)}
+.ev{font-family:"JetBrains Mono",Menlo,monospace; font-size:9px; color:var(--ink-4)}
+.ev.y{color:var(--acc); font-weight:700}
+
+.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:12px}
+.card{background:var(--sheet); border:1px solid var(--hair); border-radius:4px; padding:13px 15px}
+.card h3{font-family:"Barlow Semi Condensed",Barlow,sans-serif; font-size:16px; font-weight:700;
+  margin:0 0 2px; letter-spacing:-.01em}
+.card .n{font-family:"JetBrains Mono",Menlo,monospace; font-size:9.5px; color:var(--ink-3);
+  letter-spacing:.06em; text-transform:uppercase}
+.card p{margin:7px 0 0; font-size:12.5px; color:var(--ink-2); line-height:1.45}
+.card .px{margin-top:8px; padding-top:8px; border-top:1px solid var(--hair)}
+.tmpl{background:var(--acc-soft); border-left:3px solid var(--acc); border-radius:0 4px 4px 0;
+  padding:11px 13px; margin:0 0 10px; font-size:14px; line-height:1.5}
+.tmpl .n{font-family:"JetBrains Mono",Menlo,monospace; font-size:9px; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--acc); font-weight:700; display:block; margin-bottom:5px}
+.tmpl b{font-weight:700}
+.tmpl em{font-style:normal; background:var(--chip); padding:0 4px; border-radius:3px;
+  font-family:"JetBrains Mono",Menlo,monospace; font-size:12px}
+pre{background:var(--sheet); border:1px solid var(--rule); border-radius:4px; padding:13px;
+  overflow-x:auto; font-family:"JetBrains Mono",Menlo,monospace; font-size:11px; line-height:1.55;
+  max-height:460px; margin:0}
+#jsonbox{display:none} #jsonbox.on{display:block}
+#tablebox.off{display:none}
+ul{margin:0 0 12px; padding-left:20px} li{margin-bottom:5px; font-size:14px; max-width:88ch}
+code{font-family:"JetBrains Mono",Menlo,monospace; font-size:.87em; background:var(--chip);
+  padding:1px 4px; border-radius:3px}
+footer{border-top:1px solid var(--rule); background:var(--sheet); margin-top:40px;
+  padding:20px 0 34px; font-size:12.5px; color:var(--ink-3)}
+footer p{max-width:88ch; margin:0 0 8px}
+.themebtn{position:fixed; right:14px; bottom:14px; z-index:60; appearance:none;
+  border:1px solid var(--rule); background:var(--sheet); color:var(--ink-2); cursor:pointer;
+  font-family:"JetBrains Mono",Menlo,monospace; font-size:11px; padding:7px 11px;
+  border-radius:16px; box-shadow:var(--shadow)}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="eb">Paytm Money &middot; Insights engine &middot; engineering target list</div>
+  <h1>Merchant match list</h1>
+  <p class="dek">The brands engineering matches on, the strings they arrive as, and what each one
+    lets us say. Where the brand is listed we name the company. Where it isn't, we fall back to the
+    sector and name the listed players in it.</p>
+  <div class="cov" id="cov"></div>
+</div></header>
+
+<div class="wrap">
+
+<section>
+  <h2>How to read this</h2>
+  <ul>
+    <li><b>Tier&nbsp;1 &mdash; the brand is itself listed in India.</b> Direct nudge:
+      <em>&ldquo;you spend at Blinkit &rarr; Blinkit is Eternal&rdquo;</em>. Strongest card we have.</li>
+    <li><b>Tier&nbsp;2 &mdash; private Indian brand, sector has listed players.</b> Sector nudge:
+      <em>&ldquo;you spend on quick commerce &rarr; Eternal, Swiggy, DMart&rdquo;</em>.</li>
+    <li><b>Tier&nbsp;3 &mdash; no nudge.</b> Either foreign-listed and unbuyable here (Nike,
+      MakeMyTrip, Netflix), a payment gateway that must be suppressed entirely (Razorpay, PayU), or
+      a sector with no listed player (mental health, donations, software subscriptions). <b>The insight still
+      shows &mdash; only the buy button is withheld.</b></li>
+    <li><b>Match strings</b> are what the trie is built on: <code>merchantName</code> variants plus
+      VPA handle prefixes. Match on the VPA first &mdash; it is far more stable than the display
+      name.</li>
+    <li><b>&ldquo;dump&rdquo;</b> means the alias strings were harvested from the evidence pull and
+      are real. <b>&ldquo;add&rdquo;</b> means the brand was added by name and its aliases are
+      expected forms that must be confirmed against your own narration corpus.</li>
+    <li><b>&ldquo;verify&rdquo;</b> flags a listing status I am not confident enough about to ship
+      &mdash; recent IPOs and acquisitions. Equity desk confirms before these go live.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>The list</h2>
+  <p class="sp">Search matches brand, sector, issuer and every alias string.</p>
+  <div class="ctl">
+    <input type="search" id="q" placeholder="Search brands, sectors, aliases&hellip;" aria-label="Search">
+    <div class="seg" id="tf" role="group" aria-label="Filter by tier">
+      <button type="button" data-t="" aria-pressed="true">All tiers</button>
+      <button type="button" data-t="1" aria-pressed="false">Tier 1</button>
+      <button type="button" data-t="2" aria-pressed="false">Tier 2</button>
+      <button type="button" data-t="3" aria-pressed="false">Tier 3</button>
+    </div>
+    <select id="sf" aria-label="Filter by sector"></select>
+    <div class="seg" id="vw" role="group" aria-label="View">
+      <button type="button" data-v="t" aria-pressed="true">Table</button>
+      <button type="button" data-v="j" aria-pressed="false">JSON</button>
+    </div>
+    <span class="sp2"></span>
+    <span class="count" id="cnt"></span>
+  </div>
+  <div id="tablebox" class="tw">
+    <table>
+      <thead><tr>
+        <th style="width:15%">Brand</th>
+        <th style="width:12%">Sector</th>
+        <th style="width:26%">Match strings &mdash; merchantName &amp; VPA</th>
+        <th style="width:7%">Tier</th>
+        <th style="width:13%">Listed issuer</th>
+        <th style="width:22%">If private &rarr; sector proxies</th>
+        <th style="width:5%">Src</th>
+      </tr></thead>
+      <tbody id="tb"></tbody>
+    </table>
+  </div>
+  <pre id="jsonbox"></pre>
+</section>
+
+<section>
+  <h2>Insight templates</h2>
+  <p class="sp">Three shapes, matching the structure you described. The sector one is what makes this
+    work for a user whose merchants are all local.</p>
+  <div class="tmpl"><span class="n">Tier 1 &middot; brand is listed</span>
+    You've spent <b>&#8377;1,31,694</b> at <b>Blinkit</b> across <b>98 orders</b> this year.
+    Blinkit is owned by <b>Eternal</b>. <em>[Explore Eternal]</em></div>
+  <div class="tmpl"><span class="n">Tier 1 &middot; the financial version &mdash; strongest vein</span>
+    <b>20%</b> of everything you pay out goes to your <b>SBI Credit Card</b>.
+    <em>[Explore SBI Cards]</em></div>
+  <div class="tmpl"><span class="n">Tier 2 &middot; sector fallback</span>
+    You spent <b>&#8377;51,428</b> on <b>travel</b> this year. Listed travel companies you can own:
+    <b>Ixigo</b>, <b>EaseMyTrip</b>, <b>IRCTC</b>. <em>[See travel stocks]</em></div>
+  <div class="tmpl"><span class="n">Tier 2 &middot; eating out</span>
+    <b>&#8377;28,989</b> on eating out across <b>62 orders</b>. The listed names in that business:
+    <b>Eternal</b>, <b>Swiggy</b>, <b>Devyani</b>, <b>Jubilant FoodWorks</b>.
+    <em>[See food stocks]</em></div>
+  <div class="tmpl" style="border-color:var(--t3);background:var(--t3-soft);color:var(--ink-2)">
+    <span class="n" style="color:var(--t3)">Tier 3 &middot; insight only, no nudge</span>
+    <b>MakeMyTrip</b> was your biggest travel spend at <b>&#8377;51,428</b>.
+    <span style="opacity:.7">No buy button &mdash; MakeMyTrip is NASDAQ-only. The sector card above
+    carries the nudge instead.</span></div>
+</section>
+
+<section>
+  <h2>Sector &rarr; listed players</h2>
+  <p class="sp">The fallback table. Every tier-2 brand resolves through here. Sectors with an empty
+    list generate an insight and no nudge, by design.</p>
+  <div class="grid" id="sec"></div>
+</section>
+
+<section>
+  <h2>What this list does not solve</h2>
+  <ul>
+    <li><b>Payment gateways.</b> Razorpay was <b>&#8377;8,90,000 &mdash; 20.4% of outflow</b> in the
+      evidence dump and resolves to nothing useful. It must be tagged
+      <code>aggregator_opaque</code> and excluded from every merchant surface, not shown as a top
+      merchant.</li>
+    <li><b>One brand, many strings.</b> Zomato and District arrive as <b>7 distinct</b>
+      <code>merchantName</code> values totalling &#8377;34,426. Match only the largest and you tell
+      the user &#8377;8,671 &mdash; a 4&times; understatement on the card the mechanic depends on.
+      Every row here is a brand <em>with its alias set</em>, which is why 149 brands is more like
+      600 strings.</li>
+    <li><b>Truncation.</b> 85 of 160 merchant names in the dump arrive clipped to &le;10 characters
+      &mdash; <code>1MG HEALTH</code>, <code>10112APOLL</code>, <code>AIRBNB PAY</code>,
+      <code>NIKE BHANN</code>. Prefix matching is mandatory; short prefixes will collide and need a
+      tie-break on sector.</li>
+    <li><b>Foreign brands.</b> Recognisable, high-value, unbuyable here &mdash; 13.8% of commercial
+      spend in the dump. Sector fallback doesn't rescue them either: Nike&nbsp;&rarr;&nbsp;Bata is a
+      stretch a user would find silly. Insight yes, nudge no.</li>
+    <li><b>Individuals.</b> 158 distinct people, 17.4% of outflow. Never a merchant. Rent is the one
+      exception worth extracting, and it comes from behaviour &mdash; a stable payee paid on the
+      1st&ndash;7th, preceded by a deposit at 2&ndash;3&times; the monthly amount.</li>
+  </ul>
+</section>
+
+</div>
+
+<footer><div class="wrap">
+  <p><b>Coverage basis.</b> Alias strings marked &ldquo;dump&rdquo; are harvested from a single
+    consented AA pull &mdash; 3 accounts, 1,265 transactions, Aug 2025&ndash;Sep 2026 &mdash; in which
+    the top 100 match keys carried <b>97.2%</b> of matched value and the top 50 carried 91.9%. That
+    is the evidence a ~150-brand list clears a 90% accuracy bar; it is one user, so the head must be
+    re-mined from your own corpus before the list is frozen.</p>
+  <p><b>Accuracy means share of transaction value resolved to a brand</b> &mdash; not share of rows.
+    The local long tail and payments to individuals are explicitly out of scope; engineering should
+    not chase them.</p>
+  <p>Draft 1 &middot; 2 Sep 2026 &middot; tickers pending equity-desk confirmation</p>
+</div></footer>
+<button class="themebtn" id="theme" type="button">theme</button>
+
+<script>
+// tier: 1 = brand is itself listed in India | 2 = private, sector has listed players | 3 = no nudge
+// ev: "dump" = alias strings harvested from the evidence dump | "add" = national brand added by name
+// vf: true = listing status needs equity-desk confirmation before shipping
+const SECTORS = {
+ "Quick commerce & grocery": ["Eternal","Swiggy","Avenue Supermarts","Vishal Mega Mart"],
+ "Food delivery & dining":   ["Eternal","Swiggy","Jubilant FoodWorks","Devyani International","Sapphire Foods","Westlife Foodworld"],
+ "Pharmacy & diagnostics":   ["Apollo Hospitals","Medplus Health","Dr Lal PathLabs","Metropolis Healthcare"],
+ "Hospitals":                ["Apollo Hospitals","Global Health","Max Healthcare","Fortis Healthcare","Narayana Hrudayalaya"],
+ "Telecom & broadband":      ["Bharti Airtel","Reliance Industries","Vodafone Idea","Indus Towers"],
+ "Travel & aviation":        ["Le Travenues (Ixigo)","Easy Trip Planners","Yatra Online","IRCTC","InterGlobe Aviation"],
+ "Hotels & stays":           ["Indian Hotels","EIH","Lemon Tree Hotels","Chalet Hotels"],
+ "Mobility & ride-hailing":  ["Ola Electric","InterGlobe Aviation"],
+ "Cinema & events":          ["PVR INOX","Eternal"],
+ "Streaming & gaming":       ["Nazara Technologies","Saregama","Tips Music","Reliance Industries"],
+ "Fashion & footwear":       ["Trent","Aditya Birla Fashion","Bata India","Metro Brands","Relaxo Footwears","Page Industries"],
+ "Beauty & personal care":   ["Nykaa (FSN)","Honasa Consumer","Godrej Consumer","Hindustan Unilever","Dabur"],
+ "Jewellery":                ["Titan Company","Kalyan Jewellers","Senco Gold"],
+ "E-commerce & marketplace": ["Eternal","Nykaa (FSN)","Trent","Reliance Industries","Vishal Mega Mart"],
+ "Electronics & appliances": ["Havells","Voltas","Blue Star","Crompton Greaves CE","Electronics Mart India"],
+ "Banks & credit cards":     ["SBI Cards","State Bank of India","HDFC Bank","ICICI Bank","Axis Bank","Kotak Mahindra Bank"],
+ "NBFC & consumer lending":  ["Bajaj Finance","Aditya Birla Capital","Cholamandalam Inv","Shriram Finance","L&T Finance","Muthoot Finance"],
+ "Insurance":                ["LIC","HDFC Life","SBI Life","ICICI Lombard","Star Health","Niva Bupa","PB Fintech"],
+ "Payments & fintech":       ["One97 (Paytm)","Infibeam Avenues","PB Fintech","Zaggle Prepaid"],
+ "Broking & wealthtech":     ["Angel One","360 ONE WAM","Nuvama Wealth","Motilal Oswal","BSE","CDSL","CAMS","KFin Technologies"],
+ "Gas & electricity":        ["Indraprastha Gas","Mahanagar Gas","Adani Total Gas","Tata Power","Torrent Power"],
+ "Fuel":                     ["Reliance Industries","Indian Oil","BPCL","HPCL"],
+ "Logistics & courier":      ["Delhivery","Blue Dart Express","TCI Express","VRL Logistics"],
+ "Real estate & rent":       ["DLF","Godrej Properties","Macrotech Developers","Oberoi Realty","Prestige Estates"],
+ "FMCG & kirana":            ["Hindustan Unilever","ITC","Nestle India","Britannia","Dabur","Marico","Varun Beverages"],
+ "Paints & home improvement":["Asian Paints","Berger Paints","Kajaria Ceramics","Astral"],
+ "Education & edtech":       ["NIIT Learning","Aptech"],
+ "Fitness & wellness":       [],
+ "Software & subscriptions": [],
+ "Donations":                [],
+ "Government & tax":         [],
+};
+
+const M = [
+// ---- Quick commerce & grocery ----
+{b:"Blinkit",s:"Quick commerce & grocery",t:1,i:"Eternal",a:["blinkit","blinkit.payu","grofers1paytm","blinkitcommerce","paytm-blinkit","blinkit3.payu"],ev:"dump"},
+{b:"Zepto",s:"Quick commerce & grocery",t:2,a:["zepto","cf.zeptomarket","zeptomarketplac","zepto mark"],ev:"dump"},
+{b:"Swiggy Instamart",s:"Quick commerce & grocery",t:1,i:"Swiggy",a:["instamart","swiggyinstamart","swiggystores"],ev:"add"},
+{b:"BigBasket",s:"Quick commerce & grocery",t:2,a:["bigbasket","bbdaily","supermarketgro"],ev:"add"},
+{b:"DMart",s:"Quick commerce & grocery",t:1,i:"Avenue Supermarts",a:["dmart","avenuesupermart","dmartready"],ev:"add"},
+{b:"JioMart / Reliance Smart",s:"Quick commerce & grocery",t:1,i:"Reliance Industries",a:["jiomart","reliancesmart","reliance retail","relianceretail"],ev:"add"},
+{b:"Vishal Mega Mart",s:"Quick commerce & grocery",t:1,i:"Vishal Mega Mart",a:["vishalmegamart","vishal mega"],ev:"add"},
+{b:"Licious",s:"Quick commerce & grocery",t:2,a:["licious","deliciousmeats"],ev:"add"},
+{b:"Country Delight",s:"Quick commerce & grocery",t:2,a:["countrydelight","cdelight"],ev:"add"},
+// ---- Food delivery & dining ----
+{b:"Zomato",s:"Food delivery & dining",t:1,i:"Eternal",a:["zomato","zomatoonlineor","zomato-order","zomatofood","zomatoltd","eternal li","zomato lim","zomato onl"],ev:"dump"},
+{b:"Swiggy",s:"Food delivery & dining",t:1,i:"Swiggy",a:["swiggy","swiggyupi","bundl","swiggystores"],ev:"add"},
+{b:"District",s:"Food delivery & dining",t:1,i:"Eternal",a:["district","district.dinin","district d"],ev:"dump"},
+{b:"Domino's",s:"Food delivery & dining",t:1,i:"Jubilant FoodWorks",a:["dominos","jubilantfood","dominospizza"],ev:"add"},
+{b:"KFC",s:"Food delivery & dining",t:1,i:"Devyani International",a:["kfc","kfcindia","devyani"],ev:"add"},
+{b:"Pizza Hut",s:"Food delivery & dining",t:1,i:"Devyani International",a:["pizzahut","sapphirefoods"],ev:"add"},
+{b:"McDonald's",s:"Food delivery & dining",t:1,i:"Westlife Foodworld",a:["mcdonald","westlife","hardcastle"],ev:"add"},
+{b:"Burger King",s:"Food delivery & dining",t:1,i:"Restaurant Brands Asia",a:["burgerking","rbaindia"],ev:"add"},
+{b:"Starbucks",s:"Food delivery & dining",t:1,i:"Tata Consumer",a:["starbucks","tatastarbucks"],ev:"add",vf:true},
+{b:"Barbeque Nation",s:"Food delivery & dining",t:1,i:"Barbeque Nation",a:["barbequenation","bbqnation"],ev:"add"},
+{b:"Chaayos / Third Wave / Blue Tokai",s:"Food delivery & dining",t:2,a:["chaayos","thirdwave","bluetokai","sunshineteahou"],ev:"add"},
+{b:"EatClub / Box8",s:"Food delivery & dining",t:2,a:["eatclub","box8","poncho"],ev:"add"},
+// ---- Pharmacy & diagnostics ----
+{b:"Apollo Pharmacy",s:"Pharmacy & diagnostics",t:1,i:"Apollo Hospitals",a:["apollopharmacy","apollo pha","apollo24","10112apoll","apollohospital"],ev:"dump"},
+{b:"Tata 1mg",s:"Pharmacy & diagnostics",t:2,a:["1mgtechnologie","tata1mghealthc","1mghealthcares","tata 1mg","1mg health"],ev:"dump"},
+{b:"PharmEasy",s:"Pharmacy & diagnostics",t:2,a:["pharmeasy","axelia","threpsi"],ev:"add"},
+{b:"MedPlus",s:"Pharmacy & diagnostics",t:1,i:"Medplus Health",a:["medplus","medplusmart"],ev:"add"},
+{b:"Dr Lal PathLabs",s:"Pharmacy & diagnostics",t:1,i:"Dr Lal PathLabs",a:["lalpathlabs","drlal"],ev:"add"},
+{b:"Metropolis Labs",s:"Pharmacy & diagnostics",t:1,i:"Metropolis Healthcare",a:["metropolis","metropolislab"],ev:"add"},
+{b:"Practo",s:"Pharmacy & diagnostics",t:2,a:["practo","practotech"],ev:"add"},
+// ---- Hospitals ----
+{b:"Medanta",s:"Hospitals",t:1,i:"Global Health",a:["medanta","medantathemedi","globalhealth"],ev:"dump"},
+{b:"Apollo Hospitals",s:"Hospitals",t:1,i:"Apollo Hospitals",a:["apollohospital","apolloent"],ev:"add"},
+{b:"Fortis",s:"Hospitals",t:1,i:"Fortis Healthcare",a:["fortis","fortishealth"],ev:"add"},
+{b:"Max Healthcare",s:"Hospitals",t:1,i:"Max Healthcare",a:["maxhealthcare","maxhospital"],ev:"add"},
+{b:"Narayana Health",s:"Hospitals",t:1,i:"Narayana Hrudayalaya",a:["narayanahealth","narayanahrud"],ev:"add"},
+// ---- Telecom ----
+{b:"Airtel",s:"Telecom & broadband",t:1,i:"Bharti Airtel",a:["airtel","airtel.payu","payair","bhartiairtel","airtelupi"],ev:"dump"},
+{b:"Jio",s:"Telecom & broadband",t:1,i:"Reliance Industries",a:["jio","jiopay","reliancejio","jiofiber"],ev:"add"},
+{b:"Vi (Vodafone Idea)",s:"Telecom & broadband",t:1,i:"Vodafone Idea",a:["vodafone","videocon","vodafoneidea","myvi"],ev:"add"},
+{b:"BSNL",s:"Telecom & broadband",t:3,a:["bsnl","bharatsanchar"],ev:"add"},
+{b:"ACT Fibernet",s:"Telecom & broadband",t:2,a:["actfibernet","atriaconvergen"],ev:"add"},
+// ---- Travel ----
+{b:"Ixigo",s:"Travel & aviation",t:1,i:"Le Travenues (Ixigo)",a:["ixigo","ixigo.pay","letravenues","abhibus","confirmtkt"],ev:"add"},
+{b:"MakeMyTrip",s:"Travel & aviation",t:3,a:["makemytrip","makemytrip.pay","makemytrip.upi","makemytrip.qru","mmtupi"],ev:"dump",note:"NASDAQ only"},
+{b:"EaseMyTrip",s:"Travel & aviation",t:1,i:"Easy Trip Planners",a:["easemytrip","easytripplann"],ev:"add"},
+{b:"Yatra",s:"Travel & aviation",t:1,i:"Yatra Online",a:["yatra","yatraonline"],ev:"add"},
+{b:"IRCTC",s:"Travel & aviation",t:1,i:"IRCTC",a:["irctc","irctcupi","irctcweb"],ev:"add"},
+{b:"IndiGo",s:"Travel & aviation",t:1,i:"InterGlobe Aviation",a:["indigo","goindigo","interglobe"],ev:"add"},
+{b:"SpiceJet",s:"Travel & aviation",t:1,i:"SpiceJet",a:["spicejet"],ev:"add"},
+{b:"Air India",s:"Travel & aviation",t:2,a:["airindia","airindiaexp"],ev:"add"},
+{b:"redBus",s:"Travel & aviation",t:2,a:["redbus","ibibo"],ev:"add"},
+// ---- Hotels ----
+{b:"Taj / Ginger / Vivanta",s:"Hotels & stays",t:1,i:"Indian Hotels",a:["tajhotels","gingerhotels","vivanta","indianhotels"],ev:"add"},
+{b:"Oberoi / Trident",s:"Hotels & stays",t:1,i:"EIH",a:["oberoihotels","tridenthotels","eihltd"],ev:"add"},
+{b:"Lemon Tree",s:"Hotels & stays",t:1,i:"Lemon Tree Hotels",a:["lemontree","lemontreehotel"],ev:"add"},
+{b:"OYO",s:"Hotels & stays",t:2,a:["oyo","oyorooms","oravel"],ev:"add"},
+{b:"Airbnb",s:"Hotels & stays",t:3,a:["airbnb","airbnb pay"],ev:"dump",note:"NASDAQ only"},
+// ---- Mobility ----
+{b:"Uber",s:"Mobility & ride-hailing",t:3,a:["uber","uberrides","uberindia"],ev:"dump",note:"NYSE only"},
+{b:"Ola",s:"Mobility & ride-hailing",t:2,a:["ola","olacabs","anitechnologie"],ev:"add"},
+{b:"Rapido",s:"Mobility & ride-hailing",t:2,a:["rapido","rapidobike","roppen"],ev:"add"},
+{b:"Namma Yatri",s:"Mobility & ride-hailing",t:3,a:["nammayatri","juspay"],ev:"add"},
+// ---- Cinema & events ----
+{b:"PVR INOX",s:"Cinema & events",t:1,i:"PVR INOX",a:["pvr","inox","pvrcinemas","pvrinox"],ev:"dump"},
+{b:"BookMyShow",s:"Cinema & events",t:2,a:["bookmyshow","bigtree","bmsupi"],ev:"dump"},
+// ---- Streaming & gaming ----
+{b:"Netflix",s:"Streaming & gaming",t:3,a:["netflix"],ev:"add",note:"NASDAQ only"},
+{b:"Spotify",s:"Streaming & gaming",t:3,a:["spotify"],ev:"add",note:"NYSE only"},
+{b:"JioHotstar",s:"Streaming & gaming",t:1,i:"Reliance Industries",a:["hotstar","jiocinema","jiohotstar"],ev:"add"},
+{b:"Google Play",s:"Streaming & gaming",t:3,a:["googleplay","google play","google clou"],ev:"dump",note:"NASDAQ only"},
+{b:"Dream11 / MPL",s:"Streaming & gaming",t:2,a:["dream11","mpl","sporta","galactus"],ev:"add"},
+{b:"Nazara games",s:"Streaming & gaming",t:1,i:"Nazara Technologies",a:["nazara","nodwin","openplay"],ev:"add"},
+// ---- Fashion & footwear ----
+{b:"Myntra",s:"Fashion & footwear",t:2,a:["myntra","myntradesigns"],ev:"add"},
+{b:"Ajio",s:"Fashion & footwear",t:1,i:"Reliance Industries",a:["ajio","relianceretail"],ev:"add"},
+{b:"Westside / Zudio",s:"Fashion & footwear",t:1,i:"Trent",a:["westside","zudio","trentltd"],ev:"add"},
+{b:"Pantaloons / Allen Solly",s:"Fashion & footwear",t:1,i:"Aditya Birla Fashion",a:["pantaloons","allensolly","vanheusen","abfrl"],ev:"add"},
+{b:"Bata",s:"Fashion & footwear",t:1,i:"Bata India",a:["bata","bataindia"],ev:"add"},
+{b:"Metro / Mochi",s:"Fashion & footwear",t:1,i:"Metro Brands",a:["metroshoes","mochishoes","metrobrands"],ev:"add"},
+{b:"Nike",s:"Fashion & footwear",t:3,a:["nike","nikebhannereta","nike bhann"],ev:"dump",note:"NYSE only"},
+{b:"Adidas / Puma",s:"Fashion & footwear",t:3,a:["adidas","puma","pumasports"],ev:"add",note:"foreign listed"},
+{b:"Decathlon",s:"Fashion & footwear",t:2,a:["decathlon"],ev:"add"},
+// ---- Beauty ----
+{b:"Nykaa",s:"Beauty & personal care",t:1,i:"Nykaa (FSN)",a:["nykaa","fsnecommerce","nykaafashion"],ev:"add"},
+{b:"Mamaearth",s:"Beauty & personal care",t:1,i:"Honasa Consumer",a:["mamaearth","honasa"],ev:"add"},
+{b:"Purplle",s:"Beauty & personal care",t:2,a:["purplle","manashlifestyl"],ev:"add"},
+{b:"Lenskart",s:"Beauty & personal care",t:2,a:["lenskart","valyoo"],ev:"add",vf:true},
+// ---- Jewellery ----
+{b:"Tanishq",s:"Jewellery",t:1,i:"Titan Company",a:["tanishq","titancompany","titanco"],ev:"add"},
+{b:"Kalyan Jewellers",s:"Jewellery",t:1,i:"Kalyan Jewellers",a:["kalyanjewel"],ev:"add"},
+// ---- E-commerce ----
+{b:"Amazon",s:"E-commerce & marketplace",t:3,a:["amazon","amazonpay","amazonseller"],ev:"add",note:"NASDAQ only"},
+{b:"Flipkart",s:"E-commerce & marketplace",t:2,a:["flipkart","flipkart.payu","fkrt"],ev:"dump"},
+{b:"Meesho",s:"E-commerce & marketplace",t:2,a:["meesho","fashnear"],ev:"add",vf:true},
+{b:"Croma / Tata Cliq",s:"E-commerce & marketplace",t:2,a:["croma","tatacliq","infiniti retail"],ev:"add"},
+{b:"Reliance Digital",s:"Electronics & appliances",t:1,i:"Reliance Industries",a:["reliancedigital","reldigital"],ev:"add"},
+{b:"Vijay Sales",s:"Electronics & appliances",t:2,a:["vijaysales"],ev:"add"},
+{b:"boAt / Noise",s:"Electronics & appliances",t:2,a:["boat","imaginemarketin","noise","nexxbase"],ev:"add"},
+// ---- Banks & cards ----
+{b:"SBI Credit Card",s:"Banks & credit cards",t:1,i:"SBI Cards",a:["sbicard","sbi card","sbicards"],ev:"add"},
+{b:"State Bank of India (loan/EMI)",s:"Banks & credit cards",t:1,i:"State Bank of India",a:["racpc","sbi","statebankofind","rasmec"],ev:"dump"},
+{b:"HDFC Bank card / loan",s:"Banks & credit cards",t:1,i:"HDFC Bank",a:["hdfcbank","hdfc card","hdfcltd"],ev:"add"},
+{b:"ICICI Bank card / loan",s:"Banks & credit cards",t:1,i:"ICICI Bank",a:["icicibank","icici bank credit","icicicard"],ev:"dump"},
+{b:"Axis Bank card / loan",s:"Banks & credit cards",t:1,i:"Axis Bank",a:["axisbank","axis card"],ev:"add"},
+{b:"Kotak card / loan",s:"Banks & credit cards",t:1,i:"Kotak Mahindra Bank",a:["kotak","kotakmahindra"],ev:"add"},
+{b:"IndusInd card",s:"Banks & credit cards",t:1,i:"IndusInd Bank",a:["indusind","indusindbank"],ev:"add"},
+// ---- NBFC ----
+{b:"Bajaj Finance EMI",s:"NBFC & consumer lending",t:1,i:"Bajaj Finance",a:["bajajfinance","bajajfinserv","bajajfin"],ev:"add"},
+{b:"Aditya Birla Finance",s:"NBFC & consumer lending",t:1,i:"Aditya Birla Capital",a:["adityabirl","abfl","adityabirlafin"],ev:"dump"},
+{b:"Cholamandalam",s:"NBFC & consumer lending",t:1,i:"Cholamandalam Inv",a:["cholamandalam","cholafin"],ev:"add"},
+{b:"Shriram Finance",s:"NBFC & consumer lending",t:1,i:"Shriram Finance",a:["shriram","shriramfin"],ev:"add"},
+{b:"L&T Finance",s:"NBFC & consumer lending",t:1,i:"L&T Finance",a:["ltfinance","lntfinance"],ev:"add"},
+{b:"Muthoot / Manappuram",s:"NBFC & consumer lending",t:1,i:"Muthoot Finance",a:["muthoot","manappuram"],ev:"add"},
+{b:"CRED / slice / Jupiter",s:"NBFC & consumer lending",t:2,a:["cred","dreamplug","sliceit","jupiter","amicafin"],ev:"add"},
+// ---- Insurance ----
+{b:"LIC",s:"Insurance",t:1,i:"LIC",a:["lifeincorpofin","lic","lifeinsurcorp","life insur"],ev:"dump"},
+{b:"HDFC Life",s:"Insurance",t:1,i:"HDFC Life",a:["hdfclife","hdfcstandard"],ev:"add"},
+{b:"SBI Life",s:"Insurance",t:1,i:"SBI Life",a:["sbilife"],ev:"add"},
+{b:"ICICI Lombard",s:"Insurance",t:1,i:"ICICI Lombard",a:["icicilombard","lombard"],ev:"add"},
+{b:"Star Health",s:"Insurance",t:1,i:"Star Health",a:["starhealth","staralliedins"],ev:"add"},
+{b:"Niva Bupa",s:"Insurance",t:1,i:"Niva Bupa",a:["nivabupa","maxbupa"],ev:"add"},
+{b:"Policybazaar",s:"Insurance",t:1,i:"PB Fintech",a:["policybazaar","pbfintech","paisabazaar"],ev:"add"},
+{b:"Acko / Go Digit",s:"Insurance",t:1,i:"Go Digit",a:["acko","godigit","digitinsurance"],ev:"add",vf:true},
+// ---- Payments & fintech ----
+{b:"Paytm",s:"Payments & fintech",t:1,i:"One97 (Paytm)",a:["paytm","one97","paytmqr","paytm-"],ev:"dump"},
+{b:"PhonePe",s:"Payments & fintech",t:2,a:["phonepe","phonepeprivate"],ev:"add"},
+{b:"Razorpay",s:"Payments & fintech",t:3,a:["razorpay","razorpay payments","rzp"],ev:"dump",note:"gateway - suppress, never shown as a merchant"},
+{b:"CCAvenue",s:"Payments & fintech",t:1,i:"Infibeam Avenues",a:["ccavenue","infibeam","avenues"],ev:"add"},
+{b:"PayU / BillDesk / Cashfree",s:"Payments & fintech",t:3,a:["payu","billdesk","cashfree","cf."],ev:"add",note:"gateway - suppress"},
+// ---- Broking & wealthtech ----
+{b:"Angel One",s:"Broking & wealthtech",t:1,i:"Angel One",a:["angelone","angelbroking"],ev:"add"},
+{b:"Zerodha",s:"Broking & wealthtech",t:2,a:["zerodha","zerodhabroking"],ev:"dump"},
+{b:"Groww",s:"Broking & wealthtech",t:2,a:["groww","nextbillion"],ev:"dump",vf:true},
+{b:"Upstox",s:"Broking & wealthtech",t:2,a:["upstox","rksv"],ev:"add"},
+{b:"ET Money",s:"Broking & wealthtech",t:2,a:["etmoney","etmoney.1rzp","etmoney8289"],ev:"dump",vf:true,note:"360 ONE acquisition - confirm"},
+{b:"INDmoney",s:"Broking & wealthtech",t:2,a:["indmoney","indmoney1x.rzp","indmo"],ev:"dump"},
+{b:"Motilal Oswal",s:"Broking & wealthtech",t:1,i:"Motilal Oswal",a:["motilaloswal","mosl"],ev:"add"},
+// ---- Utilities & fuel ----
+{b:"Indraprastha Gas",s:"Gas & electricity",t:1,i:"Indraprastha Gas",a:["indraprasthaga","igl"],ev:"add"},
+{b:"Mahanagar Gas",s:"Gas & electricity",t:1,i:"Mahanagar Gas",a:["mahanagargas","mgl"],ev:"add"},
+{b:"Tata Power",s:"Gas & electricity",t:1,i:"Tata Power",a:["tatapower","tpddl"],ev:"add"},
+{b:"Adani Electricity",s:"Gas & electricity",t:1,i:"Adani Total Gas",a:["adanielectric","adanigas","adanitotal"],ev:"add"},
+{b:"BSES / discoms",s:"Gas & electricity",t:2,a:["bses","bsesrajdhani","bsesyamuna","discom"],ev:"add"},
+{b:"Indian Oil / BPCL / HPCL",s:"Fuel",t:1,i:"Indian Oil",a:["indianoil","iocl","bharatpetro","bpcl","hindustanpetro","hpcl"],ev:"add"},
+{b:"Jio-bp / Reliance petrol",s:"Fuel",t:1,i:"Reliance Industries",a:["jiobp","reliancepetro"],ev:"add"},
+// ---- Logistics ----
+{b:"Delhivery",s:"Logistics & courier",t:1,i:"Delhivery",a:["delhivery","delhiverylogis"],ev:"add"},
+{b:"Blue Dart",s:"Logistics & courier",t:1,i:"Blue Dart Express",a:["bluedart","bluedartexpres"],ev:"add"},
+{b:"DTDC",s:"Logistics & courier",t:2,a:["dtdc","dtdcwallet","dtdcexpre"],ev:"dump"},
+{b:"Ecom Express / Shiprocket",s:"Logistics & courier",t:2,a:["ecomexpress","shiprocket","bigfoot"],ev:"add"},
+// ---- Real estate ----
+{b:"DLF",s:"Real estate & rent",t:1,i:"DLF",a:["dlf","dlfltd","dlfhomes"],ev:"add"},
+{b:"Emaar MGF",s:"Real estate & rent",t:2,a:["emaarmgf","emgfclberyl","emaar"],ev:"dump"},
+{b:"Godrej Properties",s:"Real estate & rent",t:1,i:"Godrej Properties",a:["godrejproperti","godrejprop"],ev:"add"},
+{b:"Lodha",s:"Real estate & rent",t:1,i:"Macrotech Developers",a:["lodha","macrotech"],ev:"add"},
+{b:"Rent to an individual",s:"Real estate & rent",t:2,a:["(detected behaviourally: stable P2P payee, 1st-7th, deposit at 2-3x)"],ev:"dump",note:"no merchant string - see rent detection"},
+// ---- Home & services ----
+{b:"Urban Company",s:"Paints & home improvement",t:2,a:["urbancompany","urbanclap"],ev:"add",vf:true},
+{b:"Asian Paints / Berger",s:"Paints & home improvement",t:1,i:"Asian Paints",a:["asianpaints","bergerpaints"],ev:"add"},
+{b:"Havells / Voltas / Blue Star",s:"Electronics & appliances",t:1,i:"Havells",a:["havells","voltas","bluestar","crompton"],ev:"add"},
+// ---- Education ----
+{b:"Byju's / Unacademy / PW",s:"Education & edtech",t:2,a:["byju","thinkandlearn","unacademy","sorting hat","physicswallah"],ev:"add"},
+{b:"NIIT / Aptech",s:"Education & edtech",t:1,i:"NIIT Learning",a:["niit","aptech"],ev:"add"},
+// ---- Fitness, wellness, misc ----
+{b:"Cult.fit",s:"Fitness & wellness",t:3,a:["cultfit","curefit","cult.fit"],ev:"add"},
+{b:"Fittr",s:"Fitness & wellness",t:3,a:["fittr","squats"],ev:"dump"},
+{b:"Mave Health / Kaha Mind",s:"Fitness & wellness",t:3,a:["mavehealthpriv","kahamind","mave healt"],ev:"dump"},
+{b:"OpenAI / Anthropic",s:"Software & subscriptions",t:3,a:["openai","anthropic","openai  cha"],ev:"dump",note:"foreign / private"},
+{b:"Give / Ketto / Milaap",s:"Donations",t:3,a:["give144","giveindia","ketto","milaap"],ev:"dump"},
+{b:"Income tax / DTAX",s:"Government & tax",t:3,a:["dtax","directtax","incometax","tin20"],ev:"dump"},
+{b:"Municipal / Nagar Nigam",s:"Government & tax",t:3,a:["nagarnigam","municipalcorp","mcd"],ev:"dump"},
+];
+
+const $=(s,r=document)=>r.querySelector(s);
+const st={q:'',t:'',s:'',v:'t'};
+const TL={1:'a',2:'b',3:'c'}, TN={1:'TIER 1',2:'TIER 2',3:'TIER 3'};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+// coverage strip
+const n1=M.filter(m=>m.t===1).length, n2=M.filter(m=>m.t===2).length, n3=M.filter(m=>m.t===3).length;
+const aliases=M.reduce((s,m)=>s+m.a.length,0);
+$('#cov').innerHTML=[
+ [M.length,'BRANDS'],[aliases,'MATCH STRINGS'],[Object.keys(SECTORS).length,'SECTORS'],
+ [n1,'TIER 1 &middot; DIRECT'],[n2,'TIER 2 &middot; SECTOR'],[n3,'TIER 3 &middot; NO NUDGE'],
+ [M.filter(m=>m.vf).length,'NEED VERIFY'],
+].map(([v,k])=>`<div><b>${v}</b><span>${k}</span></div>`).join('');
+
+// sector select
+$('#sf').innerHTML='<option value="">All sectors</option>'+
+  Object.keys(SECTORS).sort().map(s=>`<option>${esc(s)}</option>`).join('');
+
+function rows(){
+  const q=st.q.trim().toLowerCase();
+  return M.filter(m=>
+    (!st.t||String(m.t)===st.t)&&(!st.s||m.s===st.s)&&
+    (!q||m.b.toLowerCase().includes(q)||m.s.toLowerCase().includes(q)||
+      (m.i||'').toLowerCase().includes(q)||m.a.some(a=>a.toLowerCase().includes(q))||
+      (SECTORS[m.s]||[]).some(p=>p.toLowerCase().includes(q))));
+}
+function render(){
+  const r=rows();
+  $('#cnt').textContent=`${r.length} of ${M.length} brands`;
+  $('#tb').innerHTML=r.map(m=>{
+    const px=(SECTORS[m.s]||[]);
+    return `<tr>
+      <td><span class="bn">${esc(m.b)}</span>${m.vf?' <span class="t f">VERIFY</span>':''}
+        ${m.note?`<div class="ev">${esc(m.note)}</div>`:''}</td>
+      <td style="font-size:12.5px;color:var(--ink-2)">${esc(m.s)}</td>
+      <td class="al">${m.a.map(esc).join('  ·  ')}</td>
+      <td><span class="t ${TL[m.t]}">${TN[m.t]}</span></td>
+      <td>${m.i?`<span class="iss">${esc(m.i)}</span>`:'<span style="color:var(--ink-4)">private</span>'}</td>
+      <td class="px">${m.t===1?'<span style="color:var(--ink-4)">direct match</span>'
+          :px.length?px.map(esc).join(', '):'<span style="color:var(--ink-4)">no listed player</span>'}</td>
+      <td><span class="ev ${m.ev==='dump'?'y':''}">${m.ev}</span></td>
+    </tr>`;}).join('')||
+    '<tr><td colspan="7" style="padding:24px;text-align:center;color:var(--ink-3)">No brands match.</td></tr>';
+  $('#jsonbox').textContent=JSON.stringify(
+    r.map(m=>({brand:m.b,sector:m.s,tier:m.t,issuer:m.i||null,
+      sector_proxies:m.t===1?[]:(SECTORS[m.s]||[]),match:m.a,
+      source:m.ev,verify:!!m.vf,note:m.note||null})),null,1);
+}
+$('#q').oninput=e=>{st.q=e.target.value;render();};
+$('#sf').onchange=e=>{st.s=e.target.value;render();};
+document.querySelectorAll('#tf button').forEach(b=>b.onclick=()=>{
+  st.t=b.dataset.t;
+  document.querySelectorAll('#tf button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
+  render();});
+document.querySelectorAll('#vw button').forEach(b=>b.onclick=()=>{
+  st.v=b.dataset.v;
+  document.querySelectorAll('#vw button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
+  $('#jsonbox').classList.toggle('on',st.v==='j');
+  $('#tablebox').classList.toggle('off',st.v==='j');});
+
+$('#sec').innerHTML=Object.entries(SECTORS).map(([s,p])=>{
+  const brands=M.filter(m=>m.s===s);
+  const lbl=brands.length?`${brands.length} brand${brands.length===1?'':'s'}`
+    :'category spend only &middot; no named brand';
+  return `<div class="card"><span class="n">${lbl}</span>
+    <h3>${esc(s)}</h3>
+    <p>${p.length?`<b>${p.length}</b> listed player${p.length===1?'':'s'}`
+        :'<span style="color:var(--t3)">No listed player &mdash; insight only, no nudge.</span>'}</p>
+    ${p.length?`<div class="px">${p.map(esc).join(' · ')}</div>`:''}</div>`;}).join('');
+
+$('#theme').onclick=function(){
+  const r=document.documentElement;
+  const dark=r.getAttribute('data-theme')==='dark'||
+    (!r.getAttribute('data-theme')&&matchMedia('(prefers-color-scheme: dark)').matches);
+  r.setAttribute('data-theme',dark?'light':'dark');};
+render();
+</script>
+</body>
+</html>

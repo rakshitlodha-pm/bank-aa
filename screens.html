@@ -1,0 +1,1005 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Insights Screens by Case</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --page:#e9e7e3; --edge:#d3d0ca; --ink:#191714; --ink2:#5f5a53; --ink3:#8d877e;
+  --ui:'Inter',system-ui,-apple-system,sans-serif;
+  --num:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font-family:var(--ui);font-size:15px;
+  line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:70px}
+h1,h2,h3,h4{margin:0;letter-spacing:-.02em}
+p{margin:0}
+.wrap{max-width:1600px;margin:0 auto;padding:0 30px}
+.mast{padding:44px 0 22px;border-bottom:1px solid var(--edge)}
+.eyebrow{font-family:var(--num);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3)}
+.mast h1{font-size:clamp(30px,4vw,46px);line-height:1.04;letter-spacing:-.033em;margin-top:12px;font-weight:600;max-width:22ch}
+.mast p{font-size:16.5px;color:var(--ink2);max-width:66ch;margin-top:14px;line-height:1.6}
+.mast p b{color:var(--ink);font-weight:500}
+
+.bar{position:sticky;top:0;z-index:40;background:color-mix(in oklab,var(--page) 94%,transparent);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--edge);padding:11px 0}
+.bar .in{display:flex;flex-wrap:wrap;gap:7px;align-items:center;max-width:1600px;margin:0 auto;padding:0 30px}
+.tg{font:inherit;font-size:12.5px;font-weight:500;padding:6px 13px;border-radius:999px;cursor:pointer;
+  border:1px solid var(--edge);background:#f5f4f1;color:var(--ink2)}
+.tg[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#f5f4f1}
+.tg:focus-visible{outline:2px solid #409dff;outline-offset:2px}
+
+.deck{display:flex;gap:26px;overflow-x:auto;padding:34px 30px 20px;scroll-snap-type:x proximity;
+  align-items:flex-start}
+.deck::-webkit-scrollbar{height:10px}
+.deck::-webkit-scrollbar-thumb{background:#c6c2ba;border-radius:5px}
+.scn{flex:0 0 auto;scroll-snap-align:start;width:376px}
+.scn[hidden]{display:none!important}
+.hd{margin-bottom:13px}
+.hd .r{display:flex;align-items:baseline;gap:8px}
+.hd .id{font-family:var(--num);font-size:11px;font-weight:500;color:#fff;background:var(--ink);
+  border-radius:3px;padding:2px 6px}
+.hd .id.fx{background:#8d877e}
+.hd h4{font-size:15px;font-weight:600}
+.hd .s{font-family:var(--num);font-size:11px;color:var(--ink3);margin-top:6px;line-height:1.45}
+
+/* ============ PHONE ============ */
+.pf{width:376px;background:#101010;border-radius:26px;overflow:hidden;font-family:var(--ui);
+  color:#fff;font-size:14px;line-height:1.42;box-shadow:0 1px 2px rgba(25,23,20,.16),0 20px 46px -20px rgba(25,23,20,.45)}
+.pf *{box-sizing:border-box}
+.sb{display:flex;justify-content:space-between;align-items:center;padding:12px 20px 2px;font-size:13.5px;font-weight:600}
+.sb i{font-style:normal;letter-spacing:1.5px;font-size:11px;color:#ebecee}
+.nb{display:flex;align-items:center;gap:13px;padding:14px 16px 10px}
+.nb .bk{font-size:20px;line-height:1;margin-top:-3px}
+.nb b{font-size:17px;font-weight:600;letter-spacing:-.02em}
+.nb .sp{flex:1}
+.nb .ic{width:30px;height:30px;border-radius:200px;box-shadow:inset 0 0 0 1px #3a3a3a;
+  display:grid;place-items:center;font-size:12px;color:#c9cacb}
+.tabs{display:flex;gap:2px;background:#1c1c1c;border-radius:200px;margin:2px 16px 0;padding:4px}
+.tab{flex:1;text-align:center;padding:9px 4px;font-size:13px;font-weight:500;color:#7d7d7d;border-radius:200px}
+.tab.on{color:#fff;font-weight:600;box-shadow:inset 0 0 0 1px #b9b9b9}
+.scr{padding:0 0 4px}
+.hi{padding:20px 16px 0;font-size:12px;color:#7d7d7d;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+
+/* balance */
+.bal{margin:14px 16px 0;border-radius:18px;padding:17px;
+  background:radial-gradient(120% 120% at 8% 0%,#1b2620 0%,#1c1c1c 52%,#22201c 100%)}
+.bal .lb{font-size:14px;color:#dcdcdc}
+.bal .v{font-size:31px;font-weight:500;letter-spacing:-.032em;margin-top:5px;font-variant-numeric:tabular-nums}
+.accs{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}
+.ac{font-family:var(--num);font-size:11px;color:#9a9a9a;background:#262626;border-radius:200px;padding:4px 9px}
+.addb{display:inline-block;margin-top:13px;font-size:13.5px;font-weight:600;color:#409dff;
+  background:#18242f;border-radius:200px;padding:9px 15px}
+
+/* story rail */
+.rail{display:flex;gap:13px;padding:19px 16px 2px;overflow-x:auto;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.si{flex:0 0 auto;width:64px;text-align:center}
+.ring{width:64px;height:64px;border-radius:200px;padding:2.5px;
+  background:conic-gradient(from 205deg,#20f572,#00c3d0,#409dff,#cdff82,#20f572)}
+.ring.seen{background:#333}
+.ring.fb{background:conic-gradient(from 205deg,#3d3d3d,#8b8c8c,#3d3d3d)}
+.ring u{display:grid;place-items:center;width:100%;height:100%;border-radius:200px;background:#101010;
+  text-decoration:none}
+.ring u em{width:50px;height:50px;border-radius:200px;display:grid;place-items:center;font-style:normal;
+  font-size:16px;font-weight:700;color:#101010;letter-spacing:-.03em}
+.si p{font-size:10.5px;color:#dcdcdc;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.si.seen p{color:#7d7d7d}
+
+/* chart */
+.ch{margin:20px 16px 0}
+.ch .t{display:flex;justify-content:space-between;align-items:center}
+.ch h3{font-size:17px;font-weight:600;letter-spacing:-.02em}
+.pill{font-size:12.5px;font-weight:500;color:#dcdcdc;box-shadow:inset 0 0 0 1px #3a3a3a;
+  border-radius:200px;padding:6px 12px;white-space:nowrap}
+.plot{position:relative;height:174px;margin-top:26px}
+.ax{position:absolute;left:0;right:0;top:118px;border-top:1px solid #3a3a3a}
+.bars{position:absolute;left:0;right:0;top:0;height:118px;display:grid;grid-template-columns:repeat(4,1fr);
+  gap:14px;align-items:end}
+.b{position:relative;border-radius:6px 6px 0 0;
+  background-image:repeating-linear-gradient(125deg,rgba(255,255,255,.12) 0 2px,transparent 2px 6px)}
+.b u{position:absolute;left:50%;transform:translateX(-50%);top:-19px;font-size:11px;font-weight:500;
+  text-decoration:none;white-space:nowrap;font-variant-numeric:tabular-nums}
+.b.i{background-color:#20f572}.b.i u{color:#20f572}
+.b.v{background-color:#409dff}.b.v u{color:#409dff}
+.b.e{background-color:#ff4e3e}.b.e u{color:#ff4e3e}
+.b.s{background-color:#ff9d45}.b.s u{color:#ff9d45}
+.nrow{position:absolute;left:0;right:0;top:119px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.nb2{grid-column:4;border-radius:0 0 6px 6px;background-color:#ff9d45;position:relative}
+.nb2 u{position:absolute;left:50%;transform:translateX(-50%);top:100%;margin-top:5px;font-size:11px;
+  font-weight:500;color:#ff9d45;text-decoration:none;white-space:nowrap;font-variant-numeric:tabular-nums}
+.xax{position:absolute;left:0;right:0;top:150px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.xax span{font-size:11px;color:#7d7d7d;text-align:center}
+.ccap{font-size:12.5px;color:#8b8c8c;line-height:1.5;margin:16px 16px 0}
+.ccap b{color:#dcdcdc;font-weight:600}
+
+/* cards */
+.card{margin:14px 16px 0;background:#1c1c1c;border-radius:16px;padding:16px}
+.card.ok{background:#17281d}.card.warn{background:#2b2318}.card.bad{background:#2a1d1b}
+.card.pri{background:#18242f}.card.gh{background:transparent;box-shadow:inset 0 0 0 1px #262626}
+.row{display:flex;align-items:center;gap:11px}
+.row .sp{flex:1;min-width:0}
+.mk{width:32px;height:32px;border-radius:200px;flex:0 0 auto;display:grid;place-items:center;
+  font-size:14px;font-weight:700;color:#101010}
+.mk.g{background:#20f572}.mk.o{background:#ff9d45}.mk.r{background:#ff4e3e;color:#fff}
+.mk.b{background:#409dff;color:#fff}.mk.d{background:#333;color:#cfcfcf}
+.t4{font-size:15.5px;font-weight:600;letter-spacing:-.015em;line-height:1.32}
+.mid{font-size:25px;font-weight:500;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.bd{font-size:13.5px;color:#e4e4e4;line-height:1.5}
+.st{font-size:12.5px;color:#8b8c8c;line-height:1.48}
+.k{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:#8b8c8c;font-weight:600}
+.pos{color:#20f572}.neg{color:#ff4e3e}.nt{color:#ff9d45}.pm{color:#409dff}.dm{color:#8b8c8c}
+.hr{height:1px;background:#282828;margin:14px 0}
+.cta{display:block;text-align:center;background:linear-gradient(100deg,#409dff,#63b0ff);color:#fff;
+  font-size:15px;font-weight:600;border-radius:200px;padding:13px;margin-top:14px}
+.b2{display:block;text-align:center;background:#18242f;color:#409dff;font-size:13.5px;font-weight:600;
+  border-radius:200px;padding:11px;margin-top:11px}
+.b2.gh{background:transparent;box-shadow:inset 0 0 0 1px #383838;color:#dcdcdc}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:11px}
+.pair .b2{margin-top:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
+.chip{font-size:12px;font-weight:500;color:#c9cacb;box-shadow:inset 0 0 0 1px #383838;
+  border-radius:200px;padding:5px 11px;white-space:nowrap}
+
+/* meters */
+.mt{position:relative;height:8px;border-radius:4px;background:#282828;margin-top:13px;overflow:hidden}
+.mt i{position:absolute;left:0;top:0;bottom:0;border-radius:4px}
+.mt i.g{background:linear-gradient(90deg,#159a52,#20f572)}
+.mt i.o{background:linear-gradient(90deg,#8a5a1f,#ff9d45)}
+.mt i.r{background:linear-gradient(90deg,#8a2c22,#ff4e3e)}
+.mt i.b{background:linear-gradient(90deg,#1f5590,#409dff)}
+.ml{display:flex;justify-content:space-between;font-size:11.5px;color:#8b8c8c;margin-top:8px;
+  font-variant-numeric:tabular-nums}
+.ovr{position:relative;height:8px;border-radius:4px;background:#282828;margin-top:13px}
+.ovr i{position:absolute;left:0;top:0;bottom:0;border-radius:4px;background:linear-gradient(90deg,#8a2c22,#ff4e3e)}
+.ovr b{position:absolute;top:-4px;bottom:-4px;width:2px;background:#e4e4e4;border-radius:2px}
+.ovr b::after{content:attr(data-l);position:absolute;left:50%;transform:translateX(-50%);top:-16px;
+  font-size:9.5px;font-weight:600;color:#e4e4e4;white-space:nowrap;font-variant-numeric:tabular-nums}
+.split{display:flex;gap:2px;height:13px;border-radius:7px;overflow:hidden;margin-top:13px}
+.key{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px}
+.key span{display:flex;align-items:center;gap:6px;font-size:11.5px;color:#8b8c8c;font-variant-numeric:tabular-nums}
+.key em{width:9px;height:9px;border-radius:3px;font-style:normal}
+
+/* category rows */
+.crow{padding:11px 0;border-bottom:1px solid #262626}
+.crow:last-child{border-bottom:0}
+.crow .t{display:flex;justify-content:space-between;align-items:baseline;gap:9px}
+.crow .n{font-size:14.5px;font-weight:500}
+.crow .a{font-size:14.5px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.trk{position:relative;height:6px;border-radius:3px;margin-top:8px;background:#242424;overflow:hidden}
+.trk i{position:absolute;left:0;top:0;bottom:0;border-radius:3px}
+.pc{font-size:11.5px;color:#7d7d7d;margin-top:6px;font-variant-numeric:tabular-nums}
+
+/* spark */
+.spk{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;align-items:end;height:52px;margin-top:14px}
+.spk i{border-radius:2px 2px 0 0;background:#409dff;min-height:2px}
+.spk i.br{background:#ff4e3e}.spk i.lo{background:#ff9d45}.spk i.gd{background:#20f572}
+.spkx{display:flex;justify-content:space-between;font-family:var(--num);font-size:10px;color:#5c5c5c;margin-top:6px}
+
+/* list rows */
+.lr{display:flex;align-items:center;gap:11px;padding:10px 0;border-bottom:1px solid #262626}
+.lr:last-child{border-bottom:0}
+.lr .sp{flex:1;min-width:0}
+.lr .nm{font-size:14px;font-weight:500}
+.lr .sb2{font-size:11.5px;color:#8b8c8c;margin-top:2px}
+.lr .vl{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* badges */
+.bt{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 16px 0}
+.btl{background:#1c1c1c;border-radius:16px;padding:14px}
+.btl.lk{background:transparent;box-shadow:inset 0 0 0 1px #303030}
+.med{width:32px;height:32px;border-radius:200px;display:grid;place-items:center;font-size:11.5px;
+  font-weight:700;font-variant-numeric:tabular-nums;background:#17281d;color:#20f572;
+  box-shadow:inset 0 0 0 1.5px #20f572}
+.med.nc{background:#18242f;color:#409dff;box-shadow:inset 0 0 0 1.5px #409dff}
+.med.lk{background:transparent;color:#8b8c8c;box-shadow:inset 0 0 0 1.5px #3a3a3a}
+.btl h5{font-size:13px;font-weight:600;margin:10px 0 0;letter-spacing:-.01em}
+.btl p{font-size:11.5px;color:#8b8c8c;margin-top:4px;line-height:1.4}
+.hib{height:22px}
+.hbar{width:130px;height:5px;border-radius:3px;background:#3a3a3a;margin:14px auto 12px}
+
+footer{border-top:1px solid var(--edge);margin-top:40px;padding-top:24px}
+.src{font-size:13px;color:var(--ink3);max-width:86ch;line-height:1.6;margin-top:8px}
+.src b{color:var(--ink2)}
+</style>
+</head>
+<body>
+
+<header class="mast wrap">
+  <div class="eyebrow">Paytm Money · Insights tab</div>
+  <h1>Eight complete screens, one per case</h1>
+  <p>The whole tab rendered top to bottom for eight different data situations. Same engine, same rules, same order of sections — the page is only ever <b>whatever survives the thresholds</b>. Screens marked <b>Real</b> come from the reference dump; <b>Fixture</b> screens use invented figures to reach a situation this user never hits. Scroll sideways.</p>
+</header>
+
+<div class="bar">
+  <div class="in">
+    <button class="tg" aria-pressed="true" data-f="all">All 8</button>
+    <button class="tg" aria-pressed="false" data-f="real">Real dump</button>
+    <button class="tg" aria-pressed="false" data-f="fx">Fixtures</button>
+  </div>
+</div>
+
+<div class="deck" id="deck">
+
+<!-- ============================================================
+     S1 · REAL · August 2026 — the reference user
+     ============================================================ -->
+<div class="scn" data-k="real">
+  <div class="hd">
+    <div class="r"><span class="id">S1</span><h4>August 2026 · the reference user</h4></div>
+    <p class="s">Real · 3 nudges fire: hot month, mandate stepped down, fund covered with surplus</p>
+  </div>
+  <div class="pf">
+    <div class="sb"><span>9:41</span><i>▮▮▮ ⌾ ▰</i></div>
+    <div class="nb"><span class="bk">‹</span><b>Insights</b><span class="sp"></span><span class="ic">⟳</span></div>
+    <div class="tabs"><span class="tab on">Insights</span><span class="tab">Transactions</span><span class="tab">My accounts</span></div>
+    <div class="scr">
+
+      <div class="bal">
+        <div class="lb">Your total balance</div>
+        <div class="v">₹13,55,326</div>
+        <div class="accs"><span class="ac">ICICI ••0906</span><span class="ac">Axis ••5062</span><span class="ac">Federal ••0336</span></div>
+        <span class="addb">+ Add account</span>
+      </div>
+
+      <div class="rail">
+        <div class="si"><div class="ring"><u><em style="background:#cdff82">B</em></u></div><p>Blinkit</p></div>
+        <div class="si"><div class="ring"><u><em style="background:#91ffbb">MMT</em></u></div><p>Travel</p></div>
+        <div class="si"><div class="ring"><u><em style="background:#3cd3fe">SBI</em></u></div><p>Your EMI</p></div>
+        <div class="si"><div class="ring fb"><u><em style="background:#3d3d3d;color:#dcdcdc">74</em></u></div><p>Astrotalk</p></div>
+        <div class="si seen"><div class="ring seen"><u><em style="background:#3d3d3d;color:#dcdcdc">₹</em></u></div><p>Your year</p></div>
+      </div>
+
+      <div class="ch">
+        <div class="t"><h3>Total cashflow</h3><span class="pill">Aug 2026 ⌄</span></div>
+        <div class="plot">
+          <div class="bars">
+            <div class="b i" style="height:118px"><u>₹4,17,358</u></div>
+            <div class="b v" style="height:41px"><u>₹1,45,335</u></div>
+            <div class="b e" style="height:88px"><u>₹3,12,581</u></div>
+            <div></div>
+          </div>
+          <div class="ax"></div>
+          <div class="nrow"><div class="nb2" style="height:11px"><u>−₹40,558</u></div></div>
+          <div class="xax"><span>In</span><span>Invested</span><span>Spent</span><span>Left over</span></div>
+        </div>
+        <p class="ccap">Your card bill and your mandate both cleared on the 1st; salary landed on the 31st. <b>Left over is genuinely negative</b> for August.</p>
+      </div>
+
+      <div class="hi">Your expenses</div>
+      <div class="card">
+        <div class="mid">₹3,12,581</div>
+        <div class="st" style="margin-top:5px">1.5× your usual month of ₹2,06,592</div>
+        <div class="hr"></div>
+        <div class="crow"><div class="t"><span class="n">Credit card bills</span><span class="a nt">₹1,26,820</span></div>
+          <div class="trk"><i style="width:100%;background:linear-gradient(90deg,#5a3a12,#ff9d45)"></i></div><div class="pc">40.6%</div></div>
+        <div class="crow"><div class="t"><span class="n">Rent</span><span class="a" style="color:#00c3d0">₹40,006</span></div>
+          <div class="trk"><i style="width:31.5%;background:linear-gradient(90deg,#0d3d42,#00c3d0)"></i></div><div class="pc">12.8%</div></div>
+        <div class="crow"><div class="t"><span class="n">Health &amp; pharmacy</span><span class="a" style="color:#f3a9b4">₹38,293</span></div>
+          <div class="trk"><i style="width:30.2%;background:linear-gradient(90deg,#4a2226,#f3a9b4)"></i></div><div class="pc">12.2%</div></div>
+        <div class="crow"><div class="t"><span class="n">People &amp; transfers</span><span class="a" style="color:#91ffbb">₹35,650</span></div>
+          <div class="trk"><i style="width:28.1%;background:linear-gradient(90deg,#153f27,#91ffbb)"></i></div><div class="pc">11.4% · 27 payees</div></div>
+        <div class="crow"><div class="t"><span class="n">Travel</span><span class="a pos">₹20,998</span></div>
+          <div class="trk"><i style="width:16.6%;background:linear-gradient(90deg,#153f27,#20f572)"></i></div><div class="pc">6.7%</div></div>
+        <div class="b2">View all 15 categories</div>
+      </div>
+
+      <div class="hi">What we noticed</div>
+
+      <div class="card bad">
+        <div class="row"><span class="mk r">↑</span><div class="sp"><div class="t4">August cost 1.5× your usual month</div></div></div>
+        <div class="ovr"><i style="width:100%"></i><b style="left:66%" data-l="usual ₹2,06,592"></b></div>
+        <div class="ml"><span>₹3,12,581 spent</span><span class="neg">₹1,05,989 above</span></div>
+        <div class="hr"></div>
+        <div class="bd">Two card statements landed in the same month — <b>₹1,05,164</b> on the 1st and <b>₹21,656</b> on the 31st. That is a billing cycle, not a change in how you spend.</div>
+        <div class="b2">See what made up the month</div>
+      </div>
+
+      <div class="card warn">
+        <div class="row"><span class="mk o">↓</span><div class="sp"><div class="t4">You are investing ₹60,000 a month less than you were</div></div></div>
+        <div class="spk">
+          <i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i>
+          <i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:93%"></i>
+          <i class="br" style="height:2%"></i><i class="br" style="height:10%"></i>
+          <i class="lo" style="height:71%"></i><i class="lo" style="height:71%"></i>
+        </div>
+        <div class="spkx"><span>Sep 2025</span><span>Aug 2026</span></div>
+        <div class="hr"></div>
+        <div class="bd">It ran at <b>₹2,05,000</b> until April, stopped for two months, and came back at <b>₹1,45,000</b>. Against the old rate that is <b>₹5,09,899</b> not invested.</div>
+        <div class="cta">Take it back to ₹2,05,000</div>
+        <div class="b2 gh">₹1,45,000 is right for now</div>
+      </div>
+
+      <div class="card ok">
+        <div class="row"><span class="mk g">✓</span><div class="sp"><div class="t4">Your emergency fund is done</div>
+          <div class="st" style="margin-top:3px">6.6 months of cover, across three accounts</div></div></div>
+        <div class="mt"><i class="g" style="width:100%"></i></div>
+        <div class="ml"><span>₹13,55,326 held</span><span class="pos">₹12,39,554 needed</span></div>
+        <div class="hr"></div>
+        <div class="bd">Most people never get here. The <b>₹1,15,772</b> above your cover earns about <b>₹3,400 a year</b> in savings interest.</div>
+        <div class="cta">Move ₹1,15,772 to arbitrage</div>
+      </div>
+
+      <div class="hi">You vs Paytm Money</div>
+      <div class="bt">
+        <div class="btl"><div class="med">3%</div><h5>Top 3% of investors</h5><p>₹1,45,000 a month. Median in your band is ₹18,400.</p></div>
+        <div class="btl"><div class="med nc">10</div><h5>10 of 12 months on time</h5><p>Your own streak. Nobody else is in this one.</p></div>
+      </div>
+      <div class="bt" style="grid-template-columns:1fr">
+        <div class="btl lk"><div class="med lk">◔</div><h5>Where your spending stands</h5><p>Unlocks at 5,000 connected accounts. 1,340 so far.</p></div>
+      </div>
+      <div class="hib"></div><div class="hbar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     S2 · REAL · 1–2 September — partial period, no merchants
+     ============================================================ -->
+<div class="scn" data-k="real">
+  <div class="hd">
+    <div class="r"><span class="id">S2</span><h4>1–2 September · two days in</h4></div>
+    <p class="s">Real · 9 transactions, 2 categories, 0 merchants matched. Verdicts withheld</p>
+  </div>
+  <div class="pf">
+    <div class="sb"><span>9:41</span><i>▮▮▮ ⌾ ▰</i></div>
+    <div class="nb"><span class="bk">‹</span><b>Insights</b><span class="sp"></span><span class="ic">⟳</span></div>
+    <div class="tabs"><span class="tab on">Insights</span><span class="tab">Transactions</span><span class="tab">My accounts</span></div>
+    <div class="scr">
+
+      <div class="bal">
+        <div class="lb">Your total balance</div>
+        <div class="v">₹13,55,326</div>
+        <div class="accs"><span class="ac">ICICI ••0906</span><span class="ac">Axis ••5062</span><span class="ac">Federal ••0336</span></div>
+        <span class="addb">+ Add account</span>
+      </div>
+
+      <div class="rail">
+        <div class="si"><div class="ring"><u><em style="background:#00c3d0">R</em></u></div><p>Your rent</p></div>
+        <div class="si"><div class="ring"><u><em style="background:#3cd3fe">SBI</em></u></div><p>Due in 8d</p></div>
+        <div class="si"><div class="ring fb"><u><em style="background:#cdff82">B</em></u></div><p>Blinkit ’26</p></div>
+        <div class="si"><div class="ring fb"><u><em style="background:#3d3d3d;color:#dcdcdc">₹</em></u></div><p>Your year</p></div>
+      </div>
+
+      <div class="ch">
+        <div class="t"><h3>Total cashflow</h3><span class="pill">1–2 Sep ⌄</span></div>
+        <div class="plot" style="height:158px">
+          <div class="bars">
+            <div class="b i" style="height:3px"><u>₹0</u></div>
+            <div class="b v" style="height:107px"><u>₹1,45,000</u></div>
+            <div class="b e" style="height:38px"><u>₹50,855</u></div>
+            <div></div>
+          </div>
+          <div class="ax"></div>
+          <div class="xax"><span>In</span><span>Invested</span><span>Spent</span><span>Left over</span></div>
+        </div>
+        <p class="ccap">Only <b>2 of 30 days</b> are in, and salary lands after the 24th — so <b>Left over is held</b> until this month has its income.</p>
+      </div>
+
+      <div class="hi">Your expenses</div>
+      <div class="card">
+        <div class="mid">₹50,855</div>
+        <div class="st" style="margin-top:5px">Same two days of your usual month: ₹6,592</div>
+        <div class="hr"></div>
+        <div class="crow"><div class="t"><span class="n">Rent</span><span class="a" style="color:#00c3d0">₹40,000</span></div>
+          <div class="trk"><i style="width:78.7%;background:linear-gradient(90deg,#0d3d42,#00c3d0)"></i></div><div class="pc">78.7% · third month running</div></div>
+        <div class="crow"><div class="t"><span class="n">People &amp; transfers</span><span class="a" style="color:#91ffbb">₹10,855</span></div>
+          <div class="trk"><i style="width:21.3%;background:linear-gradient(90deg,#153f27,#91ffbb)"></i></div><div class="pc">21.3%</div></div>
+        <div class="hr"></div>
+        <div class="st">No brand matched yet this month — zero of nine transactions carried a merchant we recognise.</div>
+      </div>
+
+      <div class="hi">What we noticed</div>
+
+      <div class="card">
+        <div class="row"><span class="mk d">◷</span><div class="sp"><div class="t4">Too early to say how the month is going</div></div></div>
+        <div class="split"><i style="flex:0 0 78.7%;background:#409dff"></i><i style="flex:1;background:#00c3d0"></i></div>
+        <div class="key"><span><em style="background:#409dff"></em>Committed ₹40,000</span><span><em style="background:#00c3d0"></em>Everything else ₹10,855</span></div>
+        <div class="hr"></div>
+        <div class="st">Four-fifths of this is rent, which leaves on the 1st every month. We will tell you how you are tracking after the first week.</div>
+      </div>
+
+      <div class="card ok">
+        <div class="row"><span class="mk g">✓</span><div class="sp"><div class="t4">Your emergency fund is done</div>
+          <div class="st" style="margin-top:3px">Unchanged by the period you pick</div></div></div>
+        <div class="mt"><i class="g" style="width:100%"></i></div>
+        <div class="ml"><span>₹13,55,326 held</span><span class="pos">6.6 months</span></div>
+        <div class="cta">Move ₹1,15,772 to arbitrage</div>
+      </div>
+
+      <div class="card">
+        <div class="k">Over the last 12 months</div>
+        <div class="lr" style="border-bottom:0;padding-top:11px">
+          <span class="mk" style="background:#cdff82">B</span>
+          <div class="sp"><div class="nm">Blinkit</div><div class="sb2">91 orders · parent Eternal is listed</div></div>
+          <div class="vl">₹1,21,600</div>
+        </div>
+        <div class="b2">See the story</div>
+      </div>
+
+      <div class="hi">You vs Paytm Money</div>
+      <div class="bt">
+        <div class="btl"><div class="med">3%</div><h5>Top 3% of investors</h5><p>Unaffected by the period you pick.</p></div>
+        <div class="btl"><div class="med nc">10</div><h5>Streak restored</h5><p>₹1,45,000 cleared on the 1st again.</p></div>
+      </div>
+      <div class="hib"></div><div class="hbar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     S3 · FIXTURE · thin saver, nothing set aside, never invested
+     ============================================================ -->
+<div class="scn" data-k="fx">
+  <div class="hd">
+    <div class="r"><span class="id fx">S3</span><h4>Nothing set aside · never invested</h4></div>
+    <p class="s">Fixture · balance ₹18,400 · income ₹68,000 · 0.4 months of cover · no merchants matched</p>
+  </div>
+  <div class="pf">
+    <div class="sb"><span>9:41</span><i>▮▮▮ ⌾ ▰</i></div>
+    <div class="nb"><span class="bk">‹</span><b>Insights</b><span class="sp"></span><span class="ic">⟳</span></div>
+    <div class="tabs"><span class="tab on">Insights</span><span class="tab">Transactions</span><span class="tab">My accounts</span></div>
+    <div class="scr">
+
+      <div class="bal">
+        <div class="lb">Your total balance</div>
+        <div class="v">₹18,400</div>
+        <div class="accs"><span class="ac">HDFC ••4412</span></div>
+        <span class="addb">+ Add account</span>
+      </div>
+
+      <div class="rail">
+        <div class="si"><div class="ring fb"><u><em style="background:#3d3d3d;color:#dcdcdc">◔</em></u></div><p>Your year</p></div>
+        <div class="si"><div class="ring fb"><u><em style="background:#3d3d3d;color:#dcdcdc">₹</em></u></div><p>Where it goes</p></div>
+      </div>
+
+      <div class="ch">
+        <div class="t"><h3>Total cashflow</h3><span class="pill">Aug 2026 ⌄</span></div>
+        <div class="plot">
+          <div class="bars">
+            <div class="b i" style="height:118px"><u>₹68,000</u></div>
+            <div class="b v" style="height:3px"><u>₹0</u></div>
+            <div class="b e" style="height:72px"><u>₹41,300</u></div>
+            <div class="b s" style="height:46px"><u>₹26,700</u></div>
+          </div>
+          <div class="ax"></div>
+          <div class="xax"><span>In</span><span>Invested</span><span>Spent</span><span>Left over</span></div>
+        </div>
+        <p class="ccap"><b>₹26,700 stayed put</b> this month. Over a year that pattern has built ₹18,400 — the rest went out again.</p>
+      </div>
+
+      <div class="hi">Your expenses</div>
+      <div class="card">
+        <div class="mid">₹41,300</div>
+        <div class="st" style="margin-top:5px">About your usual month of ₹41,000</div>
+        <div class="hr"></div>
+        <div class="crow"><div class="t"><span class="n">Rent</span><span class="a" style="color:#00c3d0">₹15,000</span></div>
+          <div class="trk"><i style="width:100%;background:linear-gradient(90deg,#0d3d42,#00c3d0)"></i></div><div class="pc">36.3%</div></div>
+        <div class="crow"><div class="t"><span class="n">Groceries &amp; quick commerce</span><span class="a pos">₹8,200</span></div>
+          <div class="trk"><i style="width:54.7%;background:linear-gradient(90deg,#153f27,#20f572)"></i></div><div class="pc">19.9%</div></div>
+        <div class="crow"><div class="t"><span class="n">People &amp; transfers</span><span class="a" style="color:#91ffbb">₹6,400</span></div>
+          <div class="trk"><i style="width:42.7%;background:linear-gradient(90deg,#153f27,#91ffbb)"></i></div><div class="pc">15.5%</div></div>
+        <div class="crow"><div class="t"><span class="n">Food &amp; dining</span><span class="a" style="color:#f3a9b4">₹5,100</span></div>
+          <div class="trk"><i style="width:34%;background:linear-gradient(90deg,#4a2226,#f3a9b4)"></i></div><div class="pc">12.3%</div></div>
+        <div class="b2">View all 7 categories</div>
+      </div>
+
+      <div class="hi">What we noticed</div>
+
+      <div class="card warn">
+        <div class="row"><span class="mk o">!</span><div class="sp"><div class="t4">You have about twelve days of cover</div></div></div>
+        <div class="mt"><i class="o" style="width:2.2%"></i></div>
+        <div class="ml"><span>₹18,400 set aside</span><span>₹2,47,800 is six months</span></div>
+        <div class="hr"></div>
+        <div class="bd">A usual month costs you <b>₹41,300</b>. Six of those is the amount that stops a lost job becoming debt.</div>
+        <div class="st" style="margin-top:9px">Starting matters more than the target. <span style="color:#e4e4e4">₹1,000 a month</span> is a beginning you will not feel.</div>
+        <div class="cta">Start with ₹1,000 a month</div>
+        <div class="b2 gh">Pick my own amount</div>
+      </div>
+
+      <div class="card pri">
+        <div class="row"><span class="mk b">₹</span><div class="sp"><div class="t4">₹26,700 a month is sitting still</div></div></div>
+        <div class="split"><i style="flex:0 0 61%;background:#ff4e3e"></i><i style="flex:1;background:#409dff"></i></div>
+        <div class="key"><span><em style="background:#ff4e3e"></em>Spent ₹41,300</span><span><em style="background:#409dff"></em>Left over ₹26,700</span></div>
+        <div class="hr"></div>
+        <div class="bd">Over twelve months we have seen <b>no investment</b> leave your accounts.</div>
+        <div class="st" style="margin-top:9px">Not a judgement — some of it may be invested somewhere we cannot see.</div>
+        <div class="pair"><span class="b2">Start a SIP</span><span class="b2 gh">I invest elsewhere</span></div>
+      </div>
+
+      <div class="hi">You vs Paytm Money</div>
+      <div class="bt">
+        <div class="btl lk"><div class="med lk">◔</div><h5>Investing percentile</h5><p>Starts once you make a first investment.</p></div>
+        <div class="btl lk"><div class="med lk">◔</div><h5>Spending percentile</h5><p>Unlocks at 5,000 connected accounts.</p></div>
+      </div>
+      <div class="card gh">
+        <div class="st">Two of three sections are thin because we have four months of data and no matched brands. Both fill in on their own.</div>
+      </div>
+      <div class="hib"></div><div class="hbar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     S4 · FIXTURE · building — ₹3L against ₹10L
+     ============================================================ -->
+<div class="scn" data-k="fx">
+  <div class="hd">
+    <div class="r"><span class="id fx">S4</span><h4>₹3L against a ₹10L requirement</h4></div>
+    <p class="s">Fixture · your example · median month ₹1,66,667 · 1.8 months of cover · investing ₹12,000</p>
+  </div>
+  <div class="pf">
+    <div class="sb"><span>9:41</span><i>▮▮▮ ⌾ ▰</i></div>
+    <div class="nb"><span class="bk">‹</span><b>Insights</b><span class="sp"></span><span class="ic">⟳</span></div>
+    <div class="tabs"><span class="tab on">Insights</span><span class="tab">Transactions</span><span class="tab">My accounts</span></div>
+    <div class="scr">
+
+      <div class="bal">
+        <div class="lb">Your total balance</div>
+        <div class="v">₹3,00,000</div>
+        <div class="accs"><span class="ac">ICICI ••7781</span><span class="ac">Kotak ••2093</span></div>
+        <span class="addb">+ Add account</span>
+      </div>
+
+      <div class="rail">
+        <div class="si"><div class="ring"><u><em style="background:#cdff82">Z</em></u></div><p>Zomato</p></div>
+        <div class="si"><div class="ring"><u><em style="background:#f3a9b4">M</em></u></div><p>Myntra</p></div>
+        <div class="si"><div class="ring fb"><u><em style="background:#3d3d3d;color:#dcdcdc">◔</em></u></div><p>Your year</p></div>
+      </div>
+
+      <div class="ch">
+        <div class="t"><h3>Total cashflow</h3><span class="pill">Aug 2026 ⌄</span></div>
+        <div class="plot">
+          <div class="bars">
+            <div class="b i" style="height:118px"><u>₹2,10,000</u></div>
+            <div class="b v" style="height:7px"><u>₹12,000</u></div>
+            <div class="b e" style="height:94px"><u>₹1,66,667</u></div>
+            <div class="b s" style="height:18px"><u>₹31,333</u></div>
+          </div>
+          <div class="ax"></div>
+          <div class="xax"><span>In</span><span>Invested</span><span>Spent</span><span>Left over</span></div>
+        </div>
+        <p class="ccap">You keep about <b>₹31,000</b> a month and invest ₹12,000 of it. Both are steady.</p>
+      </div>
+
+      <div class="hi">Your expenses</div>
+      <div class="card">
+        <div class="mid">₹1,66,667</div>
+        <div class="st" style="margin-top:5px">Bang on your usual month</div>
+        <div class="hr"></div>
+        <div class="crow"><div class="t"><span class="n">Rent</span><span class="a" style="color:#00c3d0">₹52,000</span></div>
+          <div class="trk"><i style="width:100%;background:linear-gradient(90deg,#0d3d42,#00c3d0)"></i></div><div class="pc">31.2%</div></div>
+        <div class="crow"><div class="t"><span class="n">Credit card bills</span><span class="a nt">₹38,400</span></div>
+          <div class="trk"><i style="width:73.8%;background:linear-gradient(90deg,#5a3a12,#ff9d45)"></i></div><div class="pc">23.0%</div></div>
+        <div class="crow"><div class="t"><span class="n">Groceries &amp; quick commerce</span><span class="a pos">₹22,100</span></div>
+          <div class="trk"><i style="width:42.5%;background:linear-gradient(90deg,#153f27,#20f572)"></i></div><div class="pc">13.3%</div></div>
+        <div class="crow"><div class="t"><span class="n">Shopping</span><span class="a" style="color:#f3a9b4">₹18,600</span></div>
+          <div class="trk"><i style="width:35.8%;background:linear-gradient(90deg,#4a2226,#f3a9b4)"></i></div><div class="pc">11.2%</div></div>
+        <div class="b2">View all 11 categories</div>
+      </div>
+
+      <div class="hi">What we noticed</div>
+
+      <div class="card warn">
+        <div class="row"><span class="mk o">◔</span><div class="sp"><div class="t4">You are ₹7,00,000 from six months of cover</div></div></div>
+        <div class="mt"><i class="o" style="width:30%"></i></div>
+        <div class="ml"><span>₹3,00,000 of ₹10,00,000</span><span class="nt">30% · 1.8 months</span></div>
+        <div class="hr"></div>
+        <div class="bd">At <b>₹29,200 a month</b> you are covered in two years — and you already keep ₹31,333 most months.</div>
+        <div class="st" style="margin-top:9px">The first three months of cover matter far more than the last three.</div>
+        <div class="cta">Start ₹29,200 a month</div>
+        <div class="b2">See liquid funds</div>
+      </div>
+
+      <div class="card ok">
+        <div class="row"><span class="mk g">✓</span><div class="sp"><div class="t4">Nine months of investing without a miss</div>
+          <div class="st" style="margin-top:3px">₹12,000 on the 5th, every month</div></div></div>
+        <div class="spk">
+          <i style="height:12%"></i><i style="height:12%"></i><i style="height:12%"></i>
+          <i class="gd" style="height:100%"></i><i class="gd" style="height:100%"></i><i class="gd" style="height:100%"></i>
+          <i class="gd" style="height:100%"></i><i class="gd" style="height:100%"></i><i class="gd" style="height:100%"></i>
+          <i class="gd" style="height:100%"></i><i class="gd" style="height:100%"></i><i class="gd" style="height:100%"></i>
+        </div>
+        <div class="spkx"><span>Sep 2025</span><span>Aug 2026</span></div>
+        <div class="hr"></div>
+        <div class="st">Nothing to do here. We will tell you if it slips.</div>
+      </div>
+
+      <div class="hi">You vs Paytm Money</div>
+      <div class="bt">
+        <div class="btl"><div class="med">41%</div><h5>Top 41% of investors</h5><p>₹12,000 a month. Median in your band is ₹9,600.</p></div>
+        <div class="btl"><div class="med nc">9</div><h5>9 months, no miss</h5><p>Your own streak.</p></div>
+      </div>
+      <div class="hib"></div><div class="hbar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     S5 · FIXTURE · nearly covered
+     ============================================================ -->
+<div class="scn" data-k="fx">
+  <div class="hd">
+    <div class="r"><span class="id fx">S5</span><h4>One month from covered</h4></div>
+    <p class="s">Fixture · balance ₹11,50,000 of ₹12,39,554 · 5.6 months · ₹89,554 to go</p>
+  </div>
+  <div class="pf">
+    <div class="sb"><span>9:41</span><i>▮▮▮ ⌾ ▰</i></div>
+    <div class="nb"><span class="bk">‹</span><b>Insights</b><span class="sp"></span><span class="ic">⟳</span></div>
+    <div class="tabs"><span class="tab on">Insights</span><span class="tab">Transactions</span><span class="tab">My accounts</span></div>
+    <div class="scr">
+
+      <div class="bal">
+        <div class="lb">Your total balance</div>
+        <div class="v">₹11,50,000</div>
+        <div class="accs"><span class="ac">ICICI ••0906</span><span class="ac">Axis ••5062</span></div>
+        <span class="addb">+ Add account</span>
+      </div>
+
+      <div class="rail">
+        <div class="si"><div class="ring"><u><em style="background:#cdff82">B</em></u></div><p>Blinkit</p></div>
+        <div class="si"><div class="ring"><u><em style="background:#3cd3fe">SBI</em></u></div><p>Your EMI</p></div>
+        <div class="si"><div class="ring seen"><u><em style="background:#3d3d3d;color:#dcdcdc">₹</em></u></div><p>Your year</p></div>
+      </div>
+
+      <div class="ch">
+        <div class="t"><h3>Total cashflow</h3><span class="pill">Aug 2026 ⌄</span></div>
+        <div class="plot">
+          <div class="bars">
+            <div class="b i" style="height:118px"><u>₹3,90,000</u></div>
+            <div class="b v" style="height:44px"><u>₹1,45,000</u></div>
+            <div class="b e" style="height:62px"><u>₹2,06,000</u></div>
+            <div class="b s" style="height:12px"><u>₹39,000</u></div>
+          </div>
+          <div class="ax"></div>
+          <div class="xax"><span>In</span><span>Invested</span><span>Spent</span><span>Left over</span></div>
+        </div>
+        <p class="ccap">A normal month. All four numbers within their usual range.</p>
+      </div>
+
+      <div class="hi">Your expenses</div>
+      <div class="card">
+        <div class="mid">₹2,06,000</div>
+        <div class="st" style="margin-top:5px">Bang on your usual month of ₹2,06,592</div>
+        <div class="hr"></div>
+        <div class="crow"><div class="t"><span class="n">Credit card bills</span><span class="a nt">₹74,200</span></div>
+          <div class="trk"><i style="width:100%;background:linear-gradient(90deg,#5a3a12,#ff9d45)"></i></div><div class="pc">36.0%</div></div>
+        <div class="crow"><div class="t"><span class="n">Rent</span><span class="a" style="color:#00c3d0">₹40,006</span></div>
+          <div class="trk"><i style="width:53.9%;background:linear-gradient(90deg,#0d3d42,#00c3d0)"></i></div><div class="pc">19.4%</div></div>
+        <div class="crow"><div class="t"><span class="n">People &amp; transfers</span><span class="a" style="color:#91ffbb">₹31,900</span></div>
+          <div class="trk"><i style="width:43%;background:linear-gradient(90deg,#153f27,#91ffbb)"></i></div><div class="pc">15.5%</div></div>
+        <div class="b2">View all 13 categories</div>
+      </div>
+
+      <div class="hi">What we noticed</div>
+
+      <div class="card ok">
+        <div class="row"><span class="mk g">◕</span><div class="sp"><div class="t4">One more month and you are covered</div></div></div>
+        <div class="mt"><i class="g" style="width:92.8%"></i></div>
+        <div class="ml"><span>₹11,50,000 of ₹12,39,554</span><span class="pos">5.6 months</span></div>
+        <div class="hr"></div>
+        <div class="bd"><b>₹89,554</b> left. You have added ₹1,40,000 over the last three months, so at that rate this finishes in <b>three weeks</b>.</div>
+        <div class="cta">Finish it in one go</div>
+        <div class="b2 gh">Keep going monthly</div>
+      </div>
+
+      <div class="card">
+        <div class="row"><span class="mk d">↻</span><div class="sp"><div class="t4">₹41,294 went to twelve subscriptions this year</div></div></div>
+        <div class="hr"></div>
+        <div class="lr"><div class="sp"><div class="nm">Google Play</div><div class="sb2">13 charges</div></div><div class="vl">₹16,044</div></div>
+        <div class="lr"><div class="sp"><div class="nm">Netflix</div><div class="sb2">13 charges · monthly</div></div><div class="vl">₹8,437</div></div>
+        <div class="lr"><div class="sp"><div class="nm">Ten more</div><div class="sb2">Apple, LinkedIn, YouTube, ZEE5…</div></div><div class="vl">₹16,813</div></div>
+        <div class="hr"></div>
+        <div class="st">None of the twelve has a listed Indian parent, so there is nothing to buy here. A number worth seeing once a year.</div>
+      </div>
+
+      <div class="hi">You vs Paytm Money</div>
+      <div class="bt">
+        <div class="btl"><div class="med">3%</div><h5>Top 3% of investors</h5><p>₹1,45,000 a month.</p></div>
+        <div class="btl"><div class="med nc">12</div><h5>12 months, no miss</h5><p>Your own streak.</p></div>
+      </div>
+      <div class="hib"></div><div class="hbar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     S6 · FIXTURE · a lot spare
+     ============================================================ -->
+<div class="scn" data-k="fx">
+  <div class="hd">
+    <div class="r"><span class="id fx">S6</span><h4>Covered, with ₹6L spare</h4></div>
+    <p class="s">Fixture · balance ₹18,40,000 · 8.9 months · surplus 2.9× a month → long horizon</p>
+  </div>
+  <div class="pf">
+    <div class="sb"><span>9:41</span><i>▮▮▮ ⌾ ▰</i></div>
+    <div class="nb"><span class="bk">‹</span><b>Insights</b><span class="sp"></span><span class="ic">⟳</span></div>
+    <div class="tabs"><span class="tab on">Insights</span><span class="tab">Transactions</span><span class="tab">My accounts</span></div>
+    <div class="scr">
+
+      <div class="bal">
+        <div class="lb">Your total balance</div>
+        <div class="v">₹18,40,000</div>
+        <div class="accs"><span class="ac">ICICI ••0906</span><span class="ac">Axis ••5062</span><span class="ac">Federal ••0336</span></div>
+        <span class="addb">+ Add account</span>
+      </div>
+
+      <div class="rail">
+        <div class="si"><div class="ring"><u><em style="background:#cdff82">B</em></u></div><p>Blinkit</p></div>
+        <div class="si"><div class="ring"><u><em style="background:#91ffbb">MMT</em></u></div><p>Travel</p></div>
+        <div class="si"><div class="ring"><u><em style="background:#3d3d3d;color:#dcdcdc">₹</em></u></div><p>Idle cash</p></div>
+        <div class="si"><div class="ring seen"><u><em style="background:#3d3d3d;color:#dcdcdc">◔</em></u></div><p>Your year</p></div>
+      </div>
+
+      <div class="ch">
+        <div class="t"><h3>Total cashflow</h3><span class="pill">Aug 2026 ⌄</span></div>
+        <div class="plot">
+          <div class="bars">
+            <div class="b i" style="height:118px"><u>₹5,20,000</u></div>
+            <div class="b v" style="height:33px"><u>₹1,45,000</u></div>
+            <div class="b e" style="height:47px"><u>₹2,06,000</u></div>
+            <div class="b s" style="height:38px"><u>₹1,69,000</u></div>
+          </div>
+          <div class="ax"></div>
+          <div class="xax"><span>In</span><span>Invested</span><span>Spent</span><span>Left over</span></div>
+        </div>
+        <p class="ccap"><b>₹1,69,000 stayed put</b> this month, and that has been the pattern for a while.</p>
+      </div>
+
+      <div class="hi">Your expenses</div>
+      <div class="card">
+        <div class="mid">₹2,06,000</div>
+        <div class="st" style="margin-top:5px">Bang on your usual month</div>
+        <div class="hr"></div>
+        <div class="crow"><div class="t"><span class="n">Credit card bills</span><span class="a nt">₹81,300</span></div>
+          <div class="trk"><i style="width:100%;background:linear-gradient(90deg,#5a3a12,#ff9d45)"></i></div><div class="pc">39.5%</div></div>
+        <div class="crow"><div class="t"><span class="n">Rent</span><span class="a" style="color:#00c3d0">₹40,006</span></div>
+          <div class="trk"><i style="width:49.2%;background:linear-gradient(90deg,#0d3d42,#00c3d0)"></i></div><div class="pc">19.4%</div></div>
+        <div class="crow"><div class="t"><span class="n">Travel</span><span class="a pos">₹28,400</span></div>
+          <div class="trk"><i style="width:34.9%;background:linear-gradient(90deg,#153f27,#20f572)"></i></div><div class="pc">13.8%</div></div>
+        <div class="b2">View all 14 categories</div>
+      </div>
+
+      <div class="hi">What we noticed</div>
+
+      <div class="card ok">
+        <div class="row"><span class="mk g">✓</span><div class="sp"><div class="t4">You are covered nearly nine months over</div>
+          <div class="st" style="margin-top:3px">Three months more than you need on hand</div></div></div>
+        <div class="mt"><i class="g" style="width:100%"></i></div>
+        <div class="ml"><span>₹18,40,000 held</span><span class="pos">₹12,39,554 needed</span></div>
+        <div class="hr"></div>
+        <div class="bd"><b>₹6,00,446</b> is sitting past your cover, earning about <b>₹18,000 a year</b>. Money you will not touch for years does not need to be reachable this week.</div>
+        <div class="chips"><span class="chip">Index funds</span><span class="chip">ETFs</span><span class="chip">Keep ₹2L liquid</span></div>
+        <div class="cta">Put ₹6,00,446 to work</div>
+        <div class="st" style="margin-top:11px;text-align:center">Popular on Paytm Money · not a recommendation</div>
+      </div>
+
+      <div class="card">
+        <div class="row"><span class="mk d">74</span><div class="sp"><div class="t4">You paid Astrotalk 74 times this year</div>
+          <div class="st" style="margin-top:3px">₹18,526 in payments of about ₹250</div></div></div>
+        <div class="hr"></div>
+        <div class="bd">More separate payments than any other merchant you use — <b>more than Blinkit</b>, which took 98 orders but in far larger amounts.</div>
+        <div class="b2 gh">See all 74 payments</div>
+      </div>
+
+      <div class="hi">You vs Paytm Money</div>
+      <div class="bt">
+        <div class="btl"><div class="med">2%</div><h5>Top 2% of savers</h5><p>Cover plus surplus, against your income band.</p></div>
+        <div class="btl"><div class="med nc">12</div><h5>12 months on time</h5><p>Your own streak.</p></div>
+      </div>
+      <div class="hib"></div><div class="hbar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     S7 · FIXTURE · everything steady, mostly praise
+     ============================================================ -->
+<div class="scn" data-k="fx">
+  <div class="hd">
+    <div class="r"><span class="id fx">S7</span><h4>Everything steady · almost nothing to say</h4></div>
+    <p class="s">Fixture · covered exactly · investing unbroken · a cheap month. Two of three nudges carry no button</p>
+  </div>
+  <div class="pf">
+    <div class="sb"><span>9:41</span><i>▮▮▮ ⌾ ▰</i></div>
+    <div class="nb"><span class="bk">‹</span><b>Insights</b><span class="sp"></span><span class="ic">⟳</span></div>
+    <div class="tabs"><span class="tab on">Insights</span><span class="tab">Transactions</span><span class="tab">My accounts</span></div>
+    <div class="scr">
+
+      <div class="bal">
+        <div class="lb">Your total balance</div>
+        <div class="v">₹12,60,000</div>
+        <div class="accs"><span class="ac">ICICI ••0906</span><span class="ac">Axis ••5062</span></div>
+        <span class="addb">+ Add account</span>
+      </div>
+
+      <div class="rail">
+        <div class="si"><div class="ring"><u><em style="background:#cdff82">B</em></u></div><p>Blinkit</p></div>
+        <div class="si seen"><div class="ring seen"><u><em style="background:#3cd3fe">SBI</em></u></div><p>Your EMI</p></div>
+        <div class="si seen"><div class="ring seen"><u><em style="background:#3d3d3d;color:#dcdcdc">◔</em></u></div><p>Your year</p></div>
+      </div>
+
+      <div class="ch">
+        <div class="t"><h3>Total cashflow</h3><span class="pill">Mar 2026 ⌄</span></div>
+        <div class="plot">
+          <div class="bars">
+            <div class="b i" style="height:118px"><u>₹2,57,265</u></div>
+            <div class="b v" style="height:94px"><u>₹2,05,000</u></div>
+            <div class="b e" style="height:34px"><u>₹74,601</u></div>
+            <div></div>
+          </div>
+          <div class="ax"></div>
+          <div class="nrow"><div class="nb2" style="height:10px"><u>−₹22,336</u></div></div>
+          <div class="xax"><span>In</span><span>Invested</span><span>Spent</span><span>Left over</span></div>
+        </div>
+        <p class="ccap">You invested <b>80% of what came in</b> and spent ₹74,601 — your cheapest month of the year.</p>
+      </div>
+
+      <div class="hi">Your expenses</div>
+      <div class="card">
+        <div class="mid">₹74,601</div>
+        <div class="st" style="margin-top:5px">0.36× your usual month of ₹2,06,592</div>
+        <div class="hr"></div>
+        <div class="crow"><div class="t"><span class="n">Rent</span><span class="a" style="color:#00c3d0">₹40,006</span></div>
+          <div class="trk"><i style="width:100%;background:linear-gradient(90deg,#0d3d42,#00c3d0)"></i></div><div class="pc">53.6%</div></div>
+        <div class="crow"><div class="t"><span class="n">People &amp; transfers</span><span class="a" style="color:#91ffbb">₹14,200</span></div>
+          <div class="trk"><i style="width:35.5%;background:linear-gradient(90deg,#153f27,#91ffbb)"></i></div><div class="pc">19.0%</div></div>
+        <div class="crow"><div class="t"><span class="n">Loan EMI</span><span class="a" style="color:#3cd3fe">₹6,360</span></div>
+          <div class="trk"><i style="width:15.9%;background:linear-gradient(90deg,#1a3350,#3cd3fe)"></i></div><div class="pc">8.5% · SBI, 13 months</div></div>
+        <div class="b2">View all 9 categories</div>
+      </div>
+
+      <div class="hi">What we noticed</div>
+
+      <div class="card ok">
+        <div class="row"><span class="mk g">↓</span><div class="sp"><div class="t4">Your cheapest month of the year</div>
+          <div class="st" style="margin-top:3px">₹74,601 against a usual ₹2,06,592</div></div></div>
+        <div class="ovr"><i style="width:36%;background:linear-gradient(90deg,#159a52,#20f572)"></i><b style="left:100%" data-l="usual"></b></div>
+        <div class="ml"><span>₹1,31,991 below usual</span><span class="pos">0.36×</span></div>
+        <div class="hr"></div>
+        <div class="st">No card statement fell in March, which is most of the difference. Nothing to do.</div>
+      </div>
+
+      <div class="card ok">
+        <div class="row"><span class="mk g">✓</span><div class="sp"><div class="t4">Twelve months, same day, same amount</div>
+          <div class="st" style="margin-top:3px">₹2,05,000 · cleared on the 1st every time</div></div></div>
+        <div class="spk">
+          <i class="gd" style="height:100%"></i><i class="gd" style="height:100%"></i><i class="gd" style="height:100%"></i>
+          <i class="gd" style="height:100%"></i><i class="gd" style="height:100%"></i><i class="gd" style="height:100%"></i>
+          <i class="gd" style="height:100%"></i><i class="gd" style="height:100%"></i><i class="gd" style="height:100%"></i>
+          <i class="gd" style="height:100%"></i><i class="gd" style="height:100%"></i><i class="gd" style="height:100%"></i>
+        </div>
+        <div class="spkx"><span>Sep 2025</span><span>Aug 2026</span></div>
+        <div class="hr"></div>
+        <div class="st">Nothing to do here. We will tell you if it slips.</div>
+      </div>
+
+      <div class="card ok">
+        <div class="row"><span class="mk g">✓</span><div class="sp"><div class="t4">Your emergency fund is exactly covered</div>
+          <div class="st" style="margin-top:3px">6.1 months · ₹20,446 above target</div></div></div>
+        <div class="mt"><i class="g" style="width:100%"></i></div>
+        <div class="ml"><span>₹12,60,000 held</span><span class="pos">₹12,39,554 needed</span></div>
+        <div class="hr"></div>
+        <div class="st">The ₹20,446 spare is small enough to leave where it is. We will say something when it grows.</div>
+      </div>
+
+      <div class="hi">You vs Paytm Money</div>
+      <div class="bt">
+        <div class="btl"><div class="med">1%</div><h5>Top 1% of investors</h5><p>₹2,05,000 a month against a ₹18,400 median.</p></div>
+        <div class="btl"><div class="med nc">12</div><h5>12 of 12 months</h5><p>Your own streak, unbroken.</p></div>
+      </div>
+      <div class="hib"></div><div class="hbar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     S8 · FIXTURE · sensitive category dominant
+     ============================================================ -->
+<div class="scn" data-k="fx">
+  <div class="hd">
+    <div class="r"><span class="id fx">S8</span><h4>A sensitive category dominates</h4></div>
+    <p class="s">Fixture · health ₹1,20,000 of ₹2,40,000 spend · largest category, held by rule, no nudge</p>
+  </div>
+  <div class="pf">
+    <div class="sb"><span>9:41</span><i>▮▮▮ ⌾ ▰</i></div>
+    <div class="nb"><span class="bk">‹</span><b>Insights</b><span class="sp"></span><span class="ic">⟳</span></div>
+    <div class="tabs"><span class="tab on">Insights</span><span class="tab">Transactions</span><span class="tab">My accounts</span></div>
+    <div class="scr">
+
+      <div class="bal">
+        <div class="lb">Your total balance</div>
+        <div class="v">₹4,80,000</div>
+        <div class="accs"><span class="ac">HDFC ••3320</span><span class="ac">SBI ••8814</span></div>
+        <span class="addb">+ Add account</span>
+      </div>
+
+      <div class="rail">
+        <div class="si"><div class="ring"><u><em style="background:#cdff82">B</em></u></div><p>Blinkit</p></div>
+        <div class="si"><div class="ring fb"><u><em style="background:#3d3d3d;color:#dcdcdc">₹</em></u></div><p>Idle cash</p></div>
+        <div class="si"><div class="ring fb"><u><em style="background:#3d3d3d;color:#dcdcdc">◔</em></u></div><p>Your year</p></div>
+      </div>
+
+      <div class="ch">
+        <div class="t"><h3>Total cashflow</h3><span class="pill">Aug 2026 ⌄</span></div>
+        <div class="plot">
+          <div class="bars">
+            <div class="b i" style="height:118px"><u>₹3,10,000</u></div>
+            <div class="b v" style="height:15px"><u>₹40,000</u></div>
+            <div class="b e" style="height:91px"><u>₹2,40,000</u></div>
+            <div class="b s" style="height:11px"><u>₹30,000</u></div>
+          </div>
+          <div class="ax"></div>
+          <div class="xax"><span>In</span><span>Invested</span><span>Spent</span><span>Left over</span></div>
+        </div>
+        <p class="ccap">Spending is <b>1.16× your usual month</b>, which is within range. All four numbers are ordinary.</p>
+      </div>
+
+      <div class="hi">Your expenses</div>
+      <div class="card">
+        <div class="mid">₹2,40,000</div>
+        <div class="st" style="margin-top:5px">1.16× your usual month of ₹2,06,592</div>
+        <div class="hr"></div>
+        <div class="crow"><div class="t"><span class="n">Health &amp; pharmacy</span><span class="a" style="color:#f3a9b4">₹1,20,000</span></div>
+          <div class="trk"><i style="width:100%;background:linear-gradient(90deg,#4a2226,#f3a9b4)"></i></div><div class="pc">50.0%</div></div>
+        <div class="crow"><div class="t"><span class="n">Rent</span><span class="a" style="color:#00c3d0">₹45,000</span></div>
+          <div class="trk"><i style="width:37.5%;background:linear-gradient(90deg,#0d3d42,#00c3d0)"></i></div><div class="pc">18.8%</div></div>
+        <div class="crow"><div class="t"><span class="n">Groceries &amp; quick commerce</span><span class="a pos">₹28,400</span></div>
+          <div class="trk"><i style="width:23.7%;background:linear-gradient(90deg,#153f27,#20f572)"></i></div><div class="pc">11.8%</div></div>
+        <div class="crow"><div class="t"><span class="n">People &amp; transfers</span><span class="a" style="color:#91ffbb">₹22,600</span></div>
+          <div class="trk"><i style="width:18.8%;background:linear-gradient(90deg,#153f27,#91ffbb)"></i></div><div class="pc">9.4%</div></div>
+        <div class="b2">View all 10 categories</div>
+      </div>
+
+      <div class="hi">What we noticed</div>
+
+      <div class="card warn">
+        <div class="row"><span class="mk o">◔</span><div class="sp"><div class="t4">You are ₹7,59,554 from six months of cover</div></div></div>
+        <div class="mt"><i class="o" style="width:38.7%"></i></div>
+        <div class="ml"><span>₹4,80,000 of ₹12,39,554</span><span class="nt">2.3 months</span></div>
+        <div class="hr"></div>
+        <div class="bd">At <b>₹31,600 a month</b> you are covered in two years.</div>
+        <div class="cta">Start ₹31,600 a month</div>
+      </div>
+
+      <div class="card gh">
+        <div class="st">Your largest category this month is not shown here. It keeps its real number in your totals and in the ranked list above, and it does not earn a card, a comparison or a button.</div>
+      </div>
+
+      <div class="hi">You vs Paytm Money</div>
+      <div class="bt">
+        <div class="btl"><div class="med">62%</div><h5>Top 62% of investors</h5><p>₹40,000 a month against a ₹18,400 median.</p></div>
+        <div class="btl lk"><div class="med lk">◔</div><h5>Spending percentile</h5><p>Unlocks at 5,000 connected accounts.</p></div>
+      </div>
+      <div class="hib"></div><div class="hbar"></div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<footer class="wrap">
+  <p class="src"><b>What varies across the eight.</b> The story rail loses its merchant bubbles and falls back to non-merchant ones. The cashflow chart gains and loses a negative Left over. The category list runs from 7 rows to 15. The nudge stack runs from one card to three, in the same fixed order. The badge row degrades from comparative to non-comparative to locked. No screen branches on a persona — every difference above is a threshold being met or missed.</p>
+  <p class="src"><b>Source.</b> S1 and S2 are computed from one Account Aggregator deposits dump: 1,265 transactions, three savings accounts, 2 August 2025 to 1 September 2026. S3 to S8 are fixtures built to reach situations that user never hits. The three cohort figures — the percentile, the ₹18,400 band median and the 1,340 connected accounts — are assumed and nothing else reads from them.</p>
+  <p class="src"><b>Open.</b> The sensitive-category blocklist, which changes S8 and nothing else. How many nudges render before the rest go behind an expander. Whether the Astrotalk frequency card stays a bare count.</p>
+</footer>
+
+<script>
+(function () {
+  var btns = [].slice.call(document.querySelectorAll('.tg[data-f]'));
+  var scns = [].slice.call(document.querySelectorAll('.scn'));
+  function apply(f) {
+    btns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.f === f)); });
+    scns.forEach(function (s) { s.hidden = !(f === 'all' || s.dataset.k === f); });
+    document.getElementById('deck').scrollLeft = 0;
+  }
+  btns.forEach(function (b) { b.addEventListener('click', function () { apply(b.dataset.f); }); });
+  apply('all');
+})();
+</script>
+</body>
+</html>

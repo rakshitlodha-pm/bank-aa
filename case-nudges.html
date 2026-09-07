@@ -1,0 +1,807 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nudges — case by case</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* ===========================================================
+   NUDGES — one frame per data situation.
+   No user-set budget anywhere. The engine decides what to say.
+   Canvas is light so the dark phone frames read as objects.
+   =========================================================== */
+:root{
+  --page:#eceae6;
+  --bench:#f6f5f2;
+  --edge:#d8d5cf;
+  --edge2:#c6c2ba;
+  --ink:#191714;
+  --ink2:#5f5a53;
+  --ink3:#8d877e;
+  --fire:#0f7b4a;
+  --quiet:#8d877e;
+  --held:#a8402f;
+  --ui:'Inter',system-ui,-apple-system,sans-serif;
+  --num:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font-family:var(--ui);
+  font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:90px}
+h1,h2,h3,h4{margin:0;letter-spacing:-.02em;text-wrap:balance}
+p{margin:0}
+.wrap{max-width:1460px;margin:0 auto;padding:0 32px}
+.mono{font-family:var(--num);font-variant-numeric:tabular-nums}
+
+/* masthead */
+.mast{padding:52px 0 26px;border-bottom:1px solid var(--edge2)}
+.eyebrow{font-family:var(--num);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3)}
+.mast h1{font-size:clamp(32px,4.4vw,52px);line-height:1.03;letter-spacing:-.033em;margin-top:14px;max-width:20ch;font-weight:600}
+.lede{font-size:17px;line-height:1.6;color:var(--ink2);max-width:66ch;margin-top:18px}
+.lede b{color:var(--ink);font-weight:500}
+.lede .f{font-family:var(--num);color:var(--ink)}
+.anchors{display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));margin-top:28px;border-top:1px solid var(--edge2)}
+.anchors div{padding:14px 20px 14px 0;border-right:1px solid var(--edge)}
+.anchors div:last-child{border-right:0}
+.anchors .k{font-family:var(--num);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3)}
+.anchors .v{font-family:var(--num);font-size:19px;font-weight:500;margin-top:5px;letter-spacing:-.02em}
+.anchors .n{font-size:11.5px;color:var(--ink3);margin-top:3px}
+
+/* controls */
+.bar{position:sticky;top:0;z-index:30;background:color-mix(in oklab,var(--page) 93%,transparent);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--edge2);padding:12px 0;margin-bottom:8px}
+.bar .in{display:flex;flex-wrap:wrap;gap:8px;align-items:center;max-width:1460px;margin:0 auto;padding:0 32px}
+.bar .lbl{font-family:var(--num);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-right:4px}
+.tg{font:inherit;font-size:13px;font-weight:500;padding:7px 14px;border-radius:999px;
+  border:1px solid var(--edge2);background:var(--bench);color:var(--ink2);cursor:pointer}
+.tg[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bench)}
+.tg:focus-visible{outline:2px solid #409dff;outline-offset:2px}
+.bar .sp{flex:1}
+
+/* family header */
+.fam{padding:46px 0 4px}
+.fam-h{max-width:72ch}
+.fam-h .n{font-family:var(--num);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--fire)}
+.fam-h h2{font-size:28px;letter-spacing:-.027em;margin-top:9px}
+.fam-h p{font-size:16px;line-height:1.6;color:var(--ink2);margin-top:10px}
+.fam-h p b{color:var(--ink);font-weight:500}
+.fam-h p .f{font-family:var(--num);color:var(--ink)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(376px,376px));gap:38px 30px;
+  margin-top:30px;justify-content:start}
+@media (max-width:520px){.grid{grid-template-columns:1fr}.pf{width:100%}}
+.frame{width:376px;max-width:100%}
+.frame[hidden]{display:none!important}
+
+/* frame caption */
+.cap{border-bottom:1px solid var(--edge2);padding-bottom:9px;margin-bottom:14px}
+.cap .top{display:flex;align-items:baseline;gap:8px}
+.cap .id{font-family:var(--num);font-size:11px;font-weight:600;color:#fff;background:var(--ink);
+  border-radius:3px;padding:2px 6px}
+.cap h4{font-size:14.5px;font-weight:600;flex:1;min-width:0}
+.cap .st{font-family:var(--num);font-size:10px;letter-spacing:.09em;text-transform:uppercase;font-weight:600}
+.cap .st.fire{color:var(--fire)}
+.cap .st.held{color:var(--held)}
+.cap .st.quiet{color:var(--quiet)}
+.cap .sit{font-family:var(--num);font-size:11.5px;color:var(--ink3);margin-top:7px;line-height:1.45}
+.cap .sit b{color:var(--ink2);font-weight:500}
+
+/* rule box, toggled by JS */
+.rule{margin-top:13px;background:var(--bench);border:1px solid var(--edge);border-radius:10px;padding:12px 13px}
+.rule[hidden]{display:none}
+.rule .k{font-family:var(--num);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3)}
+.rule p{font-size:13px;line-height:1.5;color:var(--ink2);margin-top:6px}
+.rule p .f{font-family:var(--num);color:var(--ink);font-size:12.5px}
+.rule p+p{margin-top:6px}
+.why{font-size:14px;line-height:1.58;color:var(--ink2);margin-top:14px}
+.why+.why{margin-top:8px}
+.why b{color:var(--ink);font-weight:500}
+.why .f{font-family:var(--num);color:var(--ink)}
+
+/* ===========================================================
+   PHONE — Paytm Money dark tokens
+   =========================================================== */
+.pf{width:376px;background:#101010;border-radius:22px;overflow:hidden;padding:14px 0 16px;
+  font-family:var(--ui);color:#fff;font-size:14px;line-height:1.42;
+  box-shadow:0 1px 2px rgba(25,23,20,.14),0 18px 40px -18px rgba(25,23,20,.4)}
+.pf *{box-sizing:border-box}
+.ctx{display:flex;align-items:center;gap:8px;padding:0 16px 12px;
+  font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#5c5c5c;font-weight:600}
+.ctx i{flex:1;height:1px;background:#242424;font-style:normal}
+.card{margin:0 16px;background:#202020;border-radius:16px;padding:16px}
+.card+.card{margin-top:12px}
+.card.ok{background:#17281d}
+.card.warn{background:#2b2318}
+.card.bad{background:#2a1d1b}
+.card.pri{background:#1a232d}
+.card.gh{background:transparent;box-shadow:inset 0 0 0 1px #262626}
+.row{display:flex;align-items:center;gap:10px}
+.row .sp{flex:1;min-width:0}
+.mk{width:34px;height:34px;border-radius:200px;flex:0 0 auto;display:grid;place-items:center;
+  font-size:15px;font-weight:600;color:#101010}
+.mk.g{background:#20f572}.mk.o{background:#ff9d45}.mk.r{background:#ff4e3e;color:#fff}
+.mk.b{background:#409dff;color:#fff}.mk.d{background:#333;color:#cfcfcf}
+.t4{font-size:16px;font-weight:600;letter-spacing:-.015em}
+.big{font-size:27px;font-weight:500;letter-spacing:-.03em;line-height:1.16}
+.mid{font-size:20px;font-weight:600;letter-spacing:-.024em}
+.bd{font-size:14px;color:#ebecee;line-height:1.48}
+.st2{font-size:12.5px;color:#8b8c8c;line-height:1.45}
+.k2{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:#8b8c8c;font-weight:600}
+.pos{color:#20f572}.neg{color:#ff4e3e}.nt{color:#ff9d45}.pm{color:#409dff}.dm{color:#8b8c8c}
+.tn{font-variant-numeric:tabular-nums}
+.hr{height:1px;background:#2a2a2a;margin:14px 0}
+.cta{display:block;text-align:center;background:linear-gradient(100deg,#409dff,#63b0ff);color:#fff;
+  font-size:15px;font-weight:600;border-radius:200px;padding:13px;margin-top:15px}
+.b2{display:block;text-align:center;background:#1e2a35;color:#409dff;font-size:14px;font-weight:600;
+  border-radius:200px;padding:11px;margin-top:12px}
+.b2.gh{background:transparent;box-shadow:inset 0 0 0 1px #3a3a3a;color:#ebecee}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.pair .b2{margin-top:0}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;color:#c9cacb;
+  box-shadow:inset 0 0 0 1px #3a3a3a;border-radius:200px;padding:5px 11px;white-space:nowrap}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+
+/* meter */
+.meter{position:relative;height:9px;border-radius:5px;background:#2a2a2a;margin-top:14px;overflow:hidden}
+.meter i{position:absolute;left:0;top:0;bottom:0;border-radius:5px}
+.meter i.g{background:linear-gradient(90deg,#159a52,#20f572)}
+.meter i.o{background:linear-gradient(90deg,#8a5a1f,#ff9d45)}
+.meter i.r{background:linear-gradient(90deg,#8a2c22,#ff4e3e)}
+.meter i.b{background:linear-gradient(90deg,#1f5590,#409dff)}
+.mlab{display:flex;justify-content:space-between;font-size:11.5px;color:#8b8c8c;margin-top:9px;
+  font-variant-numeric:tabular-nums}
+.over{position:relative;height:9px;border-radius:5px;background:#2a2a2a;margin-top:14px}
+.over i{position:absolute;left:0;top:0;bottom:0;border-radius:5px;background:linear-gradient(90deg,#8a2c22,#ff4e3e)}
+.over b{position:absolute;top:-4px;bottom:-4px;width:2px;background:#ebecee;border-radius:2px}
+.over b::after{content:attr(data-l);position:absolute;left:50%;transform:translateX(-50%);top:-16px;
+  font-size:9.5px;font-weight:600;color:#ebecee;white-space:nowrap;font-variant-numeric:tabular-nums}
+
+/* split bar */
+.split{display:flex;gap:2px;height:13px;border-radius:7px;overflow:hidden;margin-top:14px}
+.split i{display:block}
+.key{display:flex;flex-wrap:wrap;gap:12px;margin-top:11px}
+.key span{display:flex;align-items:center;gap:6px;font-size:11.5px;color:#8b8c8c;font-variant-numeric:tabular-nums}
+.key em{width:9px;height:9px;border-radius:3px;font-style:normal}
+
+/* sparkline of the mandate */
+.spark{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;align-items:end;height:56px;margin-top:15px}
+.spark i{border-radius:2px 2px 0 0;background:#409dff;min-height:2px}
+.spark i.br{background:#ff4e3e}
+.spark i.lo{background:#ff9d45}
+.sparkx{display:flex;justify-content:space-between;font-size:10px;color:#5c5c5c;margin-top:6px;
+  font-family:var(--num)}
+
+/* list rows */
+.lrow{display:flex;align-items:center;gap:11px;padding:10px 0;border-bottom:1px solid #262626}
+.lrow:last-child{border-bottom:0}
+.lrow .sp{flex:1;min-width:0}
+.lrow .nm{font-size:14px;font-weight:500}
+.lrow .sb{font-size:11.5px;color:#8b8c8c;margin-top:2px}
+.lrow .vl{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+footer{border-top:1px solid var(--edge2);margin-top:56px;padding-top:28px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(288px,1fr));border-top:1px solid var(--edge)}
+.col{padding:20px 26px 20px 0;border-right:1px solid var(--edge)}
+.col:last-child{border-right:0}
+.col h4{font-size:14.5px}
+.col ul{margin:10px 0 0;padding-left:17px;font-size:14px;line-height:1.6;color:var(--ink2)}
+.col li{margin-bottom:7px}
+.col li b{color:var(--ink);font-weight:500}
+.src{font-size:13px;color:var(--ink3);max-width:84ch;margin-top:24px;line-height:1.6}
+.src b{color:var(--ink2)}
+</style>
+</head>
+<body>
+
+<header class="mast wrap">
+  <div class="eyebrow">Paytm Money · Insights · nudges</div>
+  <h1>Nudges, one frame per situation</h1>
+  <p class="lede">No budget to set, no target to configure, no row to correct. The engine reads the numbers and decides what to say — so every frame below is a <b>data situation</b>, not a user type, and the same rules produce all of them. Where a figure comes from the reference dump it is real; fixtures are labelled.</p>
+  <div class="anchors">
+    <div><div class="k">Anchor</div><div class="v">₹2,06,592</div><div class="n">median month, last 6</div></div>
+    <div><div class="k">Cover target</div><div class="v">₹12,39,554</div><div class="n">6 × the median month</div></div>
+    <div><div class="k">Balance</div><div class="v">₹13,55,326</div><div class="n">3 accounts · 6.6 months</div></div>
+    <div><div class="k">Frames</div><div class="v">14</div><div class="n">5 families</div></div>
+  </div>
+</header>
+
+<div class="bar">
+  <div class="in">
+    <span class="lbl">Show</span>
+    <button class="tg" aria-pressed="true" data-fam="all">All 14</button>
+    <button class="tg" aria-pressed="false" data-fam="A">Emergency fund</button>
+    <button class="tg" aria-pressed="false" data-fam="B">Investing</button>
+    <button class="tg" aria-pressed="false" data-fam="C">Expenses</button>
+    <button class="tg" aria-pressed="false" data-fam="D">Recurring</button>
+    <button class="tg" aria-pressed="false" data-fam="E">Held</button>
+    <span class="sp"></span>
+    <button class="tg" id="rules" aria-pressed="false">Show the rules</button>
+  </div>
+</div>
+
+<!-- ================= A · EMERGENCY FUND ================= -->
+<section class="fam wrap" data-fam="A">
+  <div class="fam-h">
+    <div class="n">Family A · always fires</div>
+    <h2>Emergency fund</h2>
+    <p>This one speaks in every situation. Short of cover it says how to close the gap; at cover it says well done and points the rest at investing. The situation changes the <b>tone</b> and <b>where the money is sent</b> — never whether we speak.</p>
+  </div>
+  <div class="grid">
+
+    <!-- A1 -->
+    <div class="frame" data-fam="A">
+      <div class="cap">
+        <div class="top"><span class="id">A1</span><h4>Nothing set aside yet</h4><span class="st fire">Fires</span></div>
+        <p class="sit"><b>Situation</b> · balance ₹18,400 · median month ₹2,06,592 · <b>0.1 months</b> of cover</p>
+      </div>
+      <div class="pf">
+        <div class="ctx">Below your expenses <i></i></div>
+        <div class="card">
+          <div class="row">
+            <span class="mk o">!</span>
+            <div class="sp"><div class="t4">You have about four days of cover</div></div>
+          </div>
+          <div class="bd" style="margin-top:11px">A usual month costs you <b>₹2,06,592</b>. Six of those is <b>₹12,39,554</b> — the amount that keeps a lost job or a hospital week from becoming debt.</div>
+          <div class="meter"><i class="o" style="width:1.5%"></i></div>
+          <div class="mlab"><span>₹18,400 set aside</span><span>₹12,39,554</span></div>
+          <div class="hr"></div>
+          <div class="st2">Starting is worth more than the target here. <span style="color:#ebecee">₹5,000 a month</span> in a liquid fund is a beginning you will not notice.</div>
+          <div class="cta">Start with ₹5,000 a month</div>
+          <div class="b2 gh">Pick my own amount</div>
+        </div>
+      </div>
+      <div class="rule" hidden>
+        <div class="k">Rule</div>
+        <p>Fires when <span class="f">balance ÷ median month &lt; 1</span>. Suggests a starting amount rather than the target: <span class="f">round(median × 2.5%)</span> to the nearest ₹500.</p>
+        <p>Never states the shortfall as a lump at this level — <span class="f">₹12.2L short</span> reads as impossible and is the most common reason people close this card and never return.</p>
+      </div>
+      <p class="why"><b>The target is deliberately not the headline.</b> A user four days from zero cannot act on ₹12,39,554, so the number that gets the button is the one they can start tomorrow.</p>
+    </div>
+
+    <!-- A2 -->
+    <div class="frame" data-fam="A">
+      <div class="cap">
+        <div class="top"><span class="id">A2</span><h4>Badly short — your example</h4><span class="st fire">Fires</span></div>
+        <p class="sit"><b>Fixture</b> · balance ₹3,00,000 · median month ₹1,66,667 · target ₹10,00,000 · <b>1.8 months</b></p>
+      </div>
+      <div class="pf">
+        <div class="ctx">Below your expenses <i></i></div>
+        <div class="card">
+          <div class="row">
+            <span class="mk o">◔</span>
+            <div class="sp"><div class="t4">You are ₹7,00,000 from six months of cover</div></div>
+          </div>
+          <div class="meter"><i class="o" style="width:30%"></i></div>
+          <div class="mlab"><span>₹3,00,000 of ₹10,00,000</span><span class="nt">30%</span></div>
+          <div class="hr"></div>
+          <div class="bd">At <b>₹29,200 a month</b> you are covered in two years. Held in a liquid fund it stays reachable the day you need it.</div>
+          <div class="st2" style="margin-top:9px">You already have <span style="color:#ebecee">1.8 months</span>. The first three months of cover matter more than the last three.</div>
+          <div class="cta">Start ₹29,200 a month</div>
+          <div class="b2">See liquid funds</div>
+        </div>
+      </div>
+      <div class="rule" hidden>
+        <div class="k">Rule</div>
+        <p>Fires when <span class="f">1 ≤ months of cover &lt; 6</span>. The monthly figure is <span class="f">shortfall ÷ 24</span>, so the ask is always framed over two years rather than as a lump.</p>
+        <p>Progress is stated twice on purpose — as a percentage and as months — because months are what the user actually feels.</p>
+      </div>
+      <p class="why"><b>Your ₹3L-against-₹10L case.</b> The gap is real and named once; everything after it is the monthly number, because that is the only part anyone can act on.</p>
+      <p class="why"><b>Credit before instruction.</b> <span class="f">1.8 months</span> of cover is genuine progress and gets said before the ask.</p>
+    </div>
+
+    <!-- A3 -->
+    <div class="frame" data-fam="A">
+      <div class="cap">
+        <div class="top"><span class="id">A3</span><h4>Nearly there</h4><span class="st fire">Fires</span></div>
+        <p class="sit"><b>Fixture</b> · balance ₹11,50,000 · target ₹12,39,554 · <b>5.6 months</b> · ₹89,554 to go</p>
+      </div>
+      <div class="pf">
+        <div class="ctx">Below your expenses <i></i></div>
+        <div class="card ok">
+          <div class="row">
+            <span class="mk g">◕</span>
+            <div class="sp"><div class="t4">One more month and you are covered</div></div>
+          </div>
+          <div class="meter"><i class="g" style="width:92.8%"></i></div>
+          <div class="mlab"><span>₹11,50,000 of ₹12,39,554</span><span class="pos">5.6 months</span></div>
+          <div class="hr"></div>
+          <div class="bd"><b>₹89,554</b> left. You have added ₹1,40,000 over the last three months, so at that rate this finishes in <b>three weeks</b>.</div>
+          <div class="cta">Finish it in one go</div>
+          <div class="b2 gh">Keep going monthly</div>
+        </div>
+      </div>
+      <div class="rule" hidden>
+        <div class="k">Rule</div>
+        <p>Fires when <span class="f">months of cover ≥ 5</span> and below 6. Uses the observed three-month rate of change to state a date, not an instruction.</p>
+        <p>Card turns positive here — the same rule, a different tone, because the situation is nearly won.</p>
+      </div>
+      <p class="why"><b>The only frame that forecasts,</b> and only because there is a measured rate to forecast from. <span class="f">Three weeks</span> is arithmetic on the last three months, not a projection.</p>
+    </div>
+
+    <!-- A4 -->
+    <div class="frame" data-fam="A">
+      <div class="cap">
+        <div class="top"><span class="id">A4</span><h4>Covered — the real dump</h4><span class="st fire">Fires</span></div>
+        <p class="sit"><b>Real</b> · balance ₹13,55,326 · target ₹12,39,554 · <b>6.6 months</b> · surplus ₹1,15,772 <span style="color:#8d877e">(0.56× a month)</span></p>
+      </div>
+      <div class="pf">
+        <div class="ctx">Below your expenses <i></i></div>
+        <div class="card ok">
+          <div class="row">
+            <span class="mk g">✓</span>
+            <div class="sp"><div class="t4">Your emergency fund is done</div>
+              <div class="st2" style="margin-top:3px">6.6 months of cover, across three accounts</div></div>
+          </div>
+          <div class="meter"><i class="g" style="width:100%"></i></div>
+          <div class="mlab"><span>₹13,55,326 held</span><span class="pos">₹12,39,554 needed</span></div>
+          <div class="hr"></div>
+          <div class="bd">Most people never get here. The <b>₹1,15,772</b> above your cover is earning savings-account interest — about <b>₹3,400 a year</b>.</div>
+          <div class="st2" style="margin-top:9px">It is half a month of expenses, so it should stay reachable. An arbitrage fund keeps it liquid and taxes it better.</div>
+          <div class="cta">Move ₹1,15,772 to arbitrage</div>
+          <div class="b2 gh">Show me the funds first</div>
+        </div>
+      </div>
+      <div class="rule" hidden>
+        <div class="k">Rule</div>
+        <p>Fires when <span class="f">months of cover ≥ 6</span>. Always speaks — praise first, then the surplus.</p>
+        <p>Destination by size: surplus <span class="f">&lt; 3× median month</span> → arbitrage or liquid. <span class="f">≥ 3×</span> → index funds and ETFs. Here <span class="f">₹1,15,772 = 0.56×</span>, so it stays liquid.</p>
+        <p>No suppression threshold. An earlier draft stayed silent under 1× a month; that was wrong — a finished fund is the best news the tab has.</p>
+      </div>
+      <p class="why"><b>This is your real situation, and it earns the warmest frame on the page.</b> Praise first and specifically — <span class="f">6.6 months</span> — then the surplus, then one destination.</p>
+      <p class="why"><b>The ₹3,400 a year is the whole argument.</b> Naming what the money currently earns is more persuasive than naming what it could earn, and it needs no forward projection to say.</p>
+    </div>
+
+    <!-- A5 -->
+    <div class="frame" data-fam="A">
+      <div class="cap">
+        <div class="top"><span class="id">A5</span><h4>Covered, with a lot spare</h4><span class="st fire">Fires</span></div>
+        <p class="sit"><b>Fixture</b> · balance ₹18,40,000 · target ₹12,39,554 · <b>8.9 months</b> · surplus ₹6,00,446 <span style="color:#8d877e">(2.9× a month)</span></p>
+      </div>
+      <div class="pf">
+        <div class="ctx">Below your expenses <i></i></div>
+        <div class="card ok">
+          <div class="row">
+            <span class="mk g">✓</span>
+            <div class="sp"><div class="t4">You are covered nearly nine months over</div>
+              <div class="st2" style="margin-top:3px">Three months more than you need on hand</div></div>
+          </div>
+          <div class="meter"><i class="g" style="width:100%"></i></div>
+          <div class="mlab"><span>₹18,40,000 held</span><span class="pos">₹12,39,554 needed</span></div>
+          <div class="hr"></div>
+          <div class="bd"><b>₹6,00,446</b> is sitting past your cover. Money you will not touch for years does not need to be reachable this week.</div>
+          <div class="chips">
+            <span class="chip">Index funds</span><span class="chip">ETFs</span><span class="chip">Keep ₹2L liquid</span>
+          </div>
+          <div class="cta">Put ₹6,00,446 to work</div>
+          <div class="st2" style="margin-top:11px;text-align:center">Popular on Paytm Money · not a recommendation</div>
+        </div>
+      </div>
+      <div class="rule" hidden>
+        <div class="k">Rule</div>
+        <p>Same rule as A4, different branch: <span class="f">surplus ≥ 3× median month</span> routes to long-horizon products instead of liquid ones.</p>
+        <p>The <span class="f">Keep ₹2L liquid</span> chip exists so the nudge never implies emptying the buffer.</p>
+      </div>
+      <p class="why"><b>One rule, two destinations.</b> Above three months of spare the horizon changes, so the product does — no persona, no branch on who the user is, only on how much is spare.</p>
+      <p class="why"><b>No projected return anywhere.</b> Live prices are not modelled, so nothing here says what the ₹6,00,446 would become.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= B · INVESTING ================= -->
+<section class="fam wrap" data-fam="B">
+  <div class="fam-h">
+    <div class="n">Family B · the sharpest one in the dump</div>
+    <h2>Investing that slipped</h2>
+    <p>The reference user ran <b>₹2,05,000</b> a month for eight months, missed May and June, then came back at <b>₹1,45,000</b> and stayed there. The nudge is not the two missed months — it is that the level dropped by <span class="f">₹60,000</span> and never recovered.</p>
+  </div>
+  <div class="grid">
+
+    <!-- B1 -->
+    <div class="frame" data-fam="B">
+      <div class="cap">
+        <div class="top"><span class="id">B1</span><h4>The level fell and stayed down</h4><span class="st fire">Fires</span></div>
+        <p class="sit"><b>Real</b> · ₹2,05,000 × 8 months → May ₹1,000 · Jun ₹20,000 → ₹1,45,000 × 2 · behind by <b>₹5,09,899</b></p>
+      </div>
+      <div class="pf">
+        <div class="ctx">Below your expenses <i></i></div>
+        <div class="card warn">
+          <div class="row">
+            <span class="mk o">↓</span>
+            <div class="sp"><div class="t4">You are investing ₹60,000 a month less than you were</div></div>
+          </div>
+          <div class="spark">
+            <i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i>
+            <i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:93%"></i>
+            <i class="br" style="height:2%"></i><i class="br" style="height:10%"></i>
+            <i class="lo" style="height:71%"></i><i class="lo" style="height:71%"></i>
+          </div>
+          <div class="sparkx"><span>Sep 2025</span><span>Aug 2026</span></div>
+          <div class="hr"></div>
+          <div class="bd">It ran at <b>₹2,05,000</b> until April, stopped for two months, and came back at <b>₹1,45,000</b>. Against the old rate that is <b>₹5,09,899</b> not invested.</div>
+          <div class="st2" style="margin-top:9px">Two months of that was the pause. The other ₹1,19,899 is the lower rate, quietly, since July.</div>
+          <div class="cta">Take it back to ₹2,05,000</div>
+          <div class="b2 gh">₹1,45,000 is right for now</div>
+        </div>
+      </div>
+      <div class="rule" hidden>
+        <div class="k">Rule</div>
+        <p>Fires when the median monthly investment of the last <span class="f">3 months</span> is below the median of the <span class="f">9 before it</span> by more than <span class="f">15%</span>.</p>
+        <p>The figure quoted is <span class="f">Σ (old level − actual)</span> across every month since the drop, so a pause and a step-down are counted as one number.</p>
+        <p>The dismissal is a real option, not a delay — some step-downs are deliberate, and the engine cannot tell.</p>
+      </div>
+      <p class="why"><b>A missed-SIP alert would have read "two months missed" and been wrong.</b> The pause was ₹3,90,000; the quiet step-down since July is another ₹1,19,899 and is still running.</p>
+      <p class="why"><b>The second button is not "Later."</b> A deliberate reduction — a job change, a new EMI — should be accepted and stop the nudge, not postponed into next month.</p>
+    </div>
+
+    <!-- B2 -->
+    <div class="frame" data-fam="B">
+      <div class="cap">
+        <div class="top"><span class="id">B2</span><h4>Never started</h4><span class="st fire">Fires</span></div>
+        <p class="sit"><b>Fixture</b> · no investment outflow in 12 months · income ₹68,000 · median month ₹41,300</p>
+      </div>
+      <div class="pf">
+        <div class="ctx">Below your expenses <i></i></div>
+        <div class="card pri">
+          <div class="row">
+            <span class="mk b">₹</span>
+            <div class="sp"><div class="t4">₹26,700 a month is leaving as savings, not investment</div></div>
+          </div>
+          <div class="split">
+            <i style="flex:0 0 61%;background:#ff4e3e"></i><i style="flex:1;background:#409dff"></i>
+          </div>
+          <div class="key">
+            <span><em style="background:#ff4e3e"></em>Spent ₹41,300</span>
+            <span><em style="background:#409dff"></em>Left over ₹26,700</span>
+          </div>
+          <div class="hr"></div>
+          <div class="bd">Over twelve months we have seen <b>no investment</b> leave your accounts. The leftover has been building in savings.</div>
+          <div class="st2" style="margin-top:9px">Not a judgement — some of it may be invested somewhere we cannot see.</div>
+          <div class="pair">
+            <span class="b2">Start a SIP</span>
+            <span class="b2 gh">I invest elsewhere</span>
+          </div>
+        </div>
+      </div>
+      <div class="rule" hidden>
+        <div class="k">Rule</div>
+        <p>Fires when investment outflow over <span class="f">12 months = ₹0</span> and <span class="f">median leftover &gt; 10%</span> of income.</p>
+        <p><span class="f">I invest elsewhere</span> routes to the external-holdings import, which is the only thing that can prove the nudge wrong.</p>
+      </div>
+      <p class="why"><b>The hedge in the last line is not softness, it is accuracy.</b> Deposits data cannot see a direct-plan investor, and a confident "you invest nothing" to someone who does is unrecoverable.</p>
+    </div>
+
+    <!-- B3 -->
+    <div class="frame" data-fam="B">
+      <div class="cap">
+        <div class="top"><span class="id">B3</span><h4>Running exactly as before</h4><span class="st quiet">Positive, no ask</span></div>
+        <p class="sit"><b>Fixture</b> · ₹1,45,000 for 6 straight months · no drop, no gap</p>
+      </div>
+      <div class="pf">
+        <div class="ctx">Below your expenses <i></i></div>
+        <div class="card ok">
+          <div class="row">
+            <span class="mk g">✓</span>
+            <div class="sp"><div class="t4">Six months, same day, same amount</div>
+              <div class="st2" style="margin-top:3px">₹1,45,000 · cleared on the 1st every time</div></div>
+          </div>
+          <div class="spark">
+            <i style="height:20%"></i><i style="height:20%"></i><i style="height:20%"></i><i style="height:20%"></i>
+            <i style="height:20%"></i><i style="height:20%"></i>
+            <i style="height:100%;background:#20f572"></i><i style="height:100%;background:#20f572"></i>
+            <i style="height:100%;background:#20f572"></i><i style="height:100%;background:#20f572"></i>
+            <i style="height:100%;background:#20f572"></i><i style="height:100%;background:#20f572"></i>
+          </div>
+          <div class="sparkx"><span>Sep 2025</span><span>Aug 2026</span></div>
+          <div class="hr"></div>
+          <div class="st2">Nothing to do here. We will tell you if it slips.</div>
+        </div>
+      </div>
+      <div class="rule" hidden>
+        <div class="k">Rule</div>
+        <p>Fires when the mandate ran <span class="f">≥ 6 consecutive months</span> with variation under <span class="f">5%</span>. Carries no button by design.</p>
+        <p>This is the only frame in the family with nothing to act on, and it exists so the family is not exclusively bad news.</p>
+      </div>
+      <p class="why"><b>A nudge is allowed to have no ask.</b> If every card in this family carried a button, the family would read as pressure and get scrolled past — which costs us the two frames that do need action.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= C · EXPENSES ================= -->
+<section class="fam wrap" data-fam="C">
+  <div class="fam-h">
+    <div class="n">Family C · no budget, no target</div>
+    <h2>Expenses running hot</h2>
+    <p>Nothing here is measured against a number the user chose. It is measured against <b>their own median month</b>, and it names the cause where we honestly know it — which on this dump is a billing-cycle artefact rather than behaviour.</p>
+  </div>
+  <div class="grid">
+
+    <!-- C1 -->
+    <div class="frame" data-fam="C">
+      <div class="cap">
+        <div class="top"><span class="id">C1</span><h4>Hot, and we know why</h4><span class="st fire">Fires</span></div>
+        <p class="sit"><b>Real</b> · Aug ₹3,12,581 · median month ₹2,06,592 · <b>1.5×</b> · card bill ₹1,26,820 <span style="color:#8d877e">(40.6%)</span></p>
+      </div>
+      <div class="pf">
+        <div class="ctx">Below your expenses <i></i></div>
+        <div class="card bad">
+          <div class="row">
+            <span class="mk r">↑</span>
+            <div class="sp"><div class="t4">August cost 1.5× your usual month</div></div>
+          </div>
+          <div class="over"><i style="width:100%"></i><b style="left:66%" data-l="usual ₹2,06,592"></b></div>
+          <div class="mlab"><span>₹3,12,581 spent</span><span class="neg">₹1,05,989 above usual</span></div>
+          <div class="hr"></div>
+          <div class="bd">Two credit-card statements landed in the same calendar month — <b>₹1,05,164</b> on the 1st and <b>₹21,656</b> on the 31st.</div>
+          <div class="st2" style="margin-top:9px">That is a billing cycle, not a change in how you spend. Your other categories were within their usual range.</div>
+          <div class="b2">See what made up the month</div>
+        </div>
+      </div>
+      <div class="rule" hidden>
+        <div class="k">Rule</div>
+        <p>Fires when <span class="f">period spend ≥ 1.25 × median month</span>. Compared to a median, never to last month — one bonus month otherwise poisons a year of comparisons.</p>
+        <p>Before speaking it checks whether a single category explains the excess. If one does, that sentence replaces the generic one.</p>
+      </div>
+      <p class="why"><b>Factual, and it does the user's reasoning for them.</b> Without the second sentence the honest conclusion from ₹3,12,581 is "I overspent badly," which is not what happened.</p>
+      <p class="why flag"><b>This is the frame that most needs the engine to be right.</b> If it names the wrong cause it is worse than saying nothing.</p>
+    </div>
+
+    <!-- C2 -->
+    <div class="frame" data-fam="C">
+      <div class="cap">
+        <div class="top"><span class="id">C2</span><h4>An ordinary month</h4><span class="st quiet">Positive, no ask</span></div>
+        <p class="sit"><b>Real</b> · Mar ₹74,601 · median month ₹2,06,592 · <b>0.36×</b></p>
+      </div>
+      <div class="pf">
+        <div class="ctx">Below your expenses <i></i></div>
+        <div class="card ok">
+          <div class="row">
+            <span class="mk g">↓</span>
+            <div class="sp"><div class="t4">Your cheapest month of the year</div>
+              <div class="st2" style="margin-top:3px">₹74,601 against a usual ₹2,06,592</div></div>
+          </div>
+          <div class="over"><i class="g" style="width:36%;background:linear-gradient(90deg,#159a52,#20f572)"></i><b style="left:100%" data-l="usual"></b></div>
+          <div class="mlab"><span>₹1,31,991 below usual</span><span class="pos">0.36×</span></div>
+          <div class="hr"></div>
+          <div class="st2">No card statement fell in March, which is most of the difference. Nothing to do.</div>
+        </div>
+      </div>
+      <div class="rule" hidden>
+        <div class="k">Rule</div>
+        <p>Fires when <span class="f">period spend ≤ 0.75 × median month</span>. Names the reason for the gap where one exists, so the praise is not misread as a behaviour change.</p>
+        <p>No button. A cheap month is not a sales opportunity — the surplus already gets handled by family A.</p>
+      </div>
+      <p class="why"><b>Honest praise names its cause too.</b> Telling someone they did well when a bill simply did not arrive teaches them to distrust the next compliment.</p>
+    </div>
+
+    <!-- C3 -->
+    <div class="frame" data-fam="C">
+      <div class="cap">
+        <div class="top"><span class="id">C3</span><h4>Two days in</h4><span class="st quiet">Withheld</span></div>
+        <p class="sit"><b>Real</b> · 1–2 Sep ₹50,855 · rent ₹40,000 of it · <b>2 of 30 days</b> elapsed</p>
+      </div>
+      <div class="pf">
+        <div class="ctx">Below your expenses <i></i></div>
+        <div class="card">
+          <div class="row">
+            <span class="mk d">◷</span>
+            <div class="sp"><div class="t4">₹50,855 out, two days in</div></div>
+          </div>
+          <div class="split">
+            <i style="flex:0 0 78.7%;background:#409dff"></i><i style="flex:1;background:#00c3d0"></i>
+          </div>
+          <div class="key">
+            <span><em style="background:#409dff"></em>Rent, already committed ₹40,000</span>
+            <span><em style="background:#00c3d0"></em>Everything else ₹10,855</span>
+          </div>
+          <div class="hr"></div>
+          <div class="st2">Too early to say how the month is going. Four-fifths of this is your rent, which leaves on the 1st every month.</div>
+        </div>
+      </div>
+      <div class="rule" hidden>
+        <div class="k">Rule</div>
+        <p>No verdict before <span class="f">day 8</span>. The card shows composition — committed against discretionary — which is true on every day of every month.</p>
+        <p>Why: across the last 12 months the share of a month's expenses already gone by day two ranged from <span class="f">0.3%</span> to <span class="f">54.4%</span>, median <span class="f">5.9%</span>. A pace rule would have declared a 12× overspend on 1 August and a 22× underspend in June.</p>
+      </div>
+      <p class="why"><b>The rule that stops the feature embarrassing itself.</b> Rent clears on the 1st, so any early pace judgement fires every month forever.</p>
+      <p class="why"><b>Same principle as a withheld <i>Left over</i>:</b> when a figure is arithmetically true and practically useless, withhold it and label the withholding.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= D · RECURRING ================= -->
+<section class="fam wrap" data-fam="D">
+  <div class="fam-h">
+    <div class="n">Family D · counted, rarely investable</div>
+    <h2>Recurring load</h2>
+    <p>Two situations that only show up once you look across a year: money leaving in small regular pieces, and one merchant taking a lot of small payments. Neither has a listed parent, so neither ends in a buy.</p>
+  </div>
+  <div class="grid">
+
+    <!-- D1 -->
+    <div class="frame" data-fam="D">
+      <div class="cap">
+        <div class="top"><span class="id">D1</span><h4>Twelve recurring services</h4><span class="st fire">Fires</span></div>
+        <p class="sit"><b>Real</b> · 12 services · ₹41,294 over 12 months · ~₹3,441 a month</p>
+      </div>
+      <div class="pf">
+        <div class="ctx">Below your expenses <i></i></div>
+        <div class="card">
+          <div class="row">
+            <span class="mk d">↻</span>
+            <div class="sp"><div class="t4">₹41,294 went to twelve subscriptions this year</div></div>
+          </div>
+          <div class="hr"></div>
+          <div class="lrow"><div class="sp"><div class="nm">Google Play</div><div class="sb">13 charges</div></div><div class="vl">₹16,044</div></div>
+          <div class="lrow"><div class="sp"><div class="nm">Netflix</div><div class="sb">13 charges · monthly</div></div><div class="vl">₹8,437</div></div>
+          <div class="lrow"><div class="sp"><div class="nm">Apple</div><div class="sb">16 charges</div></div><div class="vl">₹7,063</div></div>
+          <div class="lrow"><div class="sp"><div class="nm">LinkedIn</div><div class="sb">4 charges</div></div><div class="vl">₹2,997</div></div>
+          <div class="lrow"><div class="sp"><div class="nm">Eight more</div><div class="sb">YouTube, ZEE5, Sony, Amazon, Jio…</div></div><div class="vl">₹6,753</div></div>
+          <div class="hr"></div>
+          <div class="st2">None of the twelve has a listed Indian parent, so there is nothing to buy here. It is a number worth seeing once a year.</div>
+          <div class="b2 gh">See all twelve</div>
+        </div>
+      </div>
+      <div class="rule" hidden>
+        <div class="k">Rule</div>
+        <p>Fires when <span class="f">≥ 3 merchants</span> recur in <span class="f">≥ 3 of the last 6 months</span>. Reported yearly, because ₹3,441 a month is ignorable and ₹41,294 a year is not.</p>
+        <p>Explicitly states that there is nothing to buy, rather than routing to an unrelated product.</p>
+      </div>
+      <p class="why"><b>The yearly figure is the insight.</b> Monthly it is noise; annually it is a decision.</p>
+      <p class="why"><b>Saying "nothing to buy here" out loud is what makes the other nudges credible.</b> A tab where every card ends in a purchase is an ad break.</p>
+    </div>
+
+    <!-- D2 -->
+    <div class="frame" data-fam="D">
+      <div class="cap">
+        <div class="top"><span class="id">D2</span><h4>One merchant, seventy-four times</h4><span class="st fire">Fires</span></div>
+        <p class="sit"><b>Real</b> · Astrotalk · 74 payments · ₹18,526 · average <b>₹250</b> · not listed</p>
+      </div>
+      <div class="pf">
+        <div class="ctx">Below your expenses <i></i></div>
+        <div class="card">
+          <div class="row">
+            <span class="mk d">74</span>
+            <div class="sp"><div class="t4">You paid Astrotalk 74 times this year</div>
+              <div class="st2" style="margin-top:3px">₹18,526 in payments of about ₹250</div></div>
+          </div>
+          <div class="hr"></div>
+          <div class="bd">That is more separate payments than any other merchant you use — <b>more than Blinkit</b>, which took 98 orders but in far larger amounts.</div>
+          <div class="st2" style="margin-top:9px">Small and frequent is the hardest kind of spending to notice, which is the only reason this card exists.</div>
+          <div class="b2 gh">See all 74 payments</div>
+        </div>
+      </div>
+      <div class="rule" hidden>
+        <div class="k">Rule</div>
+        <p>Fires when one merchant accounts for <span class="f">≥ 40 payments</span> in 12 months and the average is <span class="f">≤ ₹500</span>. Frequency, not amount, is the trigger.</p>
+        <p>No judgement about the merchant or the category, and no listed parent, so no buy button. It reports a count.</p>
+      </div>
+      <p class="why"><b>A frequency nudge, not a spend nudge.</b> ₹18,526 would never rank in a category list, but 74 payments is the most distinctive fact in this user's year.</p>
+      <p class="why open"><b>Worth your call:</b> whether this stays neutral or ever gets a tone. I have kept it strictly factual — the engine has no business having an opinion about what someone buys.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= E · HELD ================= -->
+<section class="fam wrap" data-fam="E">
+  <div class="fam-h">
+    <div class="n">Family E · the rule working</div>
+    <h2>Counted, never nudged</h2>
+    <p>Health, gambling, penalties, welfare and insurance are counted in every total and never earn a nudge, a celebration or a button. The frame below is what that looks like — which is to say, almost nothing.</p>
+  </div>
+  <div class="grid">
+
+    <!-- E1 -->
+    <div class="frame" data-fam="E">
+      <div class="cap">
+        <div class="top"><span class="id">E1</span><h4>A sensitive category, held</h4><span class="st held">Held by rule</span></div>
+        <p class="sit"><b>Real</b> · ₹15,930 across 9 payments · would have ranked <b>7th</b> · Apollo and Global Health are listed</p>
+      </div>
+      <div class="pf">
+        <div class="ctx">Below your expenses <i></i></div>
+        <div class="card gh">
+          <div class="row">
+            <div class="sp"><div class="k2">In your categories</div>
+              <div class="mid" style="margin-top:5px">Health &amp; pharmacy · ₹38,293</div></div>
+          </div>
+          <div class="hr"></div>
+          <div class="st2">Shown in your totals and in the ranked list at its real number. No comparison, no suggestion, no button — and no card explaining why.</div>
+        </div>
+        <div class="card" style="background:transparent;box-shadow:inset 0 0 0 1px #2a1d1b;margin-top:12px">
+          <div class="k2" style="color:#ff9d45">Not shipped · shown here only</div>
+          <div class="st2" style="margin-top:8px">A nudge for this category would have read: <span style="color:#8b8c8c">“₹15,930 went to mental-health care across nine payments — Apollo and Global Health are both listed.”</span></div>
+          <div class="st2" style="margin-top:8px">It does not ship. That is the rule holding, and it costs a slot on a user whose data is otherwise rich.</div>
+        </div>
+      </div>
+      <div class="rule" hidden>
+        <div class="k">Rule</div>
+        <p>Category is on the blocklist — <span class="f">health, gambling, penalties, welfare, insurance</span>. It keeps its real number in every total and every ranked list, and is excluded from nudges, celebratory framing and buy buttons.</p>
+        <p>Silently. There is no card announcing a suppression; the second block above exists for this document only.</p>
+      </div>
+      <p class="why"><b>The cost is visible here so the decision can be made on evidence.</b> On this dump the category is <span class="f">₹38,293</span>, has two perfectly good listed companies behind it, and gets nothing.</p>
+      <p class="why open"><b>Still yours to call.</b> If the blocklist goes, this becomes an ordinary category with a nudge and a button. Nothing else on this page changes either way.</p>
+    </div>
+
+  </div>
+</section>
+
+<footer class="wrap">
+  <h2 style="font-size:24px;letter-spacing:-.025em">What these fourteen frames settle</h2>
+  <div class="cols">
+    <div class="col">
+      <h4>Decided</h4>
+      <ul>
+        <li><b>No budget to set.</b> The engine nudges; the user configures nothing</li>
+        <li><b>Everything is measured against the user's own median month</b> — never against last month, never against a target they picked</li>
+        <li><b>The emergency fund always speaks</b>, including when it is finished</li>
+        <li><b>Surplus size picks the destination</b>, not whether we talk: under 3× a month stays liquid, over 3× goes long</li>
+        <li><b>Nudges may have no ask.</b> Three of the fourteen carry no button</li>
+        <li><b>No verdict before day eight</b> of a period; composition instead</li>
+        <li><b>Every nudge names its cause</b> when the engine honestly knows it</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Open</h4>
+      <ul>
+        <li><b>The sensitive blocklist</b> — E1 is drawn both ways and is the only frame that changes</li>
+        <li><b>Does the frequency nudge (D2) ever get a tone,</b> or stay a bare count</li>
+        <li><b>How many nudges render at once</b> before the rest go behind an expander</li>
+        <li><b>Whether a hot month suppresses buy buttons</b> elsewhere on the page in the same session</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Found in the dump while drawing these</h4>
+      <ul>
+        <li><b>The mandate stepped down, not just paused.</b> ₹2,05,000 → ₹1,45,000, ₹5,09,899 behind the old rate</li>
+        <li><b>Two card statements landed in August</b> — ₹1,05,164 and ₹21,656. Most of the 1.5× month</li>
+        <li><b>Astrotalk took 74 payments</b> averaging ₹250 — the highest-frequency merchant in the year</li>
+        <li><b>Twelve recurring services, ₹41,294</b> — none with a listed Indian parent</li>
+        <li><b>The median month depends hard on the window:</b> ₹2,06,592 over six months, ₹1,21,924 over twelve. Spending stepped up mid-year, so the shorter window is the honest one</li>
+      </ul>
+    </div>
+  </div>
+  <p class="src"><b>Source.</b> One Account Aggregator deposits dump — 1,265 transactions across three savings accounts, 2 August 2025 to 1 September 2026. Frames marked <b>Real</b> are computed from it; frames marked <b>Fixture</b> use invented figures to reach a situation this user never hits. Personal identifiers in the file were read and excluded.</p>
+  <p class="src"><b>Caution.</b> One user is one user. Every threshold on this page — the 6× cover target, the 3× surplus split, the 1.25× hot-month trigger, the 40-payment frequency floor, the day-8 quiet period — is a first guess that needs tuning against real traffic.</p>
+</footer>
+
+<script>
+(function () {
+  var famBtns = Array.prototype.slice.call(document.querySelectorAll('.tg[data-fam]'));
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.fam'));
+  var frames = Array.prototype.slice.call(document.querySelectorAll('.frame'));
+
+  function apply(fam) {
+    famBtns.forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.dataset.fam === fam));
+    });
+    frames.forEach(function (f) {
+      f.hidden = !(fam === 'all' || f.dataset.fam === fam);
+    });
+    sections.forEach(function (s) {
+      s.hidden = !(fam === 'all' || s.dataset.fam === fam);
+    });
+  }
+  famBtns.forEach(function (b) {
+    b.addEventListener('click', function () { apply(b.dataset.fam); });
+  });
+
+  var rulesBtn = document.getElementById('rules');
+  var rules = Array.prototype.slice.call(document.querySelectorAll('.rule'));
+  var shown = false;
+  rulesBtn.addEventListener('click', function () {
+    shown = !shown;
+    rulesBtn.setAttribute('aria-pressed', String(shown));
+    rulesBtn.textContent = shown ? 'Hide the rules' : 'Show the rules';
+    rules.forEach(function (r) { r.hidden = !shown; });
+  });
+
+  apply('all');
+})();
+</script>
+</body>
+</html>
